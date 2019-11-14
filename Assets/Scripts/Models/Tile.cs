@@ -15,7 +15,7 @@ public class Tile
     public Tile( World world,int x,int y ) {
         this.world = world;
         this.X = x;
-        this.X = y;
+        this.Y = y;
     }
     public void RegisterTileTypeChange(Action<Tile> callback)
     {TileTypeChangeCB += callback;}
