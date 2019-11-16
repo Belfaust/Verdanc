@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\Models\BuiltObject.cs" />
      <Compile Include="Assets\Scripts\Models\Tile.cs" />
      <Compile Include="Assets\Scripts\Models\World.cs" />
+     <Compile Include="Assets\Scripts\Utility\SimplePool.cs" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>C:/Users/piote/OneDrive/Pulpit/Verdanc/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>

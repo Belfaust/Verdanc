@@ -17,7 +17,7 @@ public class World_Controller : MonoBehaviour
         {
             for (int y = 0; y < World.Height; y++)
             {
-                Tile tile_data = World.GetTileAt(x,y);
+                Tile tile_data = World.GetTileAt(x-World.Width/2,y-World.Height/2);
 
                 GameObject tile_GO = new GameObject();
                 tile_GO.name = "Tile_"+x+"_"+y;
@@ -50,8 +50,16 @@ public class World_Controller : MonoBehaviour
             tile_GO.GetComponent<MeshRenderer>().sharedMaterial = RoadTile.GetComponent<MeshRenderer>().sharedMaterial;
         }
         else if(tile_data.Type == Tile.TileType.Empty){
-            tile_GO = null;
+            tile_GO.GetComponent<MeshFilter>().sharedMesh = null;
+            tile_GO.GetComponent<MeshRenderer>().sharedMaterial = null;
         }
         else{Debug.LogError("OnTileTypeChange - Not Recognized Tile");}
+    }
+    public Tile GetTileAtWorldCoord(Vector3 coord)
+    {
+        int x = Mathf.FloorToInt(coord.x);
+        int y = Mathf.FloorToInt(coord.y);
+
+        return World.GetTileAt(x , y);
     }
 }
