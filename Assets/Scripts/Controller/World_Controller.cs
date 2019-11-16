@@ -42,16 +42,16 @@ public class World_Controller : MonoBehaviour
         if(tile_data.Type == Tile.TileType.Grass)
         {
             tile_GO.GetComponent<MeshFilter>().sharedMesh = GrassTile.GetComponent<MeshFilter>().sharedMesh;
-            tile_GO.GetComponent<MeshRenderer>().sharedMaterial = GrassTile.GetComponent<MeshRenderer>().sharedMaterial;
+            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = GrassTile.GetComponent<MeshRenderer>().sharedMaterials;
         }
         else if(tile_data.Type == Tile.TileType.Road)
         {
             tile_GO.GetComponent<MeshFilter>().sharedMesh = RoadTile.GetComponent<MeshFilter>().sharedMesh;
-            tile_GO.GetComponent<MeshRenderer>().sharedMaterial = RoadTile.GetComponent<MeshRenderer>().sharedMaterial;
+            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = RoadTile.GetComponent<MeshRenderer>().sharedMaterials;
         }
         else if(tile_data.Type == Tile.TileType.Empty){
             tile_GO.GetComponent<MeshFilter>().sharedMesh = null;
-            tile_GO.GetComponent<MeshRenderer>().sharedMaterial = null;
+            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = null;
         }
         else{Debug.LogError("OnTileTypeChange - Not Recognized Tile");}
     }
