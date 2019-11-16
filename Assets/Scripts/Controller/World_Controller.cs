@@ -17,7 +17,7 @@ public class World_Controller : MonoBehaviour
         {
             for (int y = 0; y < World.Height; y++)
             {
-                Tile tile_data = World.GetTileAt(x-World.Width/2,y-World.Height/2);
+                Tile tile_data = World.GetTileAt(x,y);
 
                 GameObject tile_GO = new GameObject();
                 tile_GO.name = "Tile_"+x+"_"+y;
