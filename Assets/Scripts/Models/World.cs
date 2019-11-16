@@ -16,7 +16,7 @@ public class World
         {
             for (int y = 0; y < Height; y++)
             {
-                tiles[x,y] = new Tile(this,x-Width/2,y-Height/2);        
+                tiles[x,y] = new Tile(this,x,y);        
             }   
         }
         Debug.Log("Created with " +(Width* Height)+ " tiles");
@@ -41,7 +41,7 @@ public class World
         }
     }
     public Tile GetTileAt(int x,int y){
-        if(x>Width||x<-Width||y>Height||y<-Height)
+        if(x>Width||x<0||y>Height||y<0)
         {
             Debug.LogError("Tile ("+x+" , "+y+") is out of range.");
             return null;
