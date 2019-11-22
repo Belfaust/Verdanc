@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 public class Tile 
 {
-    public enum TileType { Empty,Grass, Road };
+    public enum TileType { Empty,Grass,Road,Water,Dirt };
     TileType _type = TileType.Empty;  
     BuiltObject builtobject;
     Action<Tile> TileTypeChangeCB;

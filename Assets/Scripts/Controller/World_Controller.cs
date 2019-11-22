@@ -6,13 +6,15 @@ using System;
 public class World_Controller : MonoBehaviour
 {
     public static World_Controller _Instance{get;protected set;}
-    public GameObject GrassTile,RoadTile;
+    Dictionary<Tile , GameObject> tileGameobjectMap;
+    public GameObject GrassTile,RoadTile,WaterTile,DirtTile;
      public World World{get;protected set;}
      void Start() {
         if(_Instance != null){
         Debug.Log("Err there are 2 instances of World Controllers");
         }else{   _Instance = this;}
         World = new World();
+        tileGameobjectMap = new Dictionary<Tile, GameObject>();
         for (int x = 0; x < World.Width; x++)
         {
             for (int y = 0; y < World.Height; y++)
@@ -20,12 +22,16 @@ public class World_Controller : MonoBehaviour
                 Tile tile_data = World.GetTileAt(x,y);
 
                 GameObject tile_GO = new GameObject();
+
+                tileGameobjectMap.Add(tile_data,tile_GO);
+
                 tile_GO.name = "Tile_"+x+"_"+y;
                 tile_GO.transform.position = new Vector3(tile_data.X,tile_data.Y,0);
 
                  tile_GO.AddComponent<MeshFilter>();
                  tile_GO.AddComponent<MeshRenderer>();
-                 tile_data.RegisterTileTypeChange( (tile) => {OnTileTypeChange(tile,tile_GO);} );
+                 Action<Tile> Lambda = (tile) => {OnTileTypeChange(tile);};
+                tile_data.RegisterTileTypeChange( OnTileTypeChange );
                  tile_GO.transform.SetParent(this.transform,true);
             }
         }
@@ -37,8 +43,22 @@ public class World_Controller : MonoBehaviour
         World.Randomize();
       }  
     }
-    void OnTileTypeChange(Tile tile_data,GameObject tile_GO)
+    void OnTileTypeChange(Tile tile_data)
     {
+        if(tileGameobjectMap.ContainsKey(tile_data)==false)
+        {
+            Debug.LogError("TileGameobjectMap doesnt' contain the tile data");
+            return;
+        }
+
+        GameObject tile_GO = tileGameobjectMap[tile_data];
+
+        if(tile_GO == null)
+        {
+            Debug.LogError("TilegameobjectMap's returned Gameobject is null");
+            return;
+        }
+
         if(tile_data.Type == Tile.TileType.Grass)
         {
             tile_GO.GetComponent<MeshFilter>().sharedMesh = GrassTile.GetComponent<MeshFilter>().sharedMesh;
@@ -48,6 +68,14 @@ public class World_Controller : MonoBehaviour
         {
             tile_GO.GetComponent<MeshFilter>().sharedMesh = RoadTile.GetComponent<MeshFilter>().sharedMesh;
             tile_GO.GetComponent<MeshRenderer>().sharedMaterials = RoadTile.GetComponent<MeshRenderer>().sharedMaterials;
+        }
+        else if(tile_data.Type == Tile.TileType.Water){
+            tile_GO.GetComponent<MeshFilter>().sharedMesh = WaterTile.GetComponent<MeshFilter>().sharedMesh;
+            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = WaterTile.GetComponent<MeshRenderer>().sharedMaterials;
+        }
+        else if(tile_data.Type == Tile.TileType.Dirt){
+            tile_GO.GetComponent<MeshFilter>().sharedMesh = DirtTile.GetComponent<MeshFilter>().sharedMesh;
+            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = DirtTile.GetComponent<MeshRenderer>().sharedMaterials;
         }
         else if(tile_data.Type == Tile.TileType.Empty){
             tile_GO.GetComponent<MeshFilter>().sharedMesh = null;

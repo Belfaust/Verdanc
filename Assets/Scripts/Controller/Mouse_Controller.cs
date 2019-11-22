@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Mouse_Controller : MonoBehaviour
 {
     public GameObject CursorPrefab;
+    Tile.TileType SelectedBuildTiles = Tile.TileType.Road;
     Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);//ASk on next lessons
     Vector3 Last_Frame_Pos;
     Vector3 NotOffsetCamera;
@@ -49,6 +52,10 @@ public class Mouse_Controller : MonoBehaviour
     // }
     void UpdateDragging()
     {
+        if(EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
     if(Input.GetMouseButtonDown(0))
         {
             TileStartDragPos = CurrentFramePos;
@@ -102,7 +109,7 @@ public class Mouse_Controller : MonoBehaviour
                     Tile t = World_Controller._Instance.World.GetTileAt(x,y);
                     if(t != null)
                     {
-                        t.Type = Tile.TileType.Grass;
+                        t.Type = SelectedBuildTiles;
                     }
                 }
             }
@@ -119,5 +126,17 @@ public class Mouse_Controller : MonoBehaviour
         }
        Last_Frame_Pos = GetWorldPositionOnPlane(Input.mousePosition,0);
     }
-     
+
+    public void SetMode_BuildRoad()
+    {
+        SelectedBuildTiles = Tile.TileType.Road;
+    } 
+    public void SetMode_BuildGrass()
+    {
+        SelectedBuildTiles = Tile.TileType.Grass;
+    }
+    public void SetMode_BuildWater()
+    {
+        SelectedBuildTiles = Tile.TileType.Water;
+    }
 }
