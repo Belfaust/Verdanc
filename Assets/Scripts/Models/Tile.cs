@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+   public enum TileType { Empty,Grass,Road,Water,Dirt };
 public class Tile 
 {
-    public enum TileType { Empty,Grass,Road,Water,Dirt };
+ 
     TileType _type = TileType.Empty;  
     BuiltObject builtobject;
     Action<Tile> TileTypeChangeCB;
@@ -21,4 +22,20 @@ public class Tile
     {TileTypeChangeCB += callback;}
     public void UnRegisterTileTypeChange(Action<Tile> callback)
     {TileTypeChangeCB -= callback;}
+    public bool PlaceObject(BuiltObject objInstance)
+    {
+        if(objInstance == null)
+        {
+            builtobject = null;
+            return true;
+        }
+        if(builtobject != null)
+        {
+            Debug.LogError("Lmao you tried to instal object when you already have one");
+            return false;
+        }
+
+        builtobject = objInstance;
+        return true;
+    }
 }

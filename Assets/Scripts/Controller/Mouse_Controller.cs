@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class Mouse_Controller : MonoBehaviour
 {
     public GameObject CursorPrefab;
-    Tile.TileType SelectedBuildTiles = Tile.TileType.Road;
-    Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);//ASk on next lessons
+    TileType SelectedBuildTiles = TileType.Road;
+    Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
     Vector3 Last_Frame_Pos;
     Vector3 NotOffsetCamera;
     Vector3 TileStartDragPos;
@@ -25,7 +25,6 @@ public class Mouse_Controller : MonoBehaviour
     {
         CurrentFramePos = new Vector3(GetWorldPositionOnPlane(Input.mousePosition,0).x +.5f,GetWorldPositionOnPlane(Input.mousePosition,0).y +.5f);
         NotOffsetCamera = GetWorldPositionOnPlane(Input.mousePosition,0);
-        //UpdateCursor();
         UpdateDragging();
         CameraMovement();       
         Scroling();
@@ -129,14 +128,14 @@ public class Mouse_Controller : MonoBehaviour
 
     public void SetMode_BuildRoad()
     {
-        SelectedBuildTiles = Tile.TileType.Road;
+        SelectedBuildTiles = TileType.Road;
     } 
     public void SetMode_BuildGrass()
     {
-        SelectedBuildTiles = Tile.TileType.Grass;
+        SelectedBuildTiles = TileType.Grass;
     }
     public void SetMode_BuildWater()
     {
-        SelectedBuildTiles = Tile.TileType.Water;
+        SelectedBuildTiles = TileType.Water;
     }
 }
