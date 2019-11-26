@@ -53,51 +53,57 @@ int H(int x, int y , int targetX , int targetY)
 }
 int G = 0,DestinationIndex = 0,HeuristicValue = H(CurrentRoadTile.X,CurrentRoadTile.Y,Destiantion[DestinationIndex].X,Destiantion[DestinationIndex].Y);
 int F = G + HeuristicValue;
-Debug.Log(F+"Destination tiles:"+Destiantion[DestinationIndex].X+" "+Destiantion[DestinationIndex].Y+" My Tile"+CurrentRoadTile.X+" "+ CurrentRoadTile.Y);
-int length= 0 ;
+Debug.Log(" Destination tiles:"+Destiantion[DestinationIndex].X+" "+Destiantion[DestinationIndex].Y+" My Tile"+CurrentRoadTile.X+" "+ CurrentRoadTile.Y);
 closedlist.Add(CurrentRoadTile); 
-
-while(CurrentRoadTile!= Destiantion[DestinationIndex]&& length<500)
+CurrentRoadTile.Type = TileType.Grass;
+while(CurrentRoadTile!= Destiantion[DestinationIndex])
     {
+        
         for(int dx = -1; dx <= 1; ++dx) {
             for (int dy = -1; dy <= 1; ++dy) {
                 if (dx != 0 || dy != 0) {
-                    if(GetTileAt(CurrentRoadTile.X + dx,CurrentRoadTile.Y + dy) != null){
-                        if(GetTileAt(CurrentRoadTile.X + dx,CurrentRoadTile.Y + dy).Type != TileType.Water && GetTileAt(CurrentRoadTile.X + dx,CurrentRoadTile.Y + dy).Type != TileType.Road)
+                    Tile tmp_tile = GetTileAt(CurrentRoadTile.X + dx,CurrentRoadTile.Y + dy);
+                    if(tmp_tile != null&&!openlist.Contains(tmp_tile)&&!closedlist.Contains(tmp_tile)){
+                        if(tmp_tile.Type != TileType.Road)
                         {
-                            openlist.Add(GetTileAt(CurrentRoadTile.X + dx,CurrentRoadTile.Y + dy));
+                            openlist.Add(tmp_tile);
                         }
                     }
                 }
             }
         }
+        CurrentRoadTile = openlist[Random.Range(0,openlist.Count)];
         foreach(Tile tile in openlist)
-        {      
-           // Debug.Log(tile.X + " " + tile.Y);
-            int Local_Heuristicvalue = H(tile.X,tile.Y,Destiantion[DestinationIndex].X,Destiantion[DestinationIndex].Y);
+        { 
+            int Local_HeuristicValue = H(tile.X,tile.Y,Destiantion[DestinationIndex].X,Destiantion[DestinationIndex].Y);
             G = H(tile.X,tile.Y,closedlist[0].X,closedlist[0].Y); 
-            //Debug.Log(G + Local_Heuristicvalue);
-            if(F > G + Local_Heuristicvalue)
+            if(tile.Type == TileType.Water)
             {
-                F = G + Local_Heuristicvalue;
-                CurrentRoadTile = tile;  
-                
-            } else if(F<= G + Local_Heuristicvalue)
+                Local_HeuristicValue+=1;
+            }
+            if(!closedlist.Contains(tile))
             {
-                if(!closedlist.Contains(tile)||Local_Heuristicvalue<= H(CurrentRoadTile.X,CurrentRoadTile.Y,Destiantion[DestinationIndex].X,Destiantion[DestinationIndex].Y))
+                if(F > G + Local_HeuristicValue)
                 {
-                        F = G + Local_Heuristicvalue;
+                    F = G + Local_HeuristicValue;
+                    CurrentRoadTile = tile;  
+                
+                } else
+                {         
+                    if(Local_HeuristicValue <= H(CurrentRoadTile.X,CurrentRoadTile.Y,Destiantion[DestinationIndex].X,Destiantion[DestinationIndex].Y))
+                    {
+                        F = G + Local_HeuristicValue;
                         CurrentRoadTile = tile;  
+                    }
                 }
             }
         }
-        length +=1;
         openlist.Remove(CurrentRoadTile);
         closedlist.Add(CurrentRoadTile);  
         foreach(Tile tile in closedlist)
         {
         tile.Type = TileType.Road;
-        }   
+        }  
     }
     
 }
