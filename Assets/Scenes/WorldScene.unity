@@ -680,12 +680,12 @@ PrefabInstance:
     - target: {fileID: 7618412111163883122, guid: d60e3732ede44bf4b8b793a39ed45e3f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.079332374
+      value: -0.005
       objectReference: {fileID: 0}
     - target: {fileID: 7618412111163883122, guid: d60e3732ede44bf4b8b793a39ed45e3f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2940185
+      value: 0.228
       objectReference: {fileID: 0}
     - target: {fileID: 7618412111163883122, guid: d60e3732ede44bf4b8b793a39ed45e3f,
         type: 3}
@@ -941,7 +941,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 3.772e-42, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1390,6 +1390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44f52266e93ea744b166dddd7ec67f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PerlinTest: {fileID: 0}
   GrassTile: {fileID: 4048614562777141596, guid: 42a8592338e0c844c88728c1f52cde80,
     type: 3}
   RoadTile: {fileID: 3841326795741139852, guid: 84bf1f730004d4f4d8a2ac4805dd7dbb,

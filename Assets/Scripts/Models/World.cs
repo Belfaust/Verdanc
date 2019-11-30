@@ -7,17 +7,20 @@ public class World
     Tile[,] tiles; 
     public int Width{get;protected set;}
     public int Height{get;protected set;}
-    
+    PerlinNoise noise;
     public World(int width=100,int height= 100)
     {
+        noise = new PerlinNoise(Random.Range(1000000,10000000));
         Width = width;
         Height = height;
         tiles = new Tile[this.Width, this.Height];
         for (int x = 0; x < Width; x++)
         {
+            int ColumnHeight = noise.getNoise(x - (-Width),Height -(-Height));
+            Debug.Log(ColumnHeight);
             for (int y = 0; y < Height; y++)
             {
-                tiles[x,y] = new Tile(this,x,y);        
+                tiles[x,y] = new Tile(this,x,y+ ColumnHeight);     
             }   
         }
         Debug.Log("Created with " +(Width* Height)+ " tiles");
@@ -41,47 +44,63 @@ public class World
         }
         RoadGeneration();
     }  
-   void RoadGeneration()
+    public void PerlinWorldGenerator(Renderer renderer)
+    {
+        Texture2D GenerateMapTexture()
+        {
+            Texture2D texture = new Texture2D(256, 256);
+            for (int x = 0; x < 256; x++)
+            {
+                for (int y = 0; y < 256; y++)
+                {
+                    Color color = CalculateColor(x,y);
+                    // = color;
+                }
+            }
+            texture.Apply();
+            return texture;
+        }
+        Color CalculateColor(int x , int y)
+        {
+            float xCoord = (float)x / 256 * 20;
+            float yCoord = (float)y / 256 * 20;
+
+
+            float sample = Mathf.PerlinNoise(xCoord,yCoord);
+            return new Color(sample,sample,sample);
+        }       
+        renderer.material.mainTexture = GenerateMapTexture();
+    }
+
+
+    // This function can be further upgraded with specific Tile weights However i am gonna leave it as it is for now
+    //before making the A* Road there should be A world with Elevation based on Perlin Noise
+   void RoadGeneration() 
 {
-List <Tile> openlist = new List<Tile>();
-List <Tile> closedlist = new List<Tile>();
-List <Tile> Destiantion = new List<Tile>(){tiles[Random.Range(0,Width),Random.Range(0,Height)]};
+List <Tile> Openlist = new List<Tile>();
+List <Tile> Closedlist = new List<Tile>();
+List <Tile> DestiantionList = new List<Tile>();
 Tile CurrentRoadTile= tiles[Random.Range(0,Width),1];
 int H(int x, int y , int targetX , int targetY)
 {
     return Mathf.Abs(targetX-x) + Mathf.Abs(targetY - y);
 }
-int G = 0,DestinationIndex = 0,HeuristicValue = H(CurrentRoadTile.X,CurrentRoadTile.Y,Destiantion[DestinationIndex].X,Destiantion[DestinationIndex].Y);
+for (int x = 1; x < 4; x++)
+{
+   DestiantionList.Add(tiles[Random.Range(10,Width-10),25*x]);
+}
+int G = 0,DestinationIndex = 0,HeuristicValue = H(CurrentRoadTile.X,CurrentRoadTile.Y,DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y);
 int F = G + HeuristicValue;
-Debug.Log(" Destination tiles:"+Destiantion[DestinationIndex].X+" "+Destiantion[DestinationIndex].Y+" My Tile"+CurrentRoadTile.X+" "+ CurrentRoadTile.Y);
-closedlist.Add(CurrentRoadTile); 
-CurrentRoadTile.Type = TileType.Grass;
-while(CurrentRoadTile!= Destiantion[DestinationIndex])
+Closedlist.Add(CurrentRoadTile); 
+while(CurrentRoadTile!= DestiantionList[DestiantionList.Count-1])
     {
-        
-        for(int dx = -1; dx <= 1; ++dx) {
-            for (int dy = -1; dy <= 1; ++dy) {
-                if (dx != 0 || dy != 0) {
-                    Tile tmp_tile = GetTileAt(CurrentRoadTile.X + dx,CurrentRoadTile.Y + dy);
-                    if(tmp_tile != null&&!openlist.Contains(tmp_tile)&&!closedlist.Contains(tmp_tile)){
-                        if(tmp_tile.Type != TileType.Road)
-                        {
-                            openlist.Add(tmp_tile);
-                        }
-                    }
-                }
-            }
-        }
-        CurrentRoadTile = openlist[Random.Range(0,openlist.Count)];
-        foreach(Tile tile in openlist)
+        GetNeighbourTiles(CurrentRoadTile,Openlist,Closedlist);   
+        CurrentRoadTile = Openlist[Random.Range(0,Openlist.Count-1)];
+        foreach(Tile tile in Openlist)
         { 
-            int Local_HeuristicValue = H(tile.X,tile.Y,Destiantion[DestinationIndex].X,Destiantion[DestinationIndex].Y);
-            G = H(tile.X,tile.Y,closedlist[0].X,closedlist[0].Y); 
-            if(tile.Type == TileType.Water)
-            {
-                Local_HeuristicValue+=1;
-            }
-            if(!closedlist.Contains(tile))
+            int Local_HeuristicValue = H(tile.X,tile.Y,DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y);
+            G = H(tile.X,tile.Y,Closedlist[0].X,Closedlist[0].Y); 
+            if(!Closedlist.Contains(tile))
             {
                 if(F > G + Local_HeuristicValue)
                 {
@@ -90,7 +109,7 @@ while(CurrentRoadTile!= Destiantion[DestinationIndex])
                 
                 } else
                 {         
-                    if(Local_HeuristicValue <= H(CurrentRoadTile.X,CurrentRoadTile.Y,Destiantion[DestinationIndex].X,Destiantion[DestinationIndex].Y))
+                    if(Local_HeuristicValue <= H(CurrentRoadTile.X,CurrentRoadTile.Y,DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y))
                     {
                         F = G + Local_HeuristicValue;
                         CurrentRoadTile = tile;  
@@ -98,14 +117,30 @@ while(CurrentRoadTile!= Destiantion[DestinationIndex])
                 }
             }
         }
-        openlist.Remove(CurrentRoadTile);
-        closedlist.Add(CurrentRoadTile);  
-        foreach(Tile tile in closedlist)
+        Openlist.Remove(CurrentRoadTile);
+        Closedlist.Add(CurrentRoadTile);
+        if(CurrentRoadTile == DestiantionList[DestinationIndex])
+        {
+            DestinationIndex+=1;
+        }
+    }
+        foreach(Tile tile in Closedlist)
         {
         tile.Type = TileType.Road;
         }  
-    }
-    
+}
+public void GetNeighbourTiles(Tile CurrentTile,List<Tile> NeighbourList,List<Tile> ClosedNeighbourList)
+{
+for(int dx = -1; dx <= 1; ++dx) {
+            for (int dy = -1; dy <= 1; ++dy) {
+                if (dx != 0 || dy != 0) {
+                    Tile tmp_tile = GetTileAt(CurrentTile.X + dx,CurrentTile.Y + dy);
+                    if(tmp_tile != null&&!NeighbourList.Contains(tmp_tile)&&!ClosedNeighbourList.Contains(tmp_tile)){
+                            NeighbourList.Add(tmp_tile);
+                    }
+                }
+            }
+        }
 }
     public Tile GetTileAt(int x,int y){
         if(x>Width-1||x<0||y>Height-1||y<0)
@@ -115,6 +150,5 @@ while(CurrentRoadTile!= Destiantion[DestinationIndex])
         }
         return tiles[x, y];
     }
-
 }
 

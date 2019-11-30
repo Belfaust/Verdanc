@@ -8,6 +8,7 @@ public class World_Controller : MonoBehaviour
 {
     public static World_Controller _Instance{get;protected set;}
     Dictionary<Tile , GameObject> tileGameobjectMap;
+    public Renderer PerlinTest;
     public GameObject GrassTile,RoadTile,WaterTile,DirtTile;
      public World World{get;protected set;}
      void Start() {
@@ -45,6 +46,7 @@ public class World_Controller : MonoBehaviour
       if(Input.GetKeyDown(KeyCode.K))
       {
         World.Randomize();
+        World.PerlinWorldGenerator(PerlinTest);
       }  
     }
     void DestroyAllTileGameObjects()
@@ -62,7 +64,7 @@ public class World_Controller : MonoBehaviour
     {
         if(tileGameobjectMap.ContainsKey(tile_data)==false)
         {
-            Debug.LogError("TileGameobjectMap doesnt' contain the tile data");
+            Debug.LogError("TileGameobjectMap doesn' contain the tile data");
             return;
         }
 
