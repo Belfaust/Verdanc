@@ -88,7 +88,7 @@ public class Mouse_Controller : MonoBehaviour
             {
                 for (int y = start_y; y <= end_y; y++)
                 {
-                    Tile t = World_Controller._Instance.World.GetTileAt(x,y);
+                    Tile t = World_Controller._Instance.World.GetTileAt(x,y,0);
                     if(t != null)
                     {
                        GameObject GO = SimplePool.Spawn(CursorPrefab,new Vector3(x,y,-1),Quaternion.identity);
@@ -105,7 +105,7 @@ public class Mouse_Controller : MonoBehaviour
             {
                 for (int y = start_y; y <= end_y; y++)
                 {
-                    Tile t = World_Controller._Instance.World.GetTileAt(x,y);
+                    Tile t = World_Controller._Instance.World.GetTileAt(x,y,0);
                     if(t != null)
                     {
                         t.Type = SelectedBuildTiles;

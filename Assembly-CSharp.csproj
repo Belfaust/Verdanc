@@ -46,6 +46,10 @@
   </PropertyGroup>
   <ItemGroup>     <Compile Include="Assets\Scripts\Controller\Mouse_Controller.cs" />
      <Compile Include="Assets\Scripts\Controller\World_Controller.cs" />
+     <Compile Include="Assets\Scripts\MapGeneration\Generator.cs" />
+     <Compile Include="Assets\Scripts\MapGeneration\MapDisplay.cs" />
+     <Compile Include="Assets\Scripts\MapGeneration\Noise.cs" />
+     <Compile Include="Assets\Scripts\MapGeneration\TextureGenerator.cs" />
      <Compile Include="Assets\Scripts\Models\BuiltObject.cs" />
      <Compile Include="Assets\Scripts\Models\Tile.cs" />
      <Compile Include="Assets\Scripts\Models\World.cs" />

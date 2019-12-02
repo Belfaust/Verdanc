@@ -45,6 +45,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>     <Compile Include="Assets\Scripts\UI\Editor\AutomaticVerticalSizeEditor.cs" />
+     <Compile Include="Assets\Scripts\UI\Editor\MapGeneratorEditor.cs" />
+     <Compile Include="Assets\Scripts\UI\Editor\WorldGeneratorEditor.cs" />
  <Reference Include="UnityEditor.TestRunner">
  <HintPath>C:/Users/piote/OneDrive/Pulpit/Verdanc/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
  </Reference>
