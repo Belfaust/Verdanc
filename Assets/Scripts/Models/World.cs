@@ -8,19 +8,21 @@ public class World
     public int Depth{get;protected set;}
     public int Height{get;protected set;}
     public int seed{get;protected set;}
-    public World(int width=50,int depth= 50,int height= 5)
+    public World(int width=100,int depth= 100,int height= 2)
     {
         seed = Random.Range(-100000,100000);
         Width = width;
         Depth = depth;
         Height = height;
         tiles = new Tile[this.Width, this.Depth,this.Height];
-        float[,] noiseMap = Noise.GenerateNoiseMap(Width,Depth,seed,50,4,.4f,2, new Vector2(20,15));
+        float[,] noiseMap = Noise.GenerateNoiseMap(Width,Depth,seed,50,4,.4f,2, new Vector2(10,15));
         for (int x = 0; x < Width; x++)
         { 
             for (int y = 0; y < Depth; y++)
             {   
-                int currentHeight = (int)(noiseMap[x,y]*10);
+                int currentHeight = (int)(noiseMap[x,y]*(height*10));
+                if(currentHeight>15)
+                { currentHeight = 16;}
                 for (int z = 0; z < Height; z++)
                 {
                 tiles[x,y,z] = new Tile(this,x,y,z+currentHeight);     
@@ -38,7 +40,7 @@ public class World
             {
                 for (int z = 0; z < Height; z++)
                 {
-                if(Random.Range(0,5)%2==0)
+                if(tiles[x,y,z].Z <15)
                 {
                     tiles[x,y,z].Type = TileType.Grass;
                 }
@@ -52,7 +54,7 @@ public class World
         RoadGeneration();
     }  
     // This function can be further upgraded with specific Tile weights However i am gonna leave it as it is for now
-    //before making the A* Road there should be A world with Elevation based on Perlin Noise
+    //before making the A* Road there should be a proper world with Elevation based on Perlin Noise
    void RoadGeneration() 
 {
 List <Tile> Openlist = new List<Tile>();
@@ -65,7 +67,7 @@ int H(int x, int y , int targetX , int targetY)
 }
 for (int x = 1; x < 4; x++)
 {
-   DestiantionList.Add(tiles[Random.Range(10,Width-10),10*x,0]);
+   DestiantionList.Add(tiles[Random.Range(10,Width-10),25*x,0]);
 }
 int G = 0,DestinationIndex = 0,HeuristicValue = H(CurrentRoadTile.X,CurrentRoadTile.Y,DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y);
 int F = G + HeuristicValue;
