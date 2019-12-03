@@ -33,7 +33,7 @@ public class Tile
         }
         if(builtobject != null)
         {
-            Debug.LogError("Lmao you tried to instal object when you already have one");
+            Debug.LogError("You tried to instal object when you already have one");
             return false;
         }
 
