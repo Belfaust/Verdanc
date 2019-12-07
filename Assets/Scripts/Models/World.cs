@@ -29,13 +29,10 @@ public class World
             {
                 if(Random.Range(0,2)==0)
                 {
-                    tiles[x,y].Type = Tile.TileType.Empty;
+                    tiles[x,y].Type = Tile.TileType.Grass;
                 }
                 else if(Random.Range(0,2) == 1) {
                     tiles[x,y].Type = Tile.TileType.Road;
-                }
-                else{
-                    tiles[x,y].Type = Tile.TileType.Empty;
                 }
             }
         }
