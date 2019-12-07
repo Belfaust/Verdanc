@@ -64,6 +64,8 @@ public class Mouse_Controller : MonoBehaviour
         int end_x = Mathf.FloorToInt(CurrentFramePos.x);
         int start_y = Mathf.FloorToInt(TileStartDragPos.y);
         int end_y = Mathf.FloorToInt(CurrentFramePos.y);
+        int start_z =  Mathf.FloorToInt(CurrentFramePos.z);
+        int end_z = Mathf.FloorToInt(CurrentFramePos.z);
         if(end_x < start_x)
             {
                 int tmp = end_x;
@@ -75,6 +77,12 @@ public class Mouse_Controller : MonoBehaviour
                 int tmp = end_y;
                 end_y = start_y;
                 start_y = tmp;
+            }
+            if(end_z < start_z)
+            {
+               int tmp = end_z;
+                end_z = start_z;
+                start_z = tmp; 
             }
             while(dragPreviewObjects.Count > 0)
             {
@@ -88,12 +96,15 @@ public class Mouse_Controller : MonoBehaviour
             {
                 for (int y = start_y; y <= end_y; y++)
                 {
-                    Tile t = World_Controller._Instance.World.GetTileAt(x,y,0);
+                    for (int z = start_z; z < end_z; z++)
+                    {
+                    Tile t = World_Controller._Instance.World.GetTileAt(x,y,z);
                     if(t != null)
                     {
-                       GameObject GO = SimplePool.Spawn(CursorPrefab,new Vector3(x,y,-1),Quaternion.identity);
+                       GameObject GO = SimplePool.Spawn(CursorPrefab,new Vector3(x,y,z),Quaternion.identity);
                        GO.transform.SetParent(this.transform,true);
                        dragPreviewObjects.Add(GO);
+                    }
                     }
                 }
             }

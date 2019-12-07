@@ -5,40 +5,37 @@ public class World
 {
     Tile[,,] tiles; 
     public int Width{get;protected set;}
-    public int Depth{get;protected set;}
     public int Height{get;protected set;}
-    public int seed{get;protected set;}
-    public World(int width=100,int depth= 100,int height= 2)
+    public int Depth{get;protected set;}
+    
+    public World(int width=50,int height= 50,int depth= 4)
     {
-        seed = Random.Range(-100000,100000);
+        
         Width = width;
-        Depth = depth;
         Height = height;
-        tiles = new Tile[this.Width, this.Depth,this.Height];
-        float[,] noiseMap = Noise.GenerateNoiseMap(Width,Depth,seed,50,4,.4f,2, new Vector2(10,15));
-        for (int x = 0; x < Width; x++)
+        Depth = depth;
+        tiles = new Tile[this.Width, this.Height,this.Depth];
+        
+        for (int z = 0; z < Depth; z++)
         { 
-            for (int y = 0; y < Depth; y++)
-            {   
-                int currentHeight = (int)(noiseMap[x,y]*(height*10));
-                if(currentHeight>15)
-                { currentHeight = 16;}
-                for (int z = 0; z < Height; z++)
-                {
-                tiles[x,y,z] = new Tile(this,x,y,z+currentHeight);     
+            for (int x = 0; x < Width; x++)
+            { 
+                for (int y = 0; y < Height; y++)
+                {  
+                        tiles[x,y,z] = new Tile(this,x,y,z);     
                 }
-            }   
+            } 
         }
-        Debug.Log("Created with " +(Width* Depth)+ " tiles");
+        Debug.Log("Created with " +(Width* Height)+ " tiles");
         BuiltObject wallproto = BuiltObject.CreatePrototype("Wall",1,2,1);
     }
     public void Randomize()
     {
-        for (int x = 0; x < Width; x++)
+        for (int z = 0; z < Depth; z++)
         {
-            for (int y = 0; y < Depth; y++)
+         for (int x = 0; x < Width; x++)
             {
-                for (int z = 0; z < Height; z++)
+            for (int y = 0; y < Height; y++)
                 {
                 if(tiles[x,y,z].Z <15)
                 {
@@ -48,9 +45,14 @@ public class World
                 {
                     tiles[x,y,z].Type = TileType.Water;
                 }
+                if(GetTileAt(x,y,z-1) != null)
+                {
+                    tiles[x,y,z].Type = TileType.Dirt;
+                }
                 }
             }
         }
+        
         RoadGeneration();
     }  
     // This function can be further upgraded with specific Tile weights However i am gonna leave it as it is for now
@@ -67,7 +69,7 @@ int H(int x, int y , int targetX , int targetY)
 }
 for (int x = 1; x < 4; x++)
 {
-   DestiantionList.Add(tiles[Random.Range(10,Width-10),25*x,0]);
+   DestiantionList.Add(tiles[Random.Range(10,Width-10),10*x,0]);
 }
 int G = 0,DestinationIndex = 0,HeuristicValue = H(CurrentRoadTile.X,CurrentRoadTile.Y,DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y);
 int F = G + HeuristicValue;
@@ -123,9 +125,9 @@ for(int dx = -1; dx <= 1; ++dx) {
         }
 }
     public Tile GetTileAt(int x,int y,int z){
-        if(x>Width-1||x<0||y>Depth-1||y<0||z>Height-1||z<0)
+        if(x>Width-1||x<0||y>Height-1||y<0||z>Depth-1||z<0)
         {
-            Debug.LogError("Tile ("+x+" , "+y+" , " + z+") is out of range.");
+            Debug.LogError("Tile ("+x+" , "+y+" , "+z+") is out of range.");
             return null;
         }
         return tiles[x, y, z];

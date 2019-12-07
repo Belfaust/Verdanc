@@ -10,14 +10,6 @@ public class WorldGeneratorEditor : Editor
      World_Controller WorldGen = (World_Controller)target;
     DrawDefaultInspector();
 
-    if(DrawDefaultInspector())
-    {
-        if(WorldGen.autoUpdate)
-        {
-            WorldGen.World.Randomize();
-        }
-    }
-
 
 
     if(GUILayout.Button("Generate"))

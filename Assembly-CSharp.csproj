@@ -46,14 +46,14 @@
   </PropertyGroup>
   <ItemGroup>     <Compile Include="Assets\Scripts\Controller\Mouse_Controller.cs" />
      <Compile Include="Assets\Scripts\Controller\World_Controller.cs" />
-     <Compile Include="Assets\Scripts\MapGeneration\Generator.cs" />
-     <Compile Include="Assets\Scripts\MapGeneration\MapDisplay.cs" />
-     <Compile Include="Assets\Scripts\MapGeneration\Noise.cs" />
-     <Compile Include="Assets\Scripts\MapGeneration\TextureGenerator.cs" />
+     <Compile Include="Assets\Scripts\MapGeneration2DPreview\Generator.cs" />
+     <Compile Include="Assets\Scripts\MapGeneration2DPreview\MapDisplay.cs" />
+     <Compile Include="Assets\Scripts\MapGeneration2DPreview\TextureGenerator.cs" />
      <Compile Include="Assets\Scripts\Models\BuiltObject.cs" />
      <Compile Include="Assets\Scripts\Models\Tile.cs" />
      <Compile Include="Assets\Scripts\Models\World.cs" />
      <Compile Include="Assets\Scripts\UI\AutomaticVerticalSize.cs" />
+     <Compile Include="Assets\Scripts\Utility\Noise.cs" />
      <Compile Include="Assets\Scripts\Utility\SimplePool.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />

@@ -191,13 +191,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1537075914}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.70710677, z: -0.70710677, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 1, z: 100}
+  m_LocalScale: {x: 181, y: 1, z: 167}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 90, z: -90}
 --- !u!1 &1807977404
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,14 +242,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawMode: 1
-  Width: 100
-  Height: 100
-  noiseScale: 50
-  octaves: 4
-  persistance: 0.4
-  lacunarity: 2
+  Width: 181
+  Height: 167
+  noiseScale: 71.48
+  octaves: 8
+  persistance: 0.503
+  lacunarity: 2.05
   seed: 3
-  offset: {x: 20.6, y: 15.4}
+  offset: {x: 19.27, y: 15.3}
   regions:
   - name: AcidWater
     height: 0.25
