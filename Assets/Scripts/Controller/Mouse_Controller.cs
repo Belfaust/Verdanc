@@ -34,7 +34,7 @@ public class Mouse_Controller : MonoBehaviour
         float z;       
                 z = Camera.main.transform.position.z;
                 z -=  z * Input.GetAxis("Mouse ScrollWheel");   
-                z = Mathf.Clamp(z,-35f,-5f); 
+                z = Mathf.Clamp(z,5f,40f); 
                 Camera.main.transform.position = new Vector3(Camera.main.transform.position.x,Camera.main.transform.position.y,z);   
                
     }
@@ -131,7 +131,7 @@ public class Mouse_Controller : MonoBehaviour
         {
             Vector3 diff = Last_Frame_Pos - NotOffsetCamera;
             Vector3 tmp = Camera.main.transform.position;
-            Camera.main.transform.Translate(diff.x,diff.y,0);
+            Camera.main.transform.Translate(-diff.x,diff.y,0);
             Camera.main.transform.position = new Vector3(Camera.main.transform.position.x,Camera.main.transform.position.y,tmp.z);
         }
        Last_Frame_Pos = GetWorldPositionOnPlane(Input.mousePosition,0);

@@ -11,9 +11,9 @@ public class World_Controller : MonoBehaviour
     public World World{get;protected set;}
     public bool autoUpdate;
        
-    public int seed;
+ 
      void Start() {
-        seed = Random.Range(-100000,100000);
+        
         if(_Instance != null){
         Debug.Log("Err there are 2 instances of World Controllers");
         }
@@ -31,19 +31,14 @@ public class World_Controller : MonoBehaviour
     {
         World = new World();
         tileGameobjectMap = new Dictionary<Tile, GameObject>();
-        float[,] noiseMap = Noise.GenerateNoiseMap(World.Width,World.Height,seed,50,4,.5f,2, new Vector2(10,15));
-        for (int z = 0; z < World.Depth; z++)
-        {
+        
+        
             for (int x = 0; x < World.Width; x++)
             {
                 for (int y = 0; y < World.Height; y++)
                 {
-                int currentHeight = (int)(noiseMap[x,y]*(World.Depth*10));
-                if(currentHeight>15)
-                    {
-                        currentHeight = 15;
-                    }
-
+                for (int z = 0; z < World.Depth; z++)
+                {
                 Tile tile_data = World.GetTileAt(x,y,z);
 
                 GameObject tile_GO = new GameObject();
@@ -51,7 +46,7 @@ public class World_Controller : MonoBehaviour
                 tileGameobjectMap.Add(tile_data,tile_GO);
 
                 tile_GO.name = "Tile_"+x+"_"+y+" "+z;
-                tile_GO.transform.position = new Vector3(tile_data.X,tile_data.Y,tile_data.Z+currentHeight);
+                tile_GO.transform.position = new Vector3(tile_data.X,tile_data.Y,tile_data.Z);
                 tile_GO.transform.SetParent(this.transform,true);
 
                 tile_GO.AddComponent<MeshFilter>();
@@ -112,7 +107,7 @@ public class World_Controller : MonoBehaviour
             tile_GO.GetComponent<MeshRenderer>().sharedMaterials = null;
         }
         else{Debug.LogError("OnTileTypeChange - Not Recognized Tile");}
-            OnTileMeshChange(tile_data,tile_GO);
+           // OnTileMeshChange(tile_data,tile_GO);
     }
     public void OnTileMeshChange(Tile tile_data,GameObject tile_GO)
     {

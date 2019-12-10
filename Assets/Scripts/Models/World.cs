@@ -7,21 +7,21 @@ public class World
     public int Width{get;protected set;}
     public int Height{get;protected set;}
     public int Depth{get;protected set;}
-    
-    public World(int width=50,int height= 50,int depth= 4)
+    public int seed{get;protected set;}
+    public World(int width=50,int height= 50,int depth= 25)
     {
         
         Width = width;
         Height = height;
         Depth = depth;
+        seed = Random.Range(-100000,100000);
         tiles = new Tile[this.Width, this.Height,this.Depth];
-        
-        for (int z = 0; z < Depth; z++)
+        for (int x = 0; x < Width; x++)
         { 
-            for (int x = 0; x < Width; x++)
-            { 
-                for (int y = 0; y < Height; y++)
-                {  
+            for (int y = 0; y < Height; y++)
+            {
+                for (int z = 0; z < Depth; z++)
+                {   
                         tiles[x,y,z] = new Tile(this,x,y,z);     
                 }
             } 
@@ -31,21 +31,23 @@ public class World
     }
     public void Randomize()
     {
-        for (int z = 0; z < Depth; z++)
-        {
+        float[,] noiseMap = Noise.GenerateNoiseMap(Width,Height,seed,50,4,.5f,2, new Vector2(10,15));
          for (int x = 0; x < Width; x++)
-            {
-            for (int y = 0; y < Height; y++)
+            { 
+                for (int y = 0; y < Height; y++)
                 {
-                if(tiles[x,y,z].Z <15)
+                    int currentHeight = (int)(noiseMap[x,y]*(Depth));
+                    for (int z = 0; z < Depth; z++)
+                {
+                if(tiles[x,y,z].Z == currentHeight)
                 {
                     tiles[x,y,z].Type = TileType.Grass;
                 }
-                else
+                if(tiles[x,y,z].Z >currentHeight&&tiles[x,y,z].Z<12)
                 {
                     tiles[x,y,z].Type = TileType.Water;
                 }
-                if(GetTileAt(x,y,z-1) != null)
+                if(GetTileAt(x,y,z).Z != currentHeight&&GetTileAt(x,y,z).Z<currentHeight)
                 {
                     tiles[x,y,z].Type = TileType.Dirt;
                 }
@@ -53,7 +55,7 @@ public class World
             }
         }
         
-        RoadGeneration();
+       // RoadGeneration();
     }  
     // This function can be further upgraded with specific Tile weights However i am gonna leave it as it is for now
     //before making the A* Road there should be a proper world with Elevation based on Perlin Noise
