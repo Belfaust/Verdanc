@@ -8,7 +8,7 @@ public class World
     public int Height{get;protected set;}
     public int Depth{get;protected set;}
     public int seed{get;protected set;}
-    public World(int width=50,int height= 50,int depth= 25)
+    public World(int width=25,int height= 25,int depth= 20)
     {
         
         Width = width;
@@ -32,18 +32,18 @@ public class World
     public void Randomize()
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(Width,Height,seed,50,4,.5f,2, new Vector2(10,15));
-         for (int x = 0; x < Width; x++)
+         for (int x = 1; x < Width-1; x++)
             { 
-                for (int y = 0; y < Height; y++)
+                for (int y = 1; y < Height-1; y++)
                 {
                     int currentHeight = (int)(noiseMap[x,y]*(Depth));
-                    for (int z = 0; z < Depth; z++)
+                    for (int z = 1; z < Depth-1; z++)
                 {
                 if(tiles[x,y,z].Z == currentHeight)
                 {
                     tiles[x,y,z].Type = TileType.Grass;
                 }
-                if(tiles[x,y,z].Z >currentHeight&&tiles[x,y,z].Z<12)
+                if(tiles[x,y,z].Z >currentHeight&&tiles[x,y,z].Z<7)
                 {
                     tiles[x,y,z].Type = TileType.Water;
                 }
