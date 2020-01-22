@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\Models\Tile.cs" />
      <Compile Include="Assets\Scripts\Models\World.cs" />
      <Compile Include="Assets\Scripts\UI\AutomaticVerticalSize.cs" />
+     <Compile Include="Assets\Scripts\UI\LevelLoader.cs" />
      <Compile Include="Assets\Scripts\Utility\CubeMeshData.cs" />
      <Compile Include="Assets\Scripts\Utility\Noise.cs" />
      <Compile Include="Assets\Scripts\Utility\SimplePool.cs" />

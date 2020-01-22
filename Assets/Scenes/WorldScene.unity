@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.42782626, g: 0.461321, b: 0.48984683, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -943,7 +943,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0.0000008142067, y: 6.323129e-19, z: 6337696, w: NaN}
+  m_BoundingSphereOverride: {x: 0, y: 1.4e-44, z: 7.75e-43, w: 1.6114932e-38}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -954,13 +954,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.9608577, y: -0.21424672, z: -0.145209, w: 0.09881971}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 7.3360004, y: -161.09201, z: -153.63701}
 --- !u!1 &730008155
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,15 +1392,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44f52266e93ea744b166dddd7ec67f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GrassTile: {fileID: 901930005353691515, guid: f11595777fe9b274bad97de183760481,
-    type: 3}
-  RoadTile: {fileID: 111010402354493022, guid: aac1546810d2d1d4c9a0833ffd414e57, type: 3}
-  WaterTile: {fileID: 6121666848304332081, guid: 8923187e7461baf49a114aa8a12dacca,
-    type: 3}
-  DirtTile: {fileID: 8568934895054024855, guid: 198454a7dd2cfb8448c801ac3e382c4b,
-    type: 3}
-  testCube: {fileID: 111010402354493022, guid: aac1546810d2d1d4c9a0833ffd414e57, type: 3}
-  autoUpdate: 0
+  Grass: {fileID: 2100000, guid: 5a3dc76562b5f5849b97064020a934b2, type: 2}
+  Road: {fileID: 2100000, guid: 0417e677d736f5148ab621c883783a0a, type: 2}
+  Water: {fileID: 2100000, guid: d63b7d972550beb41820c07f57a22dd6, type: 2}
+  Dirt: {fileID: 2100000, guid: 7f4f856933f83fd409f73e292cb50d22, type: 2}
 --- !u!4 &1154643989
 Transform:
   m_ObjectHideFlags: 0

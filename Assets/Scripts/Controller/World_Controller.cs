@@ -7,7 +7,7 @@ public class World_Controller : MonoBehaviour
 {
     public static World_Controller _Instance{get;protected set;}
     Dictionary<Tile , GameObject> tileGameobjectMap;
-    public GameObject GrassTile,RoadTile,WaterTile,DirtTile;
+    public Material Grass,Road,Water,Dirt;
     public World World{get;protected set;}
     Vector3[] offsets =
     {
@@ -54,6 +54,11 @@ public class World_Controller : MonoBehaviour
                         for (int i = 0; i < 6; i++)
                         {
                         if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type == TileType.Empty)
+                            {
+                            tile_GO.SetActive(true);
+                            break;
+                            }
+                            else if(GetNeighbour(tile_data,(FaceDirections)i) == null)
                             {
                             tile_GO.SetActive(true);
                             break;
@@ -107,47 +112,52 @@ public class World_Controller : MonoBehaviour
         TileMeshChange(tile_data,tile_mesh);
         if(tile_data.Type == TileType.Grass)
         {
-            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = GrassTile.GetComponent<MeshRenderer>().sharedMaterials;
+            tile_GO.GetComponent<MeshRenderer>().material = Grass;
         }
         else if(tile_data.Type == TileType.Road)
         {
-            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = RoadTile.GetComponent<MeshRenderer>().sharedMaterials;
+            tile_GO.GetComponent<MeshRenderer>().material = Road;
         }
         else if(tile_data.Type == TileType.Water){
-            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = WaterTile.GetComponent<MeshRenderer>().sharedMaterials;
+            tile_GO.GetComponent<MeshRenderer>().material = Water;
         }
         else if(tile_data.Type == TileType.Dirt){
-            tile_GO.GetComponent<MeshRenderer>().sharedMaterials = DirtTile.GetComponent<MeshRenderer>().sharedMaterials;
+            tile_GO.GetComponent<MeshRenderer>().material = Dirt;
         }
         else if(tile_data.Type == TileType.Empty){
             tile_mesh.Clear();
             Destroy(tile_GO.GetComponent<MeshRenderer>());
+            Destroy(tile_GO.GetComponent<MeshCollider>());
         }
         else{Debug.LogError("OnTileTypeChange - Not Recognized Tile");}
-        for (int i = 0; i < 6; i++)
-            {
-                if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type != TileType.Empty)
-                {
-                TileMeshChange(GetTileAtWorldCoord(new Vector3(tile_data.X,tile_data.Y,tile_data.Z)+ offsets[i]),tile_mesh);
-                }
-            }
+        // for (int i = 0; i < 6; i++)
+        //     {
+        //         if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type != TileType.Empty)
+        //         {
+        //         TileMeshChange(GetTileAtWorldCoord(new Vector3(tile_data.X,tile_data.Y,tile_data.Z)+ offsets[i]),tile_mesh);
+        //         }
+        //     }
     }
     public void TileMeshChange(Tile tile_data,Mesh tile_mesh)
     {
         bool neighbourscheck = false;// checking if theres any neighbours to delete unnecessary colliders
-            List<Vector3> vertices = new List<Vector3>();
-            List<int> triangles = new List<int>();
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> triangles = new List<int>();
         for (int i = 0; i < 6; i++)
         {
             if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type == TileType.Empty)
             {
                 neighbourscheck = true;
                 MakeFace((FaceDirections)i,tile_data,vertices,triangles);
-                //Debug.Log(vertices.Count + " + " + triangles.Count);
-                tile_mesh.vertices = vertices.ToArray();
-                tile_mesh.triangles = triangles.ToArray(); 
+            }
+            else if(GetNeighbour(tile_data,(FaceDirections)i) == null)
+            {
+                neighbourscheck = true;
+                MakeFace((FaceDirections)i,tile_data,vertices,triangles);
             }
         }
+        tile_mesh.vertices = vertices.ToArray();
+        tile_mesh.triangles = triangles.ToArray(); 
         if(!tileGameobjectMap[tile_data].TryGetComponent<MeshCollider>(out MeshCollider meshCollider)&&neighbourscheck)
         {
         tileGameobjectMap[tile_data].AddComponent<MeshCollider>();
