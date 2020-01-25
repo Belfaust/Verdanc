@@ -9,15 +9,6 @@ public class World_Controller : MonoBehaviour
     Dictionary<Tile , GameObject> tileGameobjectMap;
     public Material Grass,Road,Water,Dirt;
     public World World{get;protected set;}
-    Vector3[] offsets =
-    {
-        new Vector3(0,0,1),
-        new Vector3(1,0,0),
-        new Vector3(0,0,-1),
-        new Vector3(-1,0,0),
-        new Vector3(0,1,0),
-        new Vector3(0,-1,0)
-    };
  
      void Start() {
         
@@ -40,9 +31,9 @@ public class World_Controller : MonoBehaviour
                     {
                     Tile tile_data = World.GetTileAt(x,y,z);
 
-                    GameObject tile_GO = new GameObject();      // GO is a shortcut for GameObject
+                    GameObject tile_GO = new GameObject();          // GO is a shortcut for GameObject
 
-                    tileGameobjectMap.Add(tile_data,tile_GO);   //Linking the Gameobject and tile 
+                    tileGameobjectMap.Add(tile_data,tile_GO);       //Linking the Gameobject and tile in Dictionary 
 
                     tile_GO.name = "Tile_"+x+"_"+y+" "+z;
                     tile_GO.transform.position = new Vector3(tile_data.X,tile_data.Y,tile_data.Z);
@@ -67,7 +58,11 @@ public class World_Controller : MonoBehaviour
                     }
             }
         }
-        for (int x = 0; x < World.Width; x++)               //Starting to Generate Visual models for the World
+        StartCoroutine("GenerateMeshes");
+    }
+    IEnumerator GenerateMeshes()
+    {
+        for (int x = 0; x < World.Width; x++)                       //Starting to Generate Visual models for the World
             {
                 for (int y = 0; y < World.Height; y++)
                 {
@@ -79,6 +74,7 @@ public class World_Controller : MonoBehaviour
                     }
                 }
             }
+        yield return null;
     }
     public void DestroyAllTileGameObjects()
     {
@@ -140,10 +136,10 @@ public class World_Controller : MonoBehaviour
     }
     public void TileMeshChange(Tile tile_data,Mesh tile_mesh)
     {
-        bool neighbourscheck = false;// checking if theres any neighbours to delete unnecessary colliders
+        bool neighbourscheck = false;                           // checking if theres any neighbours to delete unnecessary colliders
         List<Vector3> vertices = new List<Vector3>();
-        List<int> triangles = new List<int>();
-        for (int i = 0; i < 6; i++)
+        List<int> triangles = new List<int>();                  // Making lists to keep track of the vertices and triangles in this specific mesh
+        for (int i = 0; i < 6; i++)                             //Checking all sides of the voxel by changing the int of FaceDirections enum 
         {
             if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type == TileType.Empty)
             {
@@ -175,6 +171,15 @@ public class World_Controller : MonoBehaviour
             triangles.Add(vCount -4 + 2);
             triangles.Add(vCount -4 + 3);   
     }
+       Vector3[] offsets =                  //Offsets to check the position of Tiles and their GameObjects
+    {
+        new Vector3(0,0,1),
+        new Vector3(1,0,0),
+        new Vector3(0,0,-1),
+        new Vector3(-1,0,0),
+        new Vector3(0,1,0),
+        new Vector3(0,-1,0)
+    };
     public Tile GetNeighbour(Tile originTile,FaceDirections dir)
     {
         Vector3 offsetToCheck = offsets[(int)dir];
