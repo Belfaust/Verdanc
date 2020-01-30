@@ -21,7 +21,7 @@ public class World_Controller : MonoBehaviour
     }
     public void CreateNewWorld()
     {
-        World = new World();                                    //Generating the World with Tile types 
+        World = new World();                                    //Generating the World with Tile types
         tileGameobjectMap = new Dictionary<Tile, GameObject>(); //Creating the Dictionary to store linked GameObjects and tiles
             for (int x = 0; x < World.Width; x++)               
             {
@@ -38,10 +38,9 @@ public class World_Controller : MonoBehaviour
                     tile_GO.name = "Tile_"+x+"_"+y+" "+z;
                     tile_GO.transform.position = new Vector3(tile_data.X,tile_data.Y,tile_data.Z);
                     tile_GO.transform.SetParent(this.transform,true);
-
                     tile_GO.AddComponent<MeshFilter>();
-                    
                     tile_GO.SetActive(false);
+
                         for (int i = 0; i < 6; i++)
                         {
                         if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type == TileType.Empty)
@@ -75,17 +74,6 @@ public class World_Controller : MonoBehaviour
                 }
             }
         yield return null;
-    }
-    public void DestroyAllTileGameObjects()
-    {
-        while(tileGameobjectMap.Count > 0)
-        {
-            Tile tile_data = tileGameobjectMap.Keys.First();
-            GameObject tile_GO = tileGameobjectMap[tile_data];
-            tileGameobjectMap.Remove(tile_data);
-            tile_data.UnRegisterTileTypeChange(OnTileTypeChange);
-                DestroyImmediate(tile_GO);
-        }
     }
     void OnTileTypeChange(Tile tile_data)
     {
@@ -126,13 +114,6 @@ public class World_Controller : MonoBehaviour
             Destroy(tile_GO.GetComponent<MeshCollider>());
         }
         else{Debug.LogError("OnTileTypeChange - Not Recognized Tile");}
-        // for (int i = 0; i < 6; i++)
-        //     {
-        //         if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type != TileType.Empty)
-        //         {
-        //         TileMeshChange(GetTileAtWorldCoord(new Vector3(tile_data.X,tile_data.Y,tile_data.Z)+ offsets[i]),tile_mesh);
-        //         }
-        //     }
     }
     public void TileMeshChange(Tile tile_data,Mesh tile_mesh)
     {
@@ -171,7 +152,7 @@ public class World_Controller : MonoBehaviour
             triangles.Add(vCount -4 + 2);
             triangles.Add(vCount -4 + 3);   
     }
-       Vector3[] offsets =                  //Offsets to check the position of Tiles and their GameObjects
+       Vector3[] offsets =                  //Offsets to check the position of Tiles and their GameObjects .Not the position of the vertices
     {
         new Vector3(0,0,1),
         new Vector3(1,0,0),
