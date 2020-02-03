@@ -16,11 +16,5 @@ public class WorldGeneratorEditor : Editor
     {
        WorldGen.CreateNewWorld();
     }
-    if(GUILayout.Button("Clean World"))
-    {
-       WorldGen.DestroyAllTileGameObjects();
-    }
-
-
  }
 }

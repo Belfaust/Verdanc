@@ -45,36 +45,40 @@ public class World
             } 
         }
         Debug.Log("Created with " +(Width* Height)+ " tiles");
-        BuiltObject wallproto = BuiltObject.CreatePrototype("Wall",1,2,1);
+        //RoadGeneration(noiseMap);  
     }   
-       // RoadGeneration();  
     // This function can be further upgraded with specific Tile weights However i am gonna leave it as it is for now
     //before making the A* Road there should be a proper world with Elevation based on Perlin Noise
-   void RoadGeneration() 
+   void RoadGeneration(float[,] noiseMap) 
 {
 List <Tile> Openlist = new List<Tile>();
 List <Tile> Closedlist = new List<Tile>();
 List <Tile> DestiantionList = new List<Tile>();
-Tile CurrentRoadTile= tiles[Random.Range(0,Width),1,0];
-int H(int x, int y , int targetX , int targetY)
+int RandomPos = Random.Range(0,Width); Tile CurrentRoadTile= tiles[RandomPos,1,(int)(noiseMap[RandomPos,1]*(Depth-5))];
+int H(Vector3 OriginalPosition , Vector3 TargetPosition)
 {
-    return Mathf.Abs(targetX-x) + Mathf.Abs(targetY - y);
+    return (int)(Mathf.Abs(TargetPosition.x -OriginalPosition.x) + Mathf.Abs(TargetPosition.y - OriginalPosition.y) + Mathf.Abs(TargetPosition.z - OriginalPosition.z));
 }
 for (int x = 1; x < 4; x++)
 {
-   DestiantionList.Add(tiles[Random.Range(10,Width-10),10*x,0]);
+
+   RandomPos = Random.Range(10,Width-10);
+   DestiantionList.Add(tiles[RandomPos,15*x,(int)(noiseMap[RandomPos,10*x]*(Depth-5))+1]);
 }
-int G = 0,DestinationIndex = 0,HeuristicValue = H(CurrentRoadTile.X,CurrentRoadTile.Y,DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y);
+int G = 0;
+int DestinationIndex = 0;
+int HeuristicValue = H(new Vector3(CurrentRoadTile.X,CurrentRoadTile.Y,CurrentRoadTile.Z),new Vector3(DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y,DestiantionList[DestinationIndex].Z));
 int F = G + HeuristicValue;
 Closedlist.Add(CurrentRoadTile); 
 while(CurrentRoadTile!= DestiantionList[DestiantionList.Count-1])
     {
+        int a = 0;
         GetNeighbourTiles(CurrentRoadTile,Openlist,Closedlist);   
         CurrentRoadTile = Openlist[Random.Range(0,Openlist.Count-1)];
         foreach(Tile tile in Openlist)
         { 
-            int Local_HeuristicValue = H(tile.X,tile.Y,DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y);
-            G = H(tile.X,tile.Y,Closedlist[0].X,Closedlist[0].Y); 
+            int Local_HeuristicValue = H(new Vector3(tile.X,tile.Y,tile.Z),new Vector3(DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y,DestiantionList[DestinationIndex].Z));
+            G = H(new Vector3(tile.X,tile.Y,tile.Z),new Vector3(Closedlist[0].X,Closedlist[0].Y,Closedlist[0].Z)); 
             if(!Closedlist.Contains(tile))
             {
                 if(F > G + Local_HeuristicValue)
@@ -84,13 +88,18 @@ while(CurrentRoadTile!= DestiantionList[DestiantionList.Count-1])
                 
                 } else
                 {         
-                    if(Local_HeuristicValue <= H(CurrentRoadTile.X,CurrentRoadTile.Y,DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y))
+                    if(Local_HeuristicValue <= H(new Vector3(CurrentRoadTile.X,CurrentRoadTile.Y,CurrentRoadTile.Z),new Vector3(DestiantionList[DestinationIndex].X,DestiantionList[DestinationIndex].Y,DestiantionList[DestinationIndex].Z)))
                     {
                         F = G + Local_HeuristicValue;
                         CurrentRoadTile = tile;  
                     }
                 }
             }
+            a+=1;
+        }
+        if(a>1000)
+        {
+            break;
         }
         Openlist.Remove(CurrentRoadTile);
         Closedlist.Add(CurrentRoadTile);
@@ -108,10 +117,13 @@ public void GetNeighbourTiles(Tile CurrentTile,List<Tile> NeighbourList,List<Til
 {
 for(int dx = -1; dx <= 1; ++dx) {
             for (int dy = -1; dy <= 1; ++dy) {
-                if (dx != 0 || dy != 0) {
-                    Tile tmp_tile = GetTileAt(CurrentTile.X + dx,CurrentTile.Y + dy,0);
+                for (int dz = 0; dz <= 1; dz++)
+                {
+                if (dx != 0 || dy != 0 || dz != 0) {
+                    Tile tmp_tile = GetTileAt(CurrentTile.X + dx,CurrentTile.Y + dy,CurrentTile.Z +dz);
                     if(tmp_tile != null&&!NeighbourList.Contains(tmp_tile)&&!ClosedNeighbourList.Contains(tmp_tile)){
                             NeighbourList.Add(tmp_tile);
+                        }
                     }
                 }
             }

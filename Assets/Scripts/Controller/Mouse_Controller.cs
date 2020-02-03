@@ -6,13 +6,11 @@ using UnityEngine.UI;
 
 public class Mouse_Controller : MonoBehaviour
 {
-    public GameObject CursorPrefab;
+    public GameObject CursorPrefab,BuildingPreview,FactoryModel;
     TileType SelectedBuildTiles = TileType.Road;
     Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
-    Vector3 Last_Frame_Pos;
-    Vector3 NotOffsetCamera;
-    Vector3 TileStartDragPos;
-    List<GameObject> dragPreviewObjects = new List<GameObject>();
+    Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
+    List<GameObject> dragPreviewObjects = new List<GameObject>();    
     public float offset_z = 2;
     public Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z) {
      Ray ray = Camera.main.ScreenPointToRay(screenPosition);
@@ -20,14 +18,20 @@ public class Mouse_Controller : MonoBehaviour
      float distance;
      xy.Raycast(ray, out distance);    
      return ray.GetPoint(distance);
- }    
+ }  
+    private void Start() {
+        BuildingPreview = new GameObject();
+        BuildingPreview.AddComponent<MeshFilter>();
+        BuildingPreview.AddComponent<MeshRenderer>();
+    }
      void Update() 
     {
-        CurrentFramePos = new Vector3(GetWorldPositionOnPlane(Input.mousePosition,0).x +.5f,GetWorldPositionOnPlane(Input.mousePosition,0).y +.5f);
-        NotOffsetCamera = GetWorldPositionOnPlane(Input.mousePosition,0);
-        UpdateDragging();
+        CurrentFramePos = new Vector3(GetWorldPositionOnPlane(Input.mousePosition,0).x +.5f,GetWorldPositionOnPlane(Input.mousePosition,0).y +.5f); // this is the Camera set up for Dealing with tiles since there is no better way to offset it
+        NotOffsetCamera = GetWorldPositionOnPlane(Input.mousePosition,0);// True Camera position on A plane that is generated in front of it to create a smooth transition of moving
+        //UpdateDragging();
         CameraMovement();       
         Scroling();
+        Building();
     }
     void Scroling()
     {
@@ -58,7 +62,6 @@ public class Mouse_Controller : MonoBehaviour
     if(Input.GetMouseButtonDown(0))
         {
             TileStartDragPos = CurrentFramePos;
-
         }
         int start_x = Mathf.FloorToInt(TileStartDragPos.x);
         int end_x = Mathf.FloorToInt(CurrentFramePos.x);
@@ -136,7 +139,35 @@ public class Mouse_Controller : MonoBehaviour
         }
        Last_Frame_Pos = GetWorldPositionOnPlane(Input.mousePosition,0);
     }
+    BuiltObject SelectedBuilding;
+    void Building()
+    {
+        if(SelectedBuilding != null)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if(Physics.Raycast(ray, out hit , 100))
+            {
+            BuildingPreview.transform.position = hit.point;
 
+            }
+            if(Input.GetMouseButton(1))
+            {
+                SelectedBuilding = null;
+            }
+        }
+        else if(SelectedBuilding == null&&BuildingPreview.GetComponent<MeshFilter>().sharedMesh != null&&BuildingPreview.GetComponent<MeshRenderer>().sharedMaterial != null)
+        {
+           BuildingPreview.GetComponent<MeshFilter>().sharedMesh = null;
+           BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = null;
+        }
+    }
+    public void Factory()
+    {
+        SelectedBuilding = BuiltObject.CreatePrototype("Factory",2,2,2);
+        BuildingPreview.GetComponent<MeshFilter>().sharedMesh = FactoryModel.GetComponent<MeshFilter>().sharedMesh;
+        BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = FactoryModel.GetComponent<MeshRenderer>().sharedMaterials;
+    }
     public void SetMode_BuildRoad()
     {
         SelectedBuildTiles = TileType.Road;

@@ -5,22 +5,19 @@ using UnityEngine;
 public class BuiltObject{
 
     Tile tile;
-
     string objectType;
-
-    float movementCost;
-
     int width;
     int height;
+    int depth;
+    
 
-  static public BuiltObject CreatePrototype(string objectType,float movementCost = 1f,int width =1 , int height =1)
+  static public BuiltObject CreatePrototype(string objectType,int width = 1 , int height = 1 , int depth = 1)
 {
-    BuiltObject obj = new BuiltObject();
+BuiltObject obj = new BuiltObject();
 obj.objectType = objectType;
-obj.movementCost = movementCost;
 obj.width = width;
 obj.height = height;
-
+obj.depth = depth;
 return obj;
 }
 
@@ -28,16 +25,15 @@ static public BuiltObject PlaceObject(BuiltObject proto, Tile tile)
 {
      BuiltObject obj = new BuiltObject();
 obj.objectType = proto.objectType;
-obj.movementCost = proto.movementCost;
 obj.width = proto.width;
 obj.height = proto.height;
+obj.depth = proto.depth;
 
 obj.tile = tile;
 
 if(!tile.PlaceObject(obj))
 {
-
-
+  return null;
 }
 return obj;
 }
