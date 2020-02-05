@@ -994,8 +994,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CursorPrefab: {fileID: 362180614306297749, guid: d60e3732ede44bf4b8b793a39ed45e3f,
     type: 3}
-  BuildingPreview: {fileID: 0}
-  FactoryModel: {fileID: 1340959528794618598, guid: 1f08fecbb13d66949b6c5bda4b681a5f,
+  FactoryModel: {fileID: 6365134881960762680, guid: 9b2ee8c9c3614b54b990249fc2127f22,
     type: 3}
   offset_z: 2
 --- !u!4 &730008157

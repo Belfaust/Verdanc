@@ -77,22 +77,23 @@ public class World_Controller : MonoBehaviour
     }
     void OnTileTypeChange(Tile tile_data)
     {
-        if(tileGameobjectMap.ContainsKey(tile_data)==false)
-        {
-            Debug.LogError("TileGameobjectMap doesn't contain the tile data");
-            return;
-        }
         GameObject tile_GO = tileGameobjectMap[tile_data];
         Mesh tile_mesh = tile_GO.GetComponent<MeshFilter>().mesh;
         if(!tile_GO.TryGetComponent<MeshRenderer>(out MeshRenderer meshRenderer))
         {
             tile_GO.AddComponent<MeshRenderer>();
         }
+        if(tileGameobjectMap.ContainsKey(tile_data)==false)
+        {
+            Debug.LogError("TileGameobjectMap doesn't contain the tile data");
+            return;
+        }
         if(tile_GO == null)
         {
             Debug.LogError("TilegameobjectMap's returned Gameobject is null");
             return;
         }
+        tile_mesh.Clear();
         TileMeshChange(tile_data,tile_mesh);
         if(tile_data.Type == TileType.Grass)
         {
@@ -133,7 +134,7 @@ public class World_Controller : MonoBehaviour
                 MakeFace((FaceDirections)i,tile_data,vertices,triangles);
             }
         }
-        tile_mesh.vertices = vertices.ToArray();
+        tile_mesh.SetVertices(vertices);
         tile_mesh.triangles = triangles.ToArray(); 
         if(!tileGameobjectMap[tile_data].TryGetComponent<MeshCollider>(out MeshCollider meshCollider)&&neighbourscheck)
         {

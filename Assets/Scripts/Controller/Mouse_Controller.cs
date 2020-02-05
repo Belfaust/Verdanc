@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class Mouse_Controller : MonoBehaviour
 {
-    public GameObject CursorPrefab,BuildingPreview,FactoryModel;
+    public GameObject CursorPrefab,FactoryModel;
+    private GameObject BuildingPreview;
     TileType SelectedBuildTiles = TileType.Road;
     Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
     Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
@@ -21,6 +22,7 @@ public class Mouse_Controller : MonoBehaviour
  }  
     private void Start() {
         BuildingPreview = new GameObject();
+        BuildingPreview.name = "BuildingPreviewObject";
         BuildingPreview.AddComponent<MeshFilter>();
         BuildingPreview.AddComponent<MeshRenderer>();
     }
@@ -146,10 +148,39 @@ public class Mouse_Controller : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+            int[,,] BuildingSize;
+            Tile OriginTile = World_Controller._Instance.World.GetTileAt(0,0,0);
             if(Physics.Raycast(ray, out hit , 100))
             {
-            BuildingPreview.transform.position = hit.point;
-
+            BuildingPreview.transform.position = new Vector3((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
+            if(World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z)) != null)
+            OriginTile = World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
+            }
+            if(Input.GetMouseButton(0))
+            {
+                Tile[] tiles;
+                BuildingSize = BuiltObject.GetSize(SelectedBuilding);
+                tiles = new Tile[BuildingSize.GetLength(0)*BuildingSize.GetLength(1)*BuildingSize.GetLength(2)];
+                int tileListCount = new int();
+                for (int x = 0; x < BuildingSize.GetLength(0); x++)
+                {
+                    for (int y = 0; y < BuildingSize.GetLength(1); y++)
+                    {
+                        for (int z = 0; z < BuildingSize.GetLength(2); z++)
+                        {
+                          tiles[tileListCount] = World_Controller._Instance.World.GetTileAt(OriginTile.X + x,OriginTile.Y +y,OriginTile.Z +z);
+                          tileListCount += 1;
+                        }
+                    }
+                }
+                BuiltObject.PlaceObject(SelectedBuilding,tiles);
+                GameObject Building = new GameObject();
+                Building.transform.position = BuildingPreview.transform.position;
+                Building.AddComponent<MeshFilter>();
+                Building.AddComponent<MeshRenderer>();
+                Building.GetComponent<MeshFilter>().sharedMesh = BuildingPreview.GetComponent<MeshFilter>().sharedMesh ;
+                Building.GetComponent<MeshRenderer>().sharedMaterials = BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials ;
+                SelectedBuilding = null;
             }
             if(Input.GetMouseButton(1))
             {
@@ -159,12 +190,12 @@ public class Mouse_Controller : MonoBehaviour
         else if(SelectedBuilding == null&&BuildingPreview.GetComponent<MeshFilter>().sharedMesh != null&&BuildingPreview.GetComponent<MeshRenderer>().sharedMaterial != null)
         {
            BuildingPreview.GetComponent<MeshFilter>().sharedMesh = null;
-           BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = null;
+           BuildingPreview.GetComponent<MeshRenderer>().material = null;
         }
     }
     public void Factory()
     {
-        SelectedBuilding = BuiltObject.CreatePrototype("Factory",2,2,2);
+        SelectedBuilding = BuiltObject.CreatePrototype("Factory",2,2,3);
         BuildingPreview.GetComponent<MeshFilter>().sharedMesh = FactoryModel.GetComponent<MeshFilter>().sharedMesh;
         BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = FactoryModel.GetComponent<MeshRenderer>().sharedMaterials;
     }
