@@ -11,30 +11,30 @@ public class World_Controller : MonoBehaviour
     public World World{get;protected set;}
     GameObject[,] ChunkList;
      void Start() {
-        
+
         if(_Instance != null){
         Debug.Log("Err there are 2 instances of World Controllers");
         }
         else
         {   _Instance = this;}
-        CreateNewWorld();   
+        CreateNewWorld();
     }
     public void CreateNewWorld()
     {
-        World = new World();  
+        World = new World();
         ChunkList = new GameObject[World.Width,World.Height];       //Generating the World with Tile types
             for (int ChunkX = 0; ChunkX < World.Width;  ChunkX += World.ChunkSize)
             {
                 for (int ChunkY = 0; ChunkY < World.Height; ChunkY += World.ChunkSize)
                 {
                     GameObject tile_GO = new GameObject();          // GO is a shortcut for GameObject
-                    
+
                     ChunkList[ChunkX/World.ChunkSize,ChunkY/World.ChunkSize] = tile_GO;
                     tile_GO.name = "Chunk_"+ChunkX+"_"+ChunkY;
-                    
+
                     tile_GO.transform.position = new Vector3(ChunkX,ChunkY,0);
                     tile_GO.transform.SetParent(this.transform,true);
-                    
+
                     tile_GO.AddComponent<MeshFilter>();
                     tile_GO.AddComponent<MeshRenderer>();
 
@@ -49,7 +49,7 @@ public class World_Controller : MonoBehaviour
                 for (int y = ChunkY; y < ChunkY + World.ChunkSize; y++)
                 {
                     for (int z = 0; z < World.Depth; z++)
-                    { 
+                    {
                         Tile tile_data = World.GetTileAt(x,y,z);
                         OnTileTypeChange(tile_data);                // Executing a callback and adding it to the tile
                         tile_data.RegisterTileTypeChange( OnTileTypeChange );
@@ -72,45 +72,42 @@ public class World_Controller : MonoBehaviour
             Debug.LogError("TilegameobjectMap's returned Gameobject is null");
             return;
         }
+        if(tile_data.Type != TileType.Empty)
         TileMeshChange(tile_data,tile_mesh);
-        
+
     }
     public void TileMeshChange(Tile tile_data,Mesh tile_mesh)
     {
-        bool neighbourscheck = false;                           // checking if theres any neighbours to delete unnecessary colliders
-        List<Vector3> vertices = new List<Vector3>(tile_mesh.vertices); 
+        List<Vector3> vertices = new List<Vector3>(tile_mesh.vertices);
         List<int> triangles = new List<int>(tile_mesh.triangles);               // Making lists to keep track of the vertices and triangles in this specific mesh
-        for (int i = 0; i < 6; i++)                             //Checking all sides of the voxel by changing the int of FaceDirections enum 
+        List<Vector2> uv =  new List<Vector2>(tile_mesh.uv);
+        for (int i = 0; i < 6; i++)                             //Checking all sides of the voxel by changing the int of FaceDirections enum
         {
             if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type == TileType.Empty)
             {
-                neighbourscheck = true;
                 MakeFace((FaceDirections)i,tile_data,vertices,triangles);
             }
             else if(GetNeighbour(tile_data,(FaceDirections)i) == null)
             {
-                neighbourscheck = true;
                 MakeFace((FaceDirections)i,tile_data,vertices,triangles);
             }
         }
         tile_mesh.SetVertices(vertices);
-        tile_mesh.triangles = triangles.ToArray();
-        if(!GetTileGameObject(tile_data).TryGetComponent<MeshCollider>(out MeshCollider meshCollider)&&neighbourscheck)
-        {
-        GetTileGameObject(tile_data).AddComponent<MeshCollider>();
-        }
+        tile_mesh.SetTriangles(triangles.ToArray(),0);
+        tile_mesh.Optimize();
     }
     void MakeFace(FaceDirections dir,Tile tile_data,List<Vector3> vertices,List<int> triangles)
-    {   
+    {
             vertices.AddRange (CubeMeshData.faceVertices(dir,new Vector3(tile_data.X-GetTileGameObject(tile_data).transform.position.x,tile_data.Y-GetTileGameObject(tile_data).transform.position.y,tile_data.Z)));
             int vCount = vertices.Count;
+            
 
             triangles.Add(vCount -4);
             triangles.Add(vCount -4 + 1);
             triangles.Add(vCount -4 + 2);
             triangles.Add(vCount -4);
             triangles.Add(vCount -4 + 2);
-            triangles.Add(vCount -4 + 3);   
+            triangles.Add(vCount -4 + 3);
     }
        Vector3[] offsets =                  //Offsets to check the position of Tiles and their GameObjects .Not the position of the vertices
     {

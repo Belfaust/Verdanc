@@ -9,12 +9,12 @@ public class World
     public int Depth{get;protected set;}
     public int seed{get;protected set;}
     public int ChunkSize{get;protected set;}
-    public World(int chunkSize = 8)
+    public World(int chunkSize = 16)
     {
         ChunkSize = chunkSize;
         Width = chunkSize * 4;
         Height = chunkSize * 4;
-        Depth = chunkSize;
+        Depth = 16;
         seed = Random.Range(-100000,100000);
         tiles = new Tile[this.Width, this.Height,this.Depth];
         float[,] noiseMap = Noise.GenerateNoiseMap(Width,Height,seed,50,2,.5f,2, new Vector2(5,8));
