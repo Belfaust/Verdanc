@@ -8,6 +8,7 @@ public class World_Controller : MonoBehaviour
     public static World_Controller _Instance{get;protected set;}
     Dictionary<Tile , GameObject> tileGameobjectMap;
     public Material Grass,Road,Water,Dirt;
+    public int Money = 250,Substance = 25;
     public World World{get;protected set;}
  
      void Start() {

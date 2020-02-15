@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class Mouse_Controller : MonoBehaviour
 {
@@ -30,7 +28,6 @@ public class Mouse_Controller : MonoBehaviour
     {
         CurrentFramePos = new Vector3(GetWorldPositionOnPlane(Input.mousePosition,0).x +.5f,GetWorldPositionOnPlane(Input.mousePosition,0).y +.5f); // this is the Camera set up for Dealing with tiles since there is no better way to offset it
         NotOffsetCamera = GetWorldPositionOnPlane(Input.mousePosition,0);// True Camera position on A plane that is generated in front of it to create a smooth transition of moving
-        //UpdateDragging();
         CameraMovement();       
         Scroling();
         Building();
@@ -46,13 +43,13 @@ public class Mouse_Controller : MonoBehaviour
     }
     // void UpdateCursor()
     // {        
-    //     Tile tileUnderMouse = World_Controller._Instance.GetTileAtWorldCoord(Cursor.transform.position);       
+    //     Tile tileUnderMouse = World_Controller._Instance.GetTileAtWorldCoord(CursorPrefab.transform.position);       
     //     if(tileUnderMouse!=null)
     //     {
-    //     Cursor.SetActive(true);
-    //     Vector3 cursorPosition = new Vector3(tileUnderMouse.X,tileUnderMouse.Y,0);
-    //     Cursor.transform.position = cursorPosition;
-    //     }else{Cursor.SetActive(false);
+    //     CursorPrefab.SetActive(true);
+    //     Vector3 cursorPosition = new Vector3(tileUnderMouse.X,tileUnderMouse.Y,tileUnderMouse.Z);
+    //     CursorPrefab.transform.position = cursorPosition;
+    //     }else{CursorPrefab.SetActive(false);
     //     }
     // }
     void UpdateDragging()
@@ -149,6 +146,7 @@ public class Mouse_Controller : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             int[,,] BuildingSize;
+            int Money_Cost = BuiltObject.GetMoneyCost(SelectedBuilding) ,Substance_Cost = BuiltObject.GetSubstanceCost(SelectedBuilding);
             Tile OriginTile = World_Controller._Instance.World.GetTileAt(0,0,0);
             if(Physics.Raycast(ray, out hit , 100))
             {
@@ -156,7 +154,7 @@ public class Mouse_Controller : MonoBehaviour
             if(World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z)) != null)
             OriginTile = World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
             }
-            if(Input.GetMouseButton(0))
+            if(Input.GetMouseButton(0)&&World_Controller._Instance.Money >= Money_Cost&&World_Controller._Instance.Substance >= Substance_Cost)
             {
                 Tile[] tiles;
                 BuildingSize = BuiltObject.GetSize(SelectedBuilding);
@@ -180,6 +178,8 @@ public class Mouse_Controller : MonoBehaviour
                 Building.AddComponent<MeshRenderer>();
                 Building.GetComponent<MeshFilter>().sharedMesh = BuildingPreview.GetComponent<MeshFilter>().sharedMesh ;
                 Building.GetComponent<MeshRenderer>().sharedMaterials = BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials ;
+                World_Controller._Instance.Money -= Money_Cost;
+                World_Controller._Instance.Substance -= Substance_Cost;
                 SelectedBuilding = null;
             }
             if(Input.GetMouseButton(1))
@@ -195,7 +195,7 @@ public class Mouse_Controller : MonoBehaviour
     }
     public void Factory()
     {
-        SelectedBuilding = BuiltObject.CreatePrototype("Factory",2,2,3);
+        SelectedBuilding = BuiltObject.CreatePrototype("Factory",3,2,2,50,5);
         BuildingPreview.GetComponent<MeshFilter>().sharedMesh = FactoryModel.GetComponent<MeshFilter>().sharedMesh;
         BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = FactoryModel.GetComponent<MeshRenderer>().sharedMaterials;
     }

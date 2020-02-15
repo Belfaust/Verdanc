@@ -5,6 +5,8 @@ ScriptsOnlyBuild:
     - LevelLoader
     - Mouse_Controller
     - World_Controller
+    Unity.Rider.Editor.dll:
+    - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
     - TMPro.TMP_Settings
@@ -20,6 +22,7 @@ ScriptsOnlyBuild:
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
+    - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -62,36 +65,38 @@ ScriptsOnlyBuild:
     - Class: 109
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11158}
+      Script: {instanceID: 11176}
     - Class: 114
-      Script: {instanceID: 11356}
+      Script: {instanceID: 11376}
     - Class: 114
-      Script: {instanceID: 11740}
+      Script: {instanceID: 11764}
     - Class: 114
-      Script: {instanceID: 11760}
+      Script: {instanceID: 11790}
     - Class: 114
-      Script: {instanceID: 11816}
+      Script: {instanceID: 11850}
     - Class: 114
-      Script: {instanceID: 12102}
+      Script: {instanceID: 12148}
     - Class: 114
-      Script: {instanceID: 12322}
+      Script: {instanceID: 12370}
     - Class: 114
-      Script: {instanceID: 12336}
+      Script: {instanceID: 12384}
     - Class: 114
-      Script: {instanceID: 12512}
+      Script: {instanceID: 12568}
     - Class: 114
-      Script: {instanceID: 12572}
+      Script: {instanceID: 12630}
     - Class: 114
-      Script: {instanceID: 12714}
+      Script: {instanceID: 12776}
     - Class: 114
-      Script: {instanceID: 12916}
+      Script: {instanceID: 12982}
     - Class: 114
-      Script: {instanceID: 12948}
+      Script: {instanceID: 13014}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
       Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
       Script: {instanceID: 0}
     - Class: 213
       Script: {instanceID: 0}
@@ -110,7 +115,13 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 21
       Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
     - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 43
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
@@ -123,34 +134,36 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11158}
+      Script: {instanceID: 11176}
     - Class: 114
-      Script: {instanceID: 11316}
+      Script: {instanceID: 11336}
     - Class: 114
-      Script: {instanceID: 11356}
+      Script: {instanceID: 11376}
     - Class: 114
-      Script: {instanceID: 11740}
+      Script: {instanceID: 11764}
     - Class: 114
-      Script: {instanceID: 11870}
+      Script: {instanceID: 11906}
     - Class: 114
-      Script: {instanceID: 12102}
+      Script: {instanceID: 12148}
     - Class: 114
-      Script: {instanceID: 12194}
+      Script: {instanceID: 12240}
     - Class: 114
-      Script: {instanceID: 12322}
+      Script: {instanceID: 12370}
     - Class: 114
-      Script: {instanceID: 12512}
+      Script: {instanceID: 12568}
     - Class: 114
-      Script: {instanceID: 12572}
+      Script: {instanceID: 12630}
     - Class: 114
-      Script: {instanceID: 12916}
+      Script: {instanceID: 12982}
     - Class: 114
-      Script: {instanceID: 12936}
+      Script: {instanceID: 13002}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
       Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
       Script: {instanceID: 0}
     - Class: 212
       Script: {instanceID: 0}
@@ -215,7 +228,7 @@ ScriptsOnlyBuild:
     className: Text
   - hash:
       serializedVersion: 2
-      Hash: 54cd5411cee4f99b8e7a36bb1ee0f7ab
+      Hash: 6e0177aa4ee9c209e3966119f8904c72
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Mouse_Controller
@@ -365,7 +378,7 @@ ScriptsOnlyBuild:
     className: LevelLoader
   - hash:
       serializedVersion: 2
-      Hash: ade01ad2661888c541054d8c464265ab
+      Hash: c613d2738dabc2c86f47d4acba578958
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: World_Controller
