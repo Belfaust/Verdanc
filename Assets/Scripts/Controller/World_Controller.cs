@@ -37,7 +37,10 @@ public class World_Controller : MonoBehaviour
 
                     tile_GO.AddComponent<MeshFilter>();
                     tile_GO.AddComponent<MeshRenderer>();
+                    tile_GO.AddComponent<MeshCollider>();
+
                     tile_GO.GetComponent<MeshRenderer>().material.mainTexture = GroundTexture;
+
                     StartCoroutine(GenerateMeshes(ChunkX,ChunkY));
                 }
             }
@@ -56,12 +59,13 @@ public class World_Controller : MonoBehaviour
                     }
                 }
             }
-        yield return null;
+        yield return new WaitForSeconds(.1f);
     }
     void OnTileTypeChange(Tile tile_data)
     {
         GameObject tile_GO = GetTileGameObject(tile_data);
         Mesh tile_mesh = tile_GO.GetComponent<MeshFilter>().mesh;
+        MeshCollider collider = tile_GO.GetComponent<MeshCollider>();
         Vector2[] uv = new Vector2[4];
         if(GetTileGameObject(tile_data)==false)
         {
@@ -81,7 +85,11 @@ public class World_Controller : MonoBehaviour
             uv[3] = new Vector2(0.5f,1f);
         }
         if(tile_data.Type != TileType.Empty)
+        {
+            collider.sharedMesh = null;
         TileMeshChange(tile_data,tile_mesh, uv);
+            collider.sharedMesh = tile_mesh;
+        }
 
     }
     public void TileMeshChange(Tile tile_data,Mesh tile_mesh,Vector2[] uv)

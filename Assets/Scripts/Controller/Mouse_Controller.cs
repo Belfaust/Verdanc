@@ -147,7 +147,7 @@ public class Mouse_Controller : MonoBehaviour
             RaycastHit hit;
             int[,,] BuildingSize;
             int Money_Cost = BuiltObject.GetMoneyCost(SelectedBuilding) ,Substance_Cost = BuiltObject.GetSubstanceCost(SelectedBuilding);
-            Tile OriginTile = World_Controller._Instance.World.GetTileAt(0,0,0);
+            Tile OriginTile = World_Controller._Instance.World.GetTileAt(1,1,1);
             if(Physics.Raycast(ray, out hit , 100))
             {
             BuildingPreview.transform.position = new Vector3((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
