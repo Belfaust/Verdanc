@@ -26,7 +26,7 @@ public static class CubeMeshData
         Vector3[] fv = new Vector3[4];
         for (int i = 0; i < fv.Length; i++)
         {
-            fv[i] = vertices[facetriangles[dir][i]];
+            fv[i] = vertices[facetriangles[dir][i]] + pos;
         }
         return fv;
     }

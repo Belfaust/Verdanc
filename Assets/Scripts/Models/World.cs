@@ -8,16 +8,16 @@ public class World
     public int Height{get;protected set;}
     public int Depth{get;protected set;}
     public int seed{get;protected set;}
-    public World(int width=100,int height= 100,int depth= 20)
+    public int ChunkSize{get;protected set;}
+    public World(int chunkSize = 8)
     {
-        
-        Width = width;
-        Height = height;
-        Depth = depth;
+        ChunkSize = chunkSize;
+        Width = chunkSize * 4;
+        Height = chunkSize * 4;
+        Depth = chunkSize;
         seed = Random.Range(-100000,100000);
         tiles = new Tile[this.Width, this.Height,this.Depth];
-        float[,] noiseMap = Noise.GenerateNoiseMap(Width,Height,seed,50,2,.5f,2, new Vector2(10,15));
-        
+        float[,] noiseMap = Noise.GenerateNoiseMap(Width,Height,seed,50,2,.5f,2, new Vector2(5,8));
         for (int x = 0; x < Width; x++)
         { 
             for (int y = 0; y < Height; y++)
