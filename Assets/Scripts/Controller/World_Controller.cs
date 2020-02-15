@@ -6,7 +6,7 @@ using System.Linq;
 public class World_Controller : MonoBehaviour
 {
     public static World_Controller _Instance{get;protected set;}
-    public Material Grass,Road,Water,Dirt;
+    public Texture GroundTexture;
     public int Money = 250,Substance = 25;
     public World World{get;protected set;}
     GameObject[,] ChunkList;
@@ -37,7 +37,7 @@ public class World_Controller : MonoBehaviour
 
                     tile_GO.AddComponent<MeshFilter>();
                     tile_GO.AddComponent<MeshRenderer>();
-
+                    tile_GO.GetComponent<MeshRenderer>().material.mainTexture = GroundTexture;
                     StartCoroutine(GenerateMeshes(ChunkX,ChunkY));
                 }
             }
@@ -62,6 +62,7 @@ public class World_Controller : MonoBehaviour
     {
         GameObject tile_GO = GetTileGameObject(tile_data);
         Mesh tile_mesh = tile_GO.GetComponent<MeshFilter>().mesh;
+        Vector2[] uv = new Vector2[4];
         if(GetTileGameObject(tile_data)==false)
         {
             Debug.LogError("TileGameobjectMap doesn't contain the tile data");
@@ -72,28 +73,38 @@ public class World_Controller : MonoBehaviour
             Debug.LogError("TilegameobjectMap's returned Gameobject is null");
             return;
         }
+        if(tile_data.Type == TileType.Grass)
+        {
+            uv[0] = new Vector2(0,0.5f);
+            uv[1] = new Vector2(0,1f);
+            uv[2] = new Vector2(0.5f,0.5f);
+            uv[3] = new Vector2(0.5f,1f);
+        }
         if(tile_data.Type != TileType.Empty)
-        TileMeshChange(tile_data,tile_mesh);
+        TileMeshChange(tile_data,tile_mesh, uv);
 
     }
-    public void TileMeshChange(Tile tile_data,Mesh tile_mesh)
+    public void TileMeshChange(Tile tile_data,Mesh tile_mesh,Vector2[] uv)
     {
         List<Vector3> vertices = new List<Vector3>(tile_mesh.vertices);
         List<int> triangles = new List<int>(tile_mesh.triangles);               // Making lists to keep track of the vertices and triangles in this specific mesh
-        List<Vector2> uv =  new List<Vector2>(tile_mesh.uv);
+        List<Vector2> uvs = new List<Vector2>(tile_mesh.uv);
         for (int i = 0; i < 6; i++)                             //Checking all sides of the voxel by changing the int of FaceDirections enum
         {
             if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type == TileType.Empty)
             {
                 MakeFace((FaceDirections)i,tile_data,vertices,triangles);
+                uvs.AddRange(uv);
             }
             else if(GetNeighbour(tile_data,(FaceDirections)i) == null)
             {
                 MakeFace((FaceDirections)i,tile_data,vertices,triangles);
+                uvs.AddRange(uv);
             }
         }
         tile_mesh.SetVertices(vertices);
         tile_mesh.SetTriangles(triangles.ToArray(),0);
+        tile_mesh.uv = uvs.ToArray();
         tile_mesh.Optimize();
     }
     void MakeFace(FaceDirections dir,Tile tile_data,List<Vector3> vertices,List<int> triangles)

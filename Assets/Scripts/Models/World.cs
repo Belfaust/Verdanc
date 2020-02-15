@@ -9,7 +9,7 @@ public class World
     public int Depth{get;protected set;}
     public int seed{get;protected set;}
     public int ChunkSize{get;protected set;}
-    public World(int chunkSize = 16)
+    public World(int chunkSize = 32)
     {
         ChunkSize = chunkSize;
         Width = chunkSize * 4;
