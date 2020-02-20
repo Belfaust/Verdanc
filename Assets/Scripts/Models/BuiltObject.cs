@@ -9,8 +9,8 @@ public class BuiltObject{
     int width;
     int height;
     int depth;
-    int Money_Cost;
-    int Substance_Cost;
+    public int Money_Cost {get;protected set;}
+    public int Substance_Cost {get;protected set;}
     
 
   static public BuiltObject CreatePrototype(string objectType,int width = 1 , int height = 1 , int depth = 1,int Money_Cost = 100, int Substance_Cost = 10)
@@ -29,16 +29,6 @@ static public int[,,] GetSize(BuiltObject Object)
 {
   int[,,] Size = new int[Object.width,Object.height,Object.depth];
   return Size;
-}
-static public int GetMoneyCost(BuiltObject Object)
-{
-  int MoneyCost = Object.Money_Cost;
-  return MoneyCost;
-}
-static public int GetSubstanceCost(BuiltObject Object)
-{
-  int Substance_Cost = Object.Substance_Cost;
-  return Substance_Cost;
 }
 static public BuiltObject PlaceObject(BuiltObject proto, Tile[] tile)
 {
