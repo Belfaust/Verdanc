@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.33156946, g: 0.32517764, b: 0.28242975, a: 1}
+  m_IndirectSpecularColor: {r: 0.33156958, g: 0.3251781, b: 0.28242996, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1398,7 +1398,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GroundTexture: {fileID: 2800000, guid: 613508b74100c3e4aa6a84b4fc19f71f, type: 3}
-  tree: {fileID: 4669056730981538251, guid: 7b9519bb94e20e743829a1bb76963541, type: 3}
   Money: 250
   Substance: 50
 --- !u!4 &1154643989

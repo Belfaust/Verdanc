@@ -7,7 +7,6 @@ public class World_Controller : MonoBehaviour
 {
     public static World_Controller _Instance{get;protected set;}
     public Texture GroundTexture;
-    public GameObject tree;
     public int Money = 250,Substance = 25;
     public World World{get;protected set;}
     GameObject[,] ChunkList;
@@ -55,22 +54,6 @@ public class World_Controller : MonoBehaviour
                     for (int z = 0; z < World.Depth; z++)
                     {
                         Tile tile_data = World.GetTileAt(x,y,z);
-                        if(tile_data.Type == TileType.Grass)
-                            {
-                            if(Random.Range(0,150) == 11)
-                                {
-                        GameObject Temptree = new GameObject();
-                        Temptree.transform.position = new Vector3(tile_data.X + .5f,tile_data.Y+ .5f,tile_data.Z+1.5f);
-                        Temptree.name = "tree"+tile_data.Z;
-
-                        Temptree.AddComponent<MeshFilter>();
-                        Temptree.AddComponent<MeshRenderer>();
-
-                        Temptree.GetComponent<MeshFilter>().sharedMesh = tree.GetComponent<MeshFilter>().sharedMesh;
-                        Temptree.GetComponent<MeshRenderer>().sharedMaterials = tree.GetComponent<MeshRenderer>().sharedMaterials;
-           
-                                }
-                            }
                         OnTileTypeChange(tile_data);                // Executing a callback and adding it to the tile
                         tile_data.RegisterTileTypeChange( OnTileTypeChange );
                     }
@@ -111,6 +94,7 @@ public class World_Controller : MonoBehaviour
         TextureChange(tile_data,TileType.Dirt,0.5f,0);
 
         TextureChange(tile_data,TileType.Road,0.5f,0.5f);
+        
         if(tile_data.Type != TileType.Empty)
         {
             collider.sharedMesh = null;
@@ -127,15 +111,15 @@ public class World_Controller : MonoBehaviour
         for (int i = 0; i < 6; i++)                             //Checking all sides of the voxel by changing the int of FaceDirections enum
         {
             if(GetNeighbour(tile_data,(FaceDirections)i) != null&&GetNeighbour(tile_data,(FaceDirections)i).Type == TileType.Empty)
-                {
+            {
                 MakeFace((FaceDirections)i,tile_data,vertices,triangles);
                 uvs.AddRange(uv);
-                }
+            }
             else if(GetNeighbour(tile_data,(FaceDirections)i) == null)
-                {
+            {
                 MakeFace((FaceDirections)i,tile_data,vertices,triangles);
                 uvs.AddRange(uv);
-                }
+            }
         }
         tile_mesh.SetVertices(vertices);
         tile_mesh.SetTriangles(triangles.ToArray(),0);

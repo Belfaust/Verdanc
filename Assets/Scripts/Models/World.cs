@@ -14,7 +14,7 @@ public class World
         ChunkSize = chunkSize;
         Width = chunkSize * 4;
         Height = chunkSize * 4;
-        Depth = 64;
+        Depth = 20;
         seed = Random.Range(-100000,100000);
         tiles = new Tile[this.Width, this.Height,this.Depth];
         float[,] noiseMap = Noise.GenerateNoiseMap(Width,Height,seed,50,2,.5f,3, new Vector2(5,8));
@@ -26,26 +26,26 @@ public class World
                 {   
                         tiles[x,y,z] = new Tile(this,x,y,z);     
                 }
-                    int currentHeight = (int)(noiseMap[x,y]*(Depth*.25f));
+                    int currentHeight = (int)(noiseMap[x,y]*(Depth));
                     for (int z = 1; z < Depth-1; z++)
                 {
-                    if(tiles[x,y,z].Z == currentHeight)
-                    {
+                if(tiles[x,y,z].Z == currentHeight)
+                {
                     tiles[x,y,z].Type = TileType.Grass;
-                    }
-                    if(tiles[x,y,z].Z >currentHeight&&tiles[x,y,z].Z<7)
-                    {
-                        tiles[x,y,z].Type = TileType.Water;
-                    }
-                    if(GetTileAt(x,y,z).Z != currentHeight&&GetTileAt(x,y,z).Z<currentHeight)
-                    {
-                        tiles[x,y,z].Type = TileType.Dirt;
-                    }
+                }
+                if(tiles[x,y,z].Z >currentHeight&&tiles[x,y,z].Z<7)
+                {
+                    tiles[x,y,z].Type = TileType.Water;
+                }
+                if(GetTileAt(x,y,z).Z != currentHeight&&GetTileAt(x,y,z).Z<currentHeight)
+                {
+                    tiles[x,y,z].Type = TileType.Dirt;
+                }
                 }
             } 
         }
         Debug.Log("Created with " +(Width* Height)+ " tiles");
-        //RoadGeneration(noiseMap);  
+        RoadGeneration(noiseMap);  
     }   
     // This function can be further upgraded with specific Tile weights However i am gonna leave it as it is for now
     //before making the A* Road there should be a proper world with Elevation based on Perlin Noise
