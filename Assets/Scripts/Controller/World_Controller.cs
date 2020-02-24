@@ -77,32 +77,21 @@ public class World_Controller : MonoBehaviour
             Debug.LogError("TilegameobjectMap's returned Gameobject is null");
             return;
         }
-        void TextureChange(Tile tile,TileType tileType,float originTexturePointX,float originTexturePointY)
+        if(tile_data.Type == TileType.Grass)
         {
-            if(tile.Type == tileType)
-            {
-            uv[0] = new Vector2(originTexturePointX,originTexturePointY);
-            uv[1] = new Vector2(originTexturePointX,originTexturePointY+0.5f);
-            uv[2] = new Vector2(originTexturePointX+0.5f,originTexturePointY);
-            uv[3] = new Vector2(originTexturePointX+0.5f,originTexturePointY+0.5f);
-            }
+            uv[0] = new Vector2(0,0.5f);
+            uv[1] = new Vector2(0,1f);
+            uv[2] = new Vector2(0.5f,0.5f);
+            uv[3] = new Vector2(0.5f,1f);
         }
-        TextureChange(tile_data,TileType.Grass,0,0.5f);
-
-        TextureChange(tile_data,TileType.Water,0,0);
-        
-        TextureChange(tile_data,TileType.Dirt,0.5f,0);
-
-        TextureChange(tile_data,TileType.Road,0.5f,0.5f);
-        
         if(tile_data.Type != TileType.Empty)
         {
             collider.sharedMesh = null;
-            TileMeshChange(tile_data,tile_mesh, uv);
+        TileMeshChange(tile_data,tile_mesh, uv);
             collider.sharedMesh = tile_mesh;
         }
+
     }
-    
     public void TileMeshChange(Tile tile_data,Mesh tile_mesh,Vector2[] uv)
     {
         List<Vector3> vertices = new List<Vector3>(tile_mesh.vertices);
