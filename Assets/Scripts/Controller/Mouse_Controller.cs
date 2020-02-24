@@ -146,7 +146,6 @@ public class Mouse_Controller : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             int[,,] BuildingSize;
-            int Money_Cost = BuiltObject.GetMoneyCost(SelectedBuilding) ,Substance_Cost = BuiltObject.GetSubstanceCost(SelectedBuilding);
             Tile OriginTile = World_Controller._Instance.World.GetTileAt(1,1,1);
             if(Physics.Raycast(ray, out hit , 100))
             {
@@ -173,13 +172,18 @@ public class Mouse_Controller : MonoBehaviour
                 }
                 BuiltObject.PlaceObject(SelectedBuilding,tiles);
                 GameObject Building = new GameObject();
+                Building.name = SelectedBuilding.objectType;
+
                 Building.transform.position = BuildingPreview.transform.position;
                 Building.AddComponent<MeshFilter>();
                 Building.AddComponent<MeshRenderer>();
+
                 Building.GetComponent<MeshFilter>().sharedMesh = BuildingPreview.GetComponent<MeshFilter>().sharedMesh ;
                 Building.GetComponent<MeshRenderer>().sharedMaterials = BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials ;
-                World_Controller._Instance.Money -= Money_Cost;
-                World_Controller._Instance.Substance -= Substance_Cost;
+                Building.AddComponent<MeshCollider>();
+
+                World_Controller._Instance.Money -= SelectedBuilding.Money_Cost;
+                World_Controller._Instance.Substance -= SelectedBuilding.Substance_Cost;
                 SelectedBuilding = null;
             }
             if(Input.GetMouseButton(1))
