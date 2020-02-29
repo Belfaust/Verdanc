@@ -5,7 +5,7 @@ using UnityEngine;
 public class BuiltObject{
 
     Tile[] tile;
-    string objectType;
+    public string objectType { get; protected set;}
     int width;
     int height;
     int depth;

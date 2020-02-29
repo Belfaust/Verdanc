@@ -1,34 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 using System.Linq;
 
 public class World_Controller : MonoBehaviour
 {
     public static World_Controller _Instance{get;protected set;}
+    public World World{get;protected set;}
+    private GameObject[,] ChunkList;
     public Texture GroundTexture;
     public GameObject tree;
+    public int Time{get;set;} private static System.Timers.Timer Timer;
     public int Money = 250,Substance = 25;
-    public World World{get;protected set;}
-    GameObject[,] ChunkList;
-     void Start() {
-
+    private void Start() {
+        
         if(_Instance != null){
         Debug.Log("Err there are 2 instances of World Controllers");
         }
         else
         {   _Instance = this;}
         CreateNewWorld();
+        StartCoroutine("TimeCount");
+    }
+    IEnumerator TimeCount()
+    {
+        while(Money > -50)
+        {
+            yield return new WaitForSeconds(1f);
+            int Time = World_Controller._Instance.Time;
+            Time += 1;
+            World_Controller._Instance.Time = Time;
+            if(Time%7==0)
+            {
+                UI_Controller._Instance.UpdateTime();
+                Money -= 100;
+                UI_Controller._Instance.UpdateResources();
+            }
+        }
+        if(Money<-50)
+        {
+            //Gameover
+        }
     }
     public void CreateNewWorld()
     {
         World = new World();
-        ChunkList = new GameObject[World.Width,World.Height];       //Generating the World with Tile types
+        ChunkList = new GameObject[World.Width,World.Height];           //Generating the World with Tile types
             for (int ChunkX = 0; ChunkX < World.Width;  ChunkX += World.ChunkSize)
             {
                 for (int ChunkY = 0; ChunkY < World.Height; ChunkY += World.ChunkSize)
                 {
-                    GameObject tile_GO = new GameObject();          // GO is a shortcut for GameObject
+                    GameObject tile_GO = new GameObject();              // GO is a shortcut for GameObject
 
                     ChunkList[ChunkX/World.ChunkSize,ChunkY/World.ChunkSize] = tile_GO;
                     tile_GO.name = "Chunk_"+ChunkX+"_"+ChunkY;
@@ -48,6 +71,7 @@ public class World_Controller : MonoBehaviour
     }
     IEnumerator GenerateMeshes(int ChunkX,int ChunkY)
     {
+        yield return new WaitForSeconds(.1f);
         for (int x = ChunkX; x < ChunkX + World.ChunkSize; x++)                       //Starting to Generate Visual models for the World
             {
                 for (int y = ChunkY; y < ChunkY + World.ChunkSize; y++)
@@ -76,7 +100,6 @@ public class World_Controller : MonoBehaviour
                     }
                 }
             }
-        yield return new WaitForSeconds(.1f);
     }
     void OnTileTypeChange(Tile tile_data)
     {

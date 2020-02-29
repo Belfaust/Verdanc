@@ -4,12 +4,11 @@ using UnityEngine.EventSystems;
 
 public class Mouse_Controller : MonoBehaviour
 {
+    public static Mouse_Controller _Instance{get;protected set;}
     public GameObject CursorPrefab,FactoryModel;
     private GameObject BuildingPreview;
-    TileType SelectedBuildTiles = TileType.Road;
     Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
     Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
-    List<GameObject> dragPreviewObjects = new List<GameObject>();    
     public float offset_z = 2;
     public Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z) {
      Ray ray = Camera.main.ScreenPointToRay(screenPosition);
@@ -19,6 +18,11 @@ public class Mouse_Controller : MonoBehaviour
      return ray.GetPoint(distance);
  }  
     private void Start() {
+         if(_Instance != null){
+        Debug.Log("Err there are 2 instances of Mouse Controllers");
+        }
+        else
+        {   _Instance = this;}
         BuildingPreview = new GameObject();
         BuildingPreview.name = "BuildingPreviewObject";
         BuildingPreview.AddComponent<MeshFilter>();
@@ -54,6 +58,8 @@ public class Mouse_Controller : MonoBehaviour
     // }
     void UpdateDragging()
     {
+    TileType SelectedBuildTiles = TileType.Road;
+    List<GameObject> dragPreviewObjects = new List<GameObject>();    
         if(EventSystem.current.IsPointerOverGameObject())
         {
             return;
@@ -153,7 +159,7 @@ public class Mouse_Controller : MonoBehaviour
             if(World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z)) != null)
             OriginTile = World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
             }
-            if(Input.GetMouseButton(0)&&World_Controller._Instance.Money >= Money_Cost&&World_Controller._Instance.Substance >= Substance_Cost)
+            if(Input.GetMouseButton(0)&&World_Controller._Instance.Money >= SelectedBuilding.Money_Cost&&World_Controller._Instance.Substance >= SelectedBuilding.Substance_Cost)
             {
                 Tile[] tiles;
                 BuildingSize = BuiltObject.GetSize(SelectedBuilding);
@@ -184,6 +190,7 @@ public class Mouse_Controller : MonoBehaviour
 
                 World_Controller._Instance.Money -= SelectedBuilding.Money_Cost;
                 World_Controller._Instance.Substance -= SelectedBuilding.Substance_Cost;
+                UI_Controller._Instance.UpdateResources();
                 SelectedBuilding = null;
             }
             if(Input.GetMouseButton(1))
@@ -203,15 +210,15 @@ public class Mouse_Controller : MonoBehaviour
         BuildingPreview.GetComponent<MeshFilter>().sharedMesh = FactoryModel.GetComponent<MeshFilter>().sharedMesh;
         BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = FactoryModel.GetComponent<MeshRenderer>().sharedMaterials;
     }
-    public void SetMode_BuildRoad()
+    public void SetMode_BuildRoad(TileType SelectedBuildTiles)
     {
         SelectedBuildTiles = TileType.Road;
     } 
-    public void SetMode_BuildGrass()
+    public void SetMode_BuildGrass(TileType SelectedBuildTiles)
     {
         SelectedBuildTiles = TileType.Grass;
     }
-    public void SetMode_BuildWater()
+    public void SetMode_BuildWater(TileType SelectedBuildTiles)
     {
         SelectedBuildTiles = TileType.Water;
     }
