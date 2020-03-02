@@ -715,7 +715,7 @@ namespace UnityEditor.Timeline
 
                 if (EditorApplication.isPlaying == false)
                 {
-                    PlayModeView.RepaintAll();
+                    PreviewEditorWindow.RepaintAll();
                     SceneView.RepaintAll();
                     AudioMixerWindow.RepaintAudioMixerWindow();
                 }

@@ -167,14 +167,11 @@ namespace UnityEditor.Timeline
         {
             if (state == null) return;
 
-            if (lastSelectedGO != Selection.activeObject)
-            {
-                // selection may have changed while Timeline Editor was looking away
-                RefreshSelection(false);
+            // selection may have changed while Timeline Editor was looking away
+            RefreshSelection(false);
 
-                // Inline curves may have become out of sync
-                RefreshInlineCurves();
-            }
+            // Inline curves may have become out of sync
+            RefreshInlineCurves();
         }
 
         void OnHierarchyChange()
