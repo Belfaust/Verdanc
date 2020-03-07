@@ -181,6 +181,8 @@ public class Mouse_Controller : MonoBehaviour
                 Building.name = SelectedBuilding.objectType;
 
                 Building.transform.position = BuildingPreview.transform.position;
+                Building.transform.localScale = BuildingPreview.transform.localScale;
+
                 Building.AddComponent<MeshFilter>();
                 Building.AddComponent<MeshRenderer>();
 
@@ -207,6 +209,7 @@ public class Mouse_Controller : MonoBehaviour
     public void Factory()
     {
         SelectedBuilding = BuiltObject.CreatePrototype("Factory",3,2,2,50,5);
+        BuildingPreview.transform.localScale = FactoryModel.transform.localScale;
         BuildingPreview.GetComponent<MeshFilter>().sharedMesh = FactoryModel.GetComponent<MeshFilter>().sharedMesh;
         BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = FactoryModel.GetComponent<MeshRenderer>().sharedMaterials;
     }

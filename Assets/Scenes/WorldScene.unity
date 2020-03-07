@@ -1031,7 +1031,7 @@ PrefabInstance:
     - target: {fileID: 7618412111163883122, guid: d60e3732ede44bf4b8b793a39ed45e3f,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7618412111163883122, guid: d60e3732ede44bf4b8b793a39ed45e3f,
         type: 3}
@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CursorPrefab: {fileID: 362180614306297749, guid: d60e3732ede44bf4b8b793a39ed45e3f,
     type: 3}
-  FactoryModel: {fileID: 6365134881960762680, guid: 9b2ee8c9c3614b54b990249fc2127f22,
+  FactoryModel: {fileID: 8712865540108863038, guid: 612d7ed40eb688545900b2e4cc0e4123,
     type: 3}
   offset_z: 2
 --- !u!4 &730008157
@@ -1228,7 +1228,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &851157607
 GameObject:

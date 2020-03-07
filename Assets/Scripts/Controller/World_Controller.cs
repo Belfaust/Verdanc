@@ -11,7 +11,7 @@ public class World_Controller : MonoBehaviour
     private GameObject[,] ChunkList;
     public Texture GroundTexture;
     public GameObject tree;
-    public int Time{get;set;} private static System.Timers.Timer Timer;
+    public int Time{get;set;} 
     public int Money = 250,Substance = 25;
     private void Start() {
         
@@ -27,7 +27,7 @@ public class World_Controller : MonoBehaviour
     {
         while(Money > -50)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(5f);
             int Time = World_Controller._Instance.Time;
             Time += 1;
             World_Controller._Instance.Time = Time;
