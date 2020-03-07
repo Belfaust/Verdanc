@@ -1865,7 +1865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GroundTexture: {fileID: 2800000, guid: 613508b74100c3e4aa6a84b4fc19f71f, type: 3}
-  tree: {fileID: 4669056730981538251, guid: 7b9519bb94e20e743829a1bb76963541, type: 3}
+  tree: {fileID: -927199367670048503, guid: 3da11e381d95ed3489997b3c069fb910, type: 3}
   Money: 250
   Substance: 50
 --- !u!4 &1154643989
@@ -2310,9 +2310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e97028aa14e2a94194ad52367c6005e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeText: {fileID: 251217492}
-  MoneyText: {fileID: 1116408078}
-  SubstanceText: {fileID: 150281623}
 --- !u!1 &1826133831
 GameObject:
   m_ObjectHideFlags: 0
