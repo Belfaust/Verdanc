@@ -6,9 +6,9 @@ public class Mouse_Controller : MonoBehaviour
 {
     public static Mouse_Controller _Instance{get;protected set;}
     public GameObject CursorPrefab,FactoryModel;
-    private GameObject BuildingPreview;
-    Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
-    Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
+    private GameObject BuildingPreview; // Preview of an object on the map that has yet to be placed 
+    private Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
+    private Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
     public float offset_z = 2;
     public Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z) {
      Ray ray = Camera.main.ScreenPointToRay(screenPosition);
@@ -20,9 +20,12 @@ public class Mouse_Controller : MonoBehaviour
     private void Start() {
          if(_Instance != null){
         Debug.Log("Err there are 2 instances of Mouse Controllers");
+        Destroy(this);
         }
         else
-        {   _Instance = this;}
+        {   _Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+        }
         BuildingPreview = new GameObject();
         BuildingPreview.name = "BuildingPreviewObject";
         BuildingPreview.AddComponent<MeshFilter>();
@@ -30,11 +33,15 @@ public class Mouse_Controller : MonoBehaviour
     }
      void Update() 
     {
+        if(World_Controller._Instance.OnWorldMap == true)
+        {
         CurrentFramePos = new Vector3(GetWorldPositionOnPlane(Input.mousePosition,0).x +.5f,GetWorldPositionOnPlane(Input.mousePosition,0).y +.5f); // this is the Camera set up for Dealing with tiles since there is no better way to offset it
         NotOffsetCamera = GetWorldPositionOnPlane(Input.mousePosition,0);// True Camera position on A plane that is generated in front of it to create a smooth transition of moving
         CameraMovement();       
         Scroling();
         Building();
+        BuildingSelection();
+        }
     }
     void Scroling()
     {
@@ -144,48 +151,49 @@ public class Mouse_Controller : MonoBehaviour
         }
        Last_Frame_Pos = GetWorldPositionOnPlane(Input.mousePosition,0);
     }
-    BuiltObject SelectedBuilding;
+    int Click_Count = 0;
+    void BuildingSelection()
+    {
+        Ray Mouse_Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if(Input.GetMouseButtonDown(1))
+        {
+           if(Physics.Raycast(Mouse_Ray,out hit,100))
+                {
+                    if(hit.transform.gameObject.GetComponent<Factory>())
+                    {
+                        if(hit.transform.gameObject.GetComponent<Factory>()&&Click_Count >= 1)
+                        {
+                            Click_Count = 0;
+                            World_Controller._Instance.OnWorldMap = false;
+                            UI_Controller._Instance.LoadFactory(hit.transform.gameObject.GetComponent<Factory>());
+                        }
+                        Click_Count += 1;
+                    }
+                }   
+        }
+    }
+    private BuiltObject SelectedBuilding;
     void Building()
     {
+        Ray Mouse_Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
         if(SelectedBuilding != null)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            int[,,] BuildingSize;
             Tile OriginTile = World_Controller._Instance.World.GetTileAt(1,1,1);
-            if(Physics.Raycast(ray, out hit , 100))
+            if(Physics.Raycast(Mouse_Ray, out hit , 100))
             {
             BuildingPreview.transform.position = new Vector3((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
             if(World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z)) != null)
             OriginTile = World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
             }
-            if(Input.GetMouseButton(0)&&World_Controller._Instance.Money >= SelectedBuilding.Money_Cost&&World_Controller._Instance.Substance >= SelectedBuilding.Substance_Cost)
+            if(Input.GetMouseButtonDown(0)&&World_Controller._Instance.Money >= SelectedBuilding.Money_Cost&&World_Controller._Instance.Substance >= SelectedBuilding.Substance_Cost)
             {
-                Tile[] tiles;
-                BuildingSize = BuiltObject.GetSize(SelectedBuilding);
-                tiles = new Tile[BuildingSize.GetLength(0)*BuildingSize.GetLength(1)*BuildingSize.GetLength(2)];
-                int tileListCount = new int();
-                for (int x = 0; x < BuildingSize.GetLength(0); x++)
-                {
-                    for (int y = 0; y < BuildingSize.GetLength(1); y++)
-                    {
-                        for (int z = 0; z < BuildingSize.GetLength(2); z++)
-                        {
-                          tiles[tileListCount] = World_Controller._Instance.World.GetTileAt(OriginTile.X + x,OriginTile.Y +y,OriginTile.Z +z);
-                          tileListCount += 1;
-                        }
-                    }
-                }
-                BuiltObject.PlaceObject(SelectedBuilding,tiles);
-                GameObject Building = new GameObject();
-                Building.name = SelectedBuilding.objectType;
+                GameObject Building = World_Controller._Instance.MakingBuilding(SelectedBuilding,OriginTile);
 
                 Building.transform.position = BuildingPreview.transform.position;
                 Building.transform.localScale = BuildingPreview.transform.localScale;
-
-                Building.AddComponent<MeshFilter>();
-                Building.AddComponent<MeshRenderer>();
-
                 Building.GetComponent<MeshFilter>().sharedMesh = BuildingPreview.GetComponent<MeshFilter>().sharedMesh ;
                 Building.GetComponent<MeshRenderer>().sharedMaterials = BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials ;
                 Building.AddComponent<MeshCollider>();
@@ -193,9 +201,10 @@ public class Mouse_Controller : MonoBehaviour
                 World_Controller._Instance.Money -= SelectedBuilding.Money_Cost;
                 World_Controller._Instance.Substance -= SelectedBuilding.Substance_Cost;
                 UI_Controller._Instance.UpdateResources();
+
                 SelectedBuilding = null;
             }
-            if(Input.GetMouseButton(1))
+            if(Input.GetMouseButtonDown(1))
             {
                 SelectedBuilding = null;
             }

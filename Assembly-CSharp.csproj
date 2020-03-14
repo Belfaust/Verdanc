@@ -45,23 +45,26 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Controller\Mouse_Controller.cs" />
-     <Compile Include="Assets\Scripts\Controller\RTSPlayerMovement.cs" />
-     <Compile Include="Assets\Scripts\Controller\UI_Controller.cs" />
-     <Compile Include="Assets\Scripts\Controller\World_Controller.cs" />
+     <Compile Include="Assets\Scripts\Controllers\Mouse_Controller.cs" />
+     <Compile Include="Assets\Scripts\Controllers\RTSPlayerMovement.cs" />
+     <Compile Include="Assets\Scripts\Controllers\UI_Controller.cs" />
+     <Compile Include="Assets\Scripts\Controllers\World_Controller.cs" />
      <Compile Include="Assets\Scripts\Inventory\Inventory.cs" />
      <Compile Include="Assets\Scripts\Inventory\InventorySlot.cs" />
      <Compile Include="Assets\Scripts\Inventory\InventoryUI.cs" />
      <Compile Include="Assets\Scripts\Inventory\Item.cs" />
-     <Compile Include="Assets\Scripts\MapGeneration2DPreview\Generator.cs" />
-     <Compile Include="Assets\Scripts\MapGeneration2DPreview\MapDisplay.cs" />
-     <Compile Include="Assets\Scripts\MapGeneration2DPreview\TextureGenerator.cs" />
      <Compile Include="Assets\Scripts\Models\BuiltObject.cs" />
+     <Compile Include="Assets\Scripts\Models\Factory.cs" />
+     <Compile Include="Assets\Scripts\Models\Sapling.cs" />
      <Compile Include="Assets\Scripts\Models\Tile.cs" />
      <Compile Include="Assets\Scripts\Models\World.cs" />
      <Compile Include="Assets\Scripts\UI\AutomaticVerticalSize.cs" />
+     <Compile Include="Assets\Scripts\UI\Button_Forwarding.cs" />
      <Compile Include="Assets\Scripts\UI\LevelLoader.cs" />
      <Compile Include="Assets\Scripts\Utility\CubeMeshData.cs" />
+     <Compile Include="Assets\Scripts\Utility\MapGeneration2DPreview\Generator.cs" />
+     <Compile Include="Assets\Scripts\Utility\MapGeneration2DPreview\MapDisplay.cs" />
+     <Compile Include="Assets\Scripts\Utility\MapGeneration2DPreview\TextureGenerator.cs" />
      <Compile Include="Assets\Scripts\Utility\Noise.cs" />
      <Compile Include="Assets\Scripts\Utility\SimplePool.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />

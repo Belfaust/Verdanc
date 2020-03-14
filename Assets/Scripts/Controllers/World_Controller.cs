@@ -1,25 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
 using UnityEngine;
-using System.Linq;
 
 public class World_Controller : MonoBehaviour
 {
     public static World_Controller _Instance{get;protected set;}
     public World World{get;protected set;}
+    Dictionary<BuiltObject, GameObject> BuiltObjects = new Dictionary<BuiltObject, GameObject>();
     private GameObject[,] ChunkList;
     public Texture GroundTexture;
     public GameObject tree;
+    public bool OnWorldMap = true;
     public int Time{get;set;} 
     public int Money = 250,Substance = 25;
     private void Start() {
         
         if(_Instance != null){
         Debug.Log("Err there are 2 instances of World Controllers");
+        Destroy(this);
         }
         else
-        {   _Instance = this;}
+        {   
+        _Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+        }
         CreateNewWorld();
         StartCoroutine("TimeCount");
     }
@@ -31,9 +35,9 @@ public class World_Controller : MonoBehaviour
             int Time = World_Controller._Instance.Time;
             Time += 1;
             World_Controller._Instance.Time = Time;
+            UI_Controller._Instance.UpdateTime();
             if(Time%7==0)
             {
-                UI_Controller._Instance.UpdateTime();
                 Money -= 100;
                 UI_Controller._Instance.UpdateResources();
             }
@@ -43,10 +47,13 @@ public class World_Controller : MonoBehaviour
             //Gameover
         }
     }
+    
     public void CreateNewWorld()
     {
         World = new World();
         ChunkList = new GameObject[World.Width,World.Height];           //Generating the World with Tile types
+        GameObject World_Object = new GameObject();
+        World_Object.transform.position =  new Vector3(0,0,0);
             for (int ChunkX = 0; ChunkX < World.Width;  ChunkX += World.ChunkSize)
             {
                 for (int ChunkY = 0; ChunkY < World.Height; ChunkY += World.ChunkSize)
@@ -57,7 +64,7 @@ public class World_Controller : MonoBehaviour
                     tile_GO.name = "Chunk_"+ChunkX+"_"+ChunkY;
 
                     tile_GO.transform.position = new Vector3(ChunkX,ChunkY,0);
-                    tile_GO.transform.SetParent(this.transform,true);
+                    tile_GO.transform.SetParent(World_Object.transform,true);
 
                     tile_GO.AddComponent<MeshFilter>();
                     tile_GO.AddComponent<MeshRenderer>();
@@ -211,6 +218,38 @@ public class World_Controller : MonoBehaviour
         int z = Mathf.FloorToInt(coord.z);
 
         return World.GetTileAt(x , y , z);
+    }
+    public GameObject MakingBuilding(BuiltObject SelectedBuilding,Tile OriginTile)
+    {
+                int[,,] BuildingSize;
+                Tile[] tiles;
+                BuildingSize = BuiltObject.GetSize(SelectedBuilding);
+                tiles = new Tile[BuildingSize.GetLength(0)*BuildingSize.GetLength(1)*BuildingSize.GetLength(2)];
+                int tileListCount = new int();
+                for (int x = 0; x < BuildingSize.GetLength(0); x++)
+                {
+                    for (int y = 0; y < BuildingSize.GetLength(1); y++)
+                    {
+                        for (int z = 0; z < BuildingSize.GetLength(2); z++)
+                        {
+                          tiles[tileListCount] = World.GetTileAt(OriginTile.X + x,OriginTile.Y +y,OriginTile.Z +z);
+                          tileListCount += 1;
+                        }
+                    }
+                }
+
+                BuiltObject.PlaceObject(SelectedBuilding,tiles);
+                GameObject Building = new GameObject();
+                BuiltObjects.Add(SelectedBuilding,Building);
+                if(SelectedBuilding.objectType == "Factory")
+                {
+                    Building.AddComponent<Factory>();
+                }
+                Building.name = SelectedBuilding.objectType;
+                Building.AddComponent<MeshFilter>();
+                Building.AddComponent<MeshRenderer>();
+
+                return Building;
     }
 }
 public enum FaceDirections{
