@@ -321,7 +321,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 26
+  controlID: 97
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -341,8 +341,8 @@ MonoBehaviour:
     y: 0
     width: 431
     height: 635
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 32}
   m_Panes:
   - {fileID: 32}
@@ -492,7 +492,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 165
+  controlID: 25
 --- !u!114 &21
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -517,7 +517,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 166
+  controlID: 26
 --- !u!114 &22
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -622,9 +622,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 3a380000
-    m_LastClickedID: 14394
-    m_ExpandedIDs: 0000000030380000323800003438000036380000383800003a3800003c38000000ca9a3b
+    m_SelectedIDs: de360000
+    m_LastClickedID: 14046
+    m_ExpandedIDs: 00000000d4360000d6360000d8360000da360000dc360000de360000e036000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -652,7 +652,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000030380000323800003438000036380000383800003a3800003c380000
+    m_ExpandedIDs: 00000000d4360000d6360000d8360000da360000dc360000de360000e0360000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -704,7 +704,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 141.5}
+    m_ScrollPosition: {x: 0, y: 48.5}
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 115
@@ -964,8 +964,8 @@ MonoBehaviour:
     vZoomLockedByDefault: 0
     m_HBaseRangeMin: -306
     m_HBaseRangeMax: 306
-    m_VBaseRangeMin: -164
-    m_VBaseRangeMax: 164
+    m_VBaseRangeMin: -174.5
+    m_VBaseRangeMax: 174.5
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -982,11 +982,11 @@ MonoBehaviour:
     m_DrawArea:
       serializedVersion: 2
       x: 0
-      y: 21
+      y: 0
       width: 612
-      height: 328
+      height: 349
     m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 306, y: 164}
+    m_Translation: {x: 306, y: 174.5}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
@@ -994,9 +994,9 @@ MonoBehaviour:
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
       x: -306
-      y: -164
+      y: -174.5
       width: 612
-      height: 328
+      height: 349
     m_MinimalGUI: 1
   m_defaultScale: 1
   m_LastWindowPixelSize: {x: 612, y: 349}
@@ -1107,9 +1107,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 3a380000
-    m_LastClickedID: 14394
-    m_ExpandedIDs: 0000000030380000323800003438000036380000383800003a3800003c38000000ca9a3b
+    m_SelectedIDs: de360000
+    m_LastClickedID: 14046
+    m_ExpandedIDs: 00000000d4360000d6360000d8360000da360000dc360000de360000e036000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1137,7 +1137,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000030380000323800003438000036380000383800003a3800003c380000
+    m_ExpandedIDs: 00000000d4360000d6360000d8360000da360000dc360000de360000e0360000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1181,7 +1181,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
+      m_ClientGUIView: {fileID: 16}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -1449,8 +1449,8 @@ MonoBehaviour:
     vZoomLockedByDefault: 0
     m_HBaseRangeMin: -309.5
     m_HBaseRangeMax: 309.5
-    m_VBaseRangeMin: -161
-    m_VBaseRangeMax: 161
+    m_VBaseRangeMin: -171.5
+    m_VBaseRangeMax: 171.5
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1467,11 +1467,11 @@ MonoBehaviour:
     m_DrawArea:
       serializedVersion: 2
       x: 0
-      y: 21
+      y: 0
       width: 619
-      height: 322
+      height: 343
     m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 309.5, y: 161}
+    m_Translation: {x: 309.5, y: 171.5}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
@@ -1479,9 +1479,9 @@ MonoBehaviour:
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
       x: -309.5
-      y: -161
+      y: -171.5
       width: 619
-      height: 322
+      height: 343
     m_MinimalGUI: 1
   m_defaultScale: 1
   m_LastWindowPixelSize: {x: 619, y: 343}
