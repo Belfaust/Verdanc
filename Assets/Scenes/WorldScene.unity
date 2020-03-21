@@ -1865,7 +1865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GroundTexture: {fileID: 2800000, guid: 613508b74100c3e4aa6a84b4fc19f71f, type: 3}
-  tree: {fileID: -927199367670048503, guid: d2eba6379f7d7d44fb2fc1328a005c92, type: 3}
+  tree: {fileID: -927199367670048503, guid: 22a8f444bc70c9e4fa34baaf22d69adf, type: 3}
   Money: 250
   Substance: 50
 --- !u!4 &1154643989
