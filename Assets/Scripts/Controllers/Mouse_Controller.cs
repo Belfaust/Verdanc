@@ -5,10 +5,10 @@ using UnityEngine.EventSystems;
 public class Mouse_Controller : MonoBehaviour
 {
     public static Mouse_Controller _Instance{get;protected set;}
-    public GameObject CursorPrefab,FactoryModel;
-    private GameObject BuildingPreview; // Preview of an object on the map that has yet to be placed 
+    public GameObject CursorPrefab,FactoryModel,CurrentlySelectedBuilding;
     private Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
     private Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
+    public Sapling CurrentlySelectedSapling;
     public float offset_z = 2;
     public Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z) {
      Ray ray = Camera.main.ScreenPointToRay(screenPosition);
@@ -26,43 +26,25 @@ public class Mouse_Controller : MonoBehaviour
         {   _Instance = this;
         DontDestroyOnLoad(this.gameObject);
         }
-        BuildingPreview = new GameObject();
-        BuildingPreview.name = "BuildingPreviewObject";
-        BuildingPreview.AddComponent<MeshFilter>();
-        BuildingPreview.AddComponent<MeshRenderer>();
+
     }
      void Update() 
     {
+        UpdateCursor();   
         if(World_Controller._Instance.OnWorldMap == true)
         {
         CurrentFramePos = new Vector3(GetWorldPositionOnPlane(Input.mousePosition,0).x +.5f,GetWorldPositionOnPlane(Input.mousePosition,0).y +.5f); // this is the Camera set up for Dealing with tiles since there is no better way to offset it
         NotOffsetCamera = GetWorldPositionOnPlane(Input.mousePosition,0);// True Camera position on A plane that is generated in front of it to create a smooth transition of moving
-        CameraMovement();       
-        Scroling();
+        CameraMovement();    
         Building();
         BuildingSelection();
         }
     }
-    void Scroling()
-    {
-        float z;       
-                z = Camera.main.transform.position.z;
-                z -=  z * Input.GetAxis("Mouse ScrollWheel");   
-                z = Mathf.Clamp(z,20f,50f); 
-                Camera.main.transform.position = new Vector3(Camera.main.transform.position.x,Camera.main.transform.position.y,z);   
-               
+    void UpdateCursor()
+    {        
+        Vector3 MousePositionOnPlane = new Vector3(Input.mousePosition.x,Input.mousePosition.y,Input.mousePosition.z);
+        CursorPrefab.transform.position = MousePositionOnPlane;
     }
-    // void UpdateCursor()
-    // {        
-    //     Tile tileUnderMouse = World_Controller._Instance.GetTileAtWorldCoord(CursorPrefab.transform.position);       
-    //     if(tileUnderMouse!=null)
-    //     {
-    //     CursorPrefab.SetActive(true);
-    //     Vector3 cursorPosition = new Vector3(tileUnderMouse.X,tileUnderMouse.Y,tileUnderMouse.Z);
-    //     CursorPrefab.transform.position = cursorPosition;
-    //     }else{CursorPrefab.SetActive(false);
-    //     }
-    // }
     void UpdateDragging()
     {
     TileType SelectedBuildTiles = TileType.Road;
@@ -150,6 +132,11 @@ public class Mouse_Controller : MonoBehaviour
             Camera.main.transform.position = new Vector3(Camera.main.transform.position.x,Camera.main.transform.position.y,tmp.z);
         }
        Last_Frame_Pos = GetWorldPositionOnPlane(Input.mousePosition,0);
+       float z;       
+                z = Camera.main.transform.position.z;
+                z -=  z * Input.GetAxis("Mouse ScrollWheel");   
+                z = Mathf.Clamp(z,20f,50f); 
+                Camera.main.transform.position = new Vector3(Camera.main.transform.position.x,Camera.main.transform.position.y,z);   
     }
     int Click_Count = 0;
     void BuildingSelection()
@@ -162,26 +149,28 @@ public class Mouse_Controller : MonoBehaviour
                 {
                     if(hit.transform.gameObject.GetComponent<Factory>())
                     {
-                        if(hit.transform.gameObject.GetComponent<Factory>()&&Click_Count >= 1)
+                        Click_Count += 1;
+                        if(hit.transform.gameObject.GetComponent<Factory>()&&Click_Count > 1)
                         {
                             Click_Count = 0;
                             World_Controller._Instance.OnWorldMap = false;
                             UI_Controller._Instance.LoadFactory(hit.transform.gameObject.GetComponent<Factory>());
+                            CurrentlySelectedBuilding = hit.transform.gameObject;
                         }
-                        Click_Count += 1;
                     }
                 }   
         }
     }
     private BuiltObject SelectedBuilding;
+    private GameObject BuildingPreview; // Preview of an object on the map that has yet to be placed 
     void Building()
     {
         Ray Mouse_Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-
         if(SelectedBuilding != null)
         {
             Tile OriginTile = World_Controller._Instance.World.GetTileAt(1,1,1);
+            BuildingPreview.layer = 2;
             if(Physics.Raycast(Mouse_Ray, out hit , 100))
             {
             BuildingPreview.transform.position = new Vector3((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
@@ -190,48 +179,40 @@ public class Mouse_Controller : MonoBehaviour
             }
             if(Input.GetMouseButtonDown(0)&&World_Controller._Instance.Money >= SelectedBuilding.Money_Cost&&World_Controller._Instance.Substance >= SelectedBuilding.Substance_Cost)
             {
-                GameObject Building = World_Controller._Instance.MakingBuilding(SelectedBuilding,OriginTile);
-
+                BuildingPreview.layer = 0;
+                GameObject Building = World_Controller._Instance.MakingBuilding(SelectedBuilding,OriginTile,BuildingPreview);
                 Building.transform.position = BuildingPreview.transform.position;
                 Building.transform.localScale = BuildingPreview.transform.localScale;
-                Building.GetComponent<MeshFilter>().sharedMesh = BuildingPreview.GetComponent<MeshFilter>().sharedMesh ;
-                Building.GetComponent<MeshRenderer>().sharedMaterials = BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials ;
-                Building.AddComponent<MeshCollider>();
 
                 World_Controller._Instance.Money -= SelectedBuilding.Money_Cost;
                 World_Controller._Instance.Substance -= SelectedBuilding.Substance_Cost;
                 UI_Controller._Instance.UpdateResources();
-
+                Destroy(BuildingPreview.gameObject);
                 SelectedBuilding = null;
             }
             if(Input.GetMouseButtonDown(1))
             {
+                Destroy(BuildingPreview.gameObject);
                 SelectedBuilding = null;
             }
-        }
-        else if(SelectedBuilding == null&&BuildingPreview.GetComponent<MeshFilter>().sharedMesh != null&&BuildingPreview.GetComponent<MeshRenderer>().sharedMaterial != null)
-        {
-           BuildingPreview.GetComponent<MeshFilter>().sharedMesh = null;
-           BuildingPreview.GetComponent<MeshRenderer>().material = null;
         }
     }
     public void Factory()
     {
         SelectedBuilding = BuiltObject.CreatePrototype("Factory",3,2,2,50,5);
+        BuildingPreview = new GameObject();
+        BuildingPreview.name = "BuildingPreviewObject";
+        BuildingPreview.AddComponent<MeshFilter>();
+        BuildingPreview.AddComponent<MeshRenderer>();
         BuildingPreview.transform.localScale = FactoryModel.transform.localScale;
         BuildingPreview.GetComponent<MeshFilter>().sharedMesh = FactoryModel.GetComponent<MeshFilter>().sharedMesh;
         BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = FactoryModel.GetComponent<MeshRenderer>().sharedMaterials;
+        BuildingPreview.AddComponent<MeshCollider>();
+        BuildingPreview.AddComponent<Factory>();
     }
+
     public void SetMode_BuildRoad(TileType SelectedBuildTiles)
     {
         SelectedBuildTiles = TileType.Road;
     } 
-    public void SetMode_BuildGrass(TileType SelectedBuildTiles)
-    {
-        SelectedBuildTiles = TileType.Grass;
-    }
-    public void SetMode_BuildWater(TileType SelectedBuildTiles)
-    {
-        SelectedBuildTiles = TileType.Water;
-    }
 }

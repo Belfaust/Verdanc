@@ -8,7 +8,7 @@ public class UI_Controller : MonoBehaviour
 {
     public static UI_Controller _Instance{get;protected set;}
     public TextMeshProUGUI TimeText,MoneyText,SubstanceText;
-    public Canvas Main_UI;
+    public GameObject Main_UI;
     public string Factory_Scene_Name;
 
     private void Start() {
@@ -22,6 +22,7 @@ public class UI_Controller : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         }
         UpdateResources();
+        TimeText.text = "0";
     }
     void UnloadAllScenes(string sceneName)
     {
@@ -29,7 +30,6 @@ public class UI_Controller : MonoBehaviour
         for (int i = 0; i < SceneCount; i++)
         {
             Scene scene = SceneManager.GetSceneAt(i);
-            print(scene.name);
             if(scene.name != sceneName)
             {
                 SceneManager.UnloadSceneAsync(scene);
@@ -50,12 +50,12 @@ public class UI_Controller : MonoBehaviour
     {
         World_Controller._Instance.OnWorldMap = true;
         UnloadAllScenes("WorldScene");
-        Main_UI.gameObject.SetActive(true);
+        Main_UI.SetActive(true);
      }
     public void LoadFactory(Factory factory)
     {        
         SceneManager.LoadScene("Factory",LoadSceneMode.Additive);    
-        Main_UI.gameObject.SetActive(false);
+        Main_UI.SetActive(false);
     }
 
 }

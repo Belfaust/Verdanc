@@ -6,12 +6,12 @@ public class World_Controller : MonoBehaviour
 {
     public static World_Controller _Instance{get;protected set;}
     public World World{get;protected set;}
-    Dictionary<BuiltObject, GameObject> BuiltObjects = new Dictionary<BuiltObject, GameObject>();
+    Dictionary<BuiltObject, GameObject> BuiltObjects = new Dictionary<BuiltObject, GameObject>();   
     private GameObject[,] ChunkList;
     public Texture GroundTexture;
     public GameObject tree;
-    public bool OnWorldMap = true;
-    public int Time{get;set;} 
+    public bool OnWorldMap = true; // boolean made for checking if player is looking at world map
+    public int Time{get;set;}       // Ongoing Counter of Time 
     public int Money = 250,Substance = 25;
     private void Start() {
         
@@ -219,8 +219,17 @@ public class World_Controller : MonoBehaviour
 
         return World.GetTileAt(x , y , z);
     }
-    public GameObject MakingBuilding(BuiltObject SelectedBuilding,Tile OriginTile)
+    public void AddResources(int AddMoney,int AddSubstance)
     {
+        Money += AddMoney;
+        Substance += AddSubstance;
+        UI_Controller._Instance.UpdateResources();
+    }
+    public GameObject MakingBuilding(BuiltObject SelectedBuilding,Tile OriginTile,GameObject PreviewObject)
+    {
+        // SelectedBuilding variable is there to Calculate size of the objects on tiles and add them on virtual tile map
+        // OriginTile is there to help Calculate the origin of the Building
+        // PreviewObject is there to copy all unique features that may have been added onto the object
                 int[,,] BuildingSize;
                 Tile[] tiles;
                 BuildingSize = BuiltObject.GetSize(SelectedBuilding);
@@ -239,15 +248,9 @@ public class World_Controller : MonoBehaviour
                 }
 
                 BuiltObject.PlaceObject(SelectedBuilding,tiles);
-                GameObject Building = new GameObject();
+                GameObject Building = Instantiate(PreviewObject);
                 BuiltObjects.Add(SelectedBuilding,Building);
-                if(SelectedBuilding.objectType == "Factory")
-                {
-                    Building.AddComponent<Factory>();
-                }
                 Building.name = SelectedBuilding.objectType;
-                Building.AddComponent<MeshFilter>();
-                Building.AddComponent<MeshRenderer>();
 
                 return Building;
     }
