@@ -44,7 +44,7 @@ public class UI_Controller : MonoBehaviour
     }
     public void UpdateTime()
     {
-        UI_Controller._Instance.TimeText.text = "Day :"+ World_Controller._Instance.Time; 
+        UI_Controller._Instance.TimeText.text = "Day :"+ World_Controller._Instance.WorldTime; 
     }
     public void World_Map_Button()
     {

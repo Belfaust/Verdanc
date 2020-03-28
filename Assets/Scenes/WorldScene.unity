@@ -615,6 +615,8 @@ MonoBehaviour:
   CursorPrefab: {fileID: 259917804}
   FactoryModel: {fileID: -927199367670048503, guid: 20280c735b5ef564f904970f6ff3cc17,
     type: 3}
+  MainBaseModel: {fileID: 3707199154201266448, guid: c7bd9ea2b2ad25a48bb64cc4839d17c6,
+    type: 3}
   CurrentlySelectedBuilding: {fileID: 0}
   offset_z: 2
 --- !u!4 &730008157

@@ -11,7 +11,9 @@ public class World_Controller : MonoBehaviour
     public Texture GroundTexture;
     public GameObject tree;
     public bool OnWorldMap = true; // boolean made for checking if player is looking at world map
-    public int Time{get;set;}       // Ongoing Counter of Time 
+    private bool PausedTimeState = false;
+    public bool PausedTime{get => PausedTimeState;set{PausedTimeState = value; TimeCB();}}
+    public int WorldTime{get;set;}       // Ongoing Counter of Time 
     public int Money = 250,Substance = 25;
     private void Start() {
         
@@ -27,14 +29,25 @@ public class World_Controller : MonoBehaviour
         CreateNewWorld();
         StartCoroutine("TimeCount");
     }
+    public void TimeCB()
+    {
+        if(PausedTime==true)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
     IEnumerator TimeCount()
     {
         while(Money > -50)
         {
-            yield return new WaitForSeconds(5f);
-            int Time = World_Controller._Instance.Time;
+            yield return new WaitForSeconds(5);
+            int Time = World_Controller._Instance.WorldTime;
             Time += 1;
-            World_Controller._Instance.Time = Time;
+            World_Controller._Instance.WorldTime = Time;
             UI_Controller._Instance.UpdateTime();
             if(Time%7==0)
             {

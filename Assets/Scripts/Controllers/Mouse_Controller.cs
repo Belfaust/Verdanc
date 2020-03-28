@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class Mouse_Controller : MonoBehaviour
 {
     public static Mouse_Controller _Instance{get;protected set;}
-    public GameObject CursorPrefab,FactoryModel,CurrentlySelectedBuilding;
+    public GameObject CursorPrefab,FactoryModel,MainBaseModel,CurrentlySelectedBuilding;
     private Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
     private Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
     public Sapling CurrentlySelectedSapling;
@@ -26,6 +26,7 @@ public class Mouse_Controller : MonoBehaviour
         {   _Instance = this;
         DontDestroyOnLoad(this.gameObject);
         }
+        MainBase();
 
     }
      void Update() 
@@ -196,6 +197,7 @@ public class Mouse_Controller : MonoBehaviour
                 SelectedBuilding = null;
             }
         }
+
     }
     public void Factory()
     {
@@ -210,7 +212,18 @@ public class Mouse_Controller : MonoBehaviour
         BuildingPreview.AddComponent<MeshCollider>();
         BuildingPreview.AddComponent<Factory>();
     }
-
+    public void MainBase()
+    {
+        SelectedBuilding = BuiltObject.CreatePrototype("MainBase",3,3,3,0,0);
+        BuildingPreview = new GameObject();
+        BuildingPreview.name = "BuildingPreviewObject";
+        BuildingPreview.AddComponent<MeshFilter>();
+        BuildingPreview.AddComponent<MeshRenderer>();
+        BuildingPreview.transform.localScale = MainBaseModel.transform.localScale;
+        BuildingPreview.GetComponent<MeshFilter>().sharedMesh = MainBaseModel.GetComponent<MeshFilter>().sharedMesh;
+        BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = MainBaseModel.GetComponent<MeshRenderer>().sharedMaterials;
+        BuildingPreview.AddComponent<MeshCollider>();
+    }
     public void SetMode_BuildRoad(TileType SelectedBuildTiles)
     {
         SelectedBuildTiles = TileType.Road;
