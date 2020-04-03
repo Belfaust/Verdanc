@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.33156946, g: 0.3251778, b: 0.28242987, a: 1}
+  m_IndirectSpecularColor: {r: 0.33156958, g: 0.3251781, b: 0.28242996, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1269,7 +1269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GroundTexture: {fileID: 2800000, guid: 613508b74100c3e4aa6a84b4fc19f71f, type: 3}
-  tree: {fileID: -927199367670048503, guid: 6b525b59512b25b4bbde495d07885a74, type: 3}
+  tree: {fileID: -927199367670048503, guid: 83aea15cbb3bb1b40b6d229023421cf2, type: 3}
   OnWorldMap: 1
   Money: 250
   Substance: 50
@@ -1586,11 +1586,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554c2e42e5eeba246bc921de04a8e95a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimeText: {fileID: 251217492}
-  MoneyText: {fileID: 1116408078}
-  SubstanceText: {fileID: 150281623}
-  Main_UI: {fileID: 2135952364}
-  Factory_Scene_Name: Factory
 --- !u!1 &1826133831
 GameObject:
   m_ObjectHideFlags: 0
