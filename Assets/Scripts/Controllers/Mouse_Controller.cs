@@ -26,7 +26,7 @@ public class Mouse_Controller : MonoBehaviour
         {   _Instance = this;
         DontDestroyOnLoad(this.gameObject);
         }
-        MainBase();
+        //MainBase();
 
     }
      void Update() 
