@@ -12,10 +12,10 @@ public class World_Controller : MonoBehaviour
     public GameObject tree;
     public bool OnWorldMap = true; // boolean made for checking if player is looking at world map
     private bool PausedTimeState = false;
-    public bool PausedTime{get => PausedTimeState;set{PausedTimeState = value; TimeCB();}}
+    public bool PausedTime{ get => PausedTimeState;set{PausedTimeState = value; TimeCB();}}
     public int WorldTime{get;set;}       // Ongoing Counter of Time 
     public int Money = 250,Substance = 25;
-    private void Start() {
+    private void Awake() {
         
         if(_Instance != null){
         Debug.Log("Err there are 2 instances of World Controllers");
@@ -39,6 +39,10 @@ public class World_Controller : MonoBehaviour
         {
             Time.timeScale = 1f;
         }
+    }
+    private IEnumerator Awake()
+    {
+        
     }
     IEnumerator TimeCount()
     {
@@ -142,9 +146,9 @@ public class World_Controller : MonoBehaviour
             if(tile.Type == tileType)
             {
             uv[0] = new Vector2(originTexturePointX,originTexturePointY);
-            uv[1] = new Vector2(originTexturePointX,originTexturePointY+0.5f);
-            uv[2] = new Vector2(originTexturePointX+0.5f,originTexturePointY);
-            uv[3] = new Vector2(originTexturePointX+0.5f,originTexturePointY+0.5f);
+            uv[1] = new Vector2(originTexturePointX,originTexturePointY+0.49f);
+            uv[2] = new Vector2(originTexturePointX+0.49f,originTexturePointY);
+            uv[3] = new Vector2(originTexturePointX+0.49f,originTexturePointY+0.49f);
             }
         }
         TextureChange(tile_data,TileType.Grass,0,0.5f);

@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -350, y: -173}
+  m_AnchoredPosition: {x: -350, y: -148.6}
   m_SizeDelta: {x: 100, y: 57.96}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &31887258
@@ -613,7 +613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CursorPrefab: {fileID: 259917804}
-  FactoryModel: {fileID: -927199367670048503, guid: 20280c735b5ef564f904970f6ff3cc17,
+  FactoryModel: {fileID: 8712865540108863038, guid: 612d7ed40eb688545900b2e4cc0e4123,
     type: 3}
   MainBaseModel: {fileID: 3707199154201266448, guid: c7bd9ea2b2ad25a48bb64cc4839d17c6,
     type: 3}
@@ -1268,8 +1268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c44f52266e93ea744b166dddd7ec67f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroundTexture: {fileID: 2800000, guid: 613508b74100c3e4aa6a84b4fc19f71f, type: 3}
-  tree: {fileID: -927199367670048503, guid: 83aea15cbb3bb1b40b6d229023421cf2, type: 3}
+  GroundTexture: {fileID: 2800000, guid: e60093be0677f12468f1e7affd7bbd7a, type: 3}
+  tree: {fileID: -927199367670048503, guid: 63ccda8d6d9e34e4b8802dea7c2cb53c, type: 3}
   OnWorldMap: 1
   Money: 250
   Substance: 50
@@ -1583,7 +1583,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1646871229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 554c2e42e5eeba246bc921de04a8e95a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e97028aa14e2a94194ad52367c6005e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1826133831
@@ -1689,7 +1689,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -1.7, y: 177}
+  m_AnchoredPosition: {x: -1.7, y: 149.2}
   m_SizeDelta: {x: 796.6, y: 61.9}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1920037286

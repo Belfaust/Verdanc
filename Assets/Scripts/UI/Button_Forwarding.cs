@@ -45,17 +45,34 @@ public class Button_Forwarding : MonoBehaviour
     }
     public void Selling_Sapling(Button thisButton)
     {
+        Factory CurrentFactory = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>();
+        Sapling[] FactorySaplingList = CurrentFactory.Factory_Sapling_List;
         for (int i = 0; i < Poaches.Length; i++)
         {
             if(thisButton == Poaches[i])
             {
                 Sapling This_Sapling = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i];
+                if(This_Sapling == null)
+                {
+                    FactorySaplingList[i] = Mouse_Controller._Instance.CurrentlySelectedSapling;
+                    FactorySaplingList[i].Growth_State = 1;
+                    Poaches[i].image.sprite = Tree;
+                    FactorySaplingList[i].Growing = false;
+                    FactorySaplingList[i].AddSaplingCB(Sapling_Growth_Update());
+                    CurrentFactory.Factory_Sapling_List = FactorySaplingList;
+                    FactorySaplingList = null;
+                    Mouse_Controller._Instance.CurrentlySelectedSapling = null;
+                    Mouse_Controller._Instance.CursorPrefab.GetComponent<Image>().sprite = cursor;
+                    
+                    break;
+                }
                 if(This_Sapling.Growth_State == 3&&This_Sapling!=null)
                 {
                     thisButton.image.sprite = null;
                     thisButton.image.color = Color.white;
                     World_Controller._Instance.AddResources((3*(3*This_Sapling.Verdancy)+This_Sapling.Fertility),This_Sapling.Verdancy);
                     Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i] = null;
+                    break;
                 }
             }
         }
@@ -78,29 +95,5 @@ public class Button_Forwarding : MonoBehaviour
                 }   
         }
         return null;
-    }
-    public void Incubator()
-    {
-        Factory CurrentFactory = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>();
-        Sapling[] FactorySaplingList = CurrentFactory.Factory_Sapling_List;
-        if(Mouse_Controller._Instance.CurrentlySelectedSapling != null)
-        {
-            for (int i = 0; i < FactorySaplingList.Length; i++)
-            {
-                if(FactorySaplingList[i] == null)
-                {
-                    FactorySaplingList[i] = Mouse_Controller._Instance.CurrentlySelectedSapling;
-                    FactorySaplingList[i].Growth_State = 1;
-                    Poaches[i].image.sprite = Tree;
-                    FactorySaplingList[i].Growing = false;
-                    FactorySaplingList[i].AddSaplingCB(Sapling_Growth_Update());
-                    CurrentFactory.Factory_Sapling_List = FactorySaplingList;
-                    FactorySaplingList = null;
-                    Mouse_Controller._Instance.CurrentlySelectedSapling = null;
-                    Mouse_Controller._Instance.CursorPrefab.GetComponent<Image>().sprite = cursor;
-                    break;
-                }
-            }
-        }
     }
 }
