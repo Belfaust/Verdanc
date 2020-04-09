@@ -40,10 +40,6 @@ public class World_Controller : MonoBehaviour
             Time.timeScale = 1f;
         }
     }
-    private IEnumerator Awake()
-    {
-        
-    }
     IEnumerator TimeCount()
     {
         while(Money > -50)
