@@ -255,6 +255,11 @@ public class World_Controller : MonoBehaviour
                         for (int z = 0; z < BuildingSize.GetLength(2); z++)
                         {
                           tiles[tileListCount] = World.GetTileAt(OriginTile.X + x,OriginTile.Y +y,OriginTile.Z +z);
+                          if(tiles[tileListCount].Type != TileType.Empty||tiles[tileListCount].builtobject != null)
+                          {
+                              Debug.Log("There is no Space for that building here");
+                              return null;
+                          }
                           tileListCount += 1;
                         }
                     }

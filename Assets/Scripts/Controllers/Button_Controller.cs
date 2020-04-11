@@ -7,9 +7,10 @@ using System;
 public class Button_Controller : MonoBehaviour
 {
     UI_Controller uI_Controller;
-    Button button;
     public Sprite Tree,cursor;
     public Button[] Poaches;
+    public GameObject[] Poaches_Positions;
+    public Mesh[] Saplings_Models;
     Sapling Sapling_Example = new Sapling();
     private void Awake() {
         Sapling_Example.Fertility = 5;
@@ -17,16 +18,20 @@ public class Button_Controller : MonoBehaviour
         Sapling_Example.Verdancy = 8;
         for (int i = 0; i < Poaches.Length; i++)
         {
-            if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i] != null)
+            Sapling IncubatorSapling = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i];
+            if( IncubatorSapling != null)
             {
-                if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i].Growth_State == 3)
+                if(IncubatorSapling.Growth_State == 3)
                 {
-                    Poaches[i].image.sprite = Tree;
-                    Poaches[i].image.color = Color.red;
+                    Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Saplings_Models[2];
+                }
+                else if(IncubatorSapling.Growth_State == 2)
+                {
+                    Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Saplings_Models[1];
                 }
                 else
                 {
-                Poaches[i].image.sprite = Tree;
+                    Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Saplings_Models[0];
                 }
             }
         }
@@ -56,7 +61,7 @@ public class Button_Controller : MonoBehaviour
                 {
                     FactorySaplingList[i] = Mouse_Controller._Instance.CurrentlySelectedSapling;
                     FactorySaplingList[i].Growth_State = 1;
-                    Poaches[i].image.sprite = Tree;
+                    Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Sapling_MeshChange(FactorySaplingList[i]);
                     FactorySaplingList[i].Growing = false;
                     FactorySaplingList[i].AddSaplingCB(Sapling_Growth_Update());
                     CurrentFactory.Factory_Sapling_List = FactorySaplingList;
@@ -68,8 +73,7 @@ public class Button_Controller : MonoBehaviour
                 }
                 if(This_Sapling.Growth_State == 3&&This_Sapling!=null)
                 {
-                    thisButton.image.sprite = null;
-                    thisButton.image.color = Color.white;
+                    Poaches_Positions[i].GetComponent<MeshFilter>().mesh = null;
                     World_Controller._Instance.AddResources((3*(3*This_Sapling.Verdancy)+This_Sapling.Fertility),This_Sapling.Verdancy);
                     Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i] = null;
                     break;
@@ -85,15 +89,25 @@ public class Button_Controller : MonoBehaviour
                 {   
                     if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i].Growth_State == 3)
                 {
-                    Poaches[i].image.sprite = Tree;
-                    Poaches[i].image.color = Color.red;
                 }
                 else
                 {
-                Poaches[i].image.sprite = Tree;
                 }
                 }   
         }
         return null;
+    }
+    private Mesh Sapling_MeshChange(Sapling SelectedSapling)
+    {
+        Mesh Sapling_mesh = new Mesh();
+        if(SelectedSapling.Type == Sapling_Type.Oak)
+        {
+            Sapling_mesh = Saplings_Models[0];
+        }
+        else if(SelectedSapling.Type == Sapling_Type.Birch)
+        {
+            Sapling_mesh = Saplings_Models[0];
+        }
+        return Sapling_mesh;
     }
 }

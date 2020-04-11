@@ -7,7 +7,7 @@ public class Tile
 {
  
     TileType _type = TileType.Empty;  
-    BuiltObject builtobject;
+    public BuiltObject builtobject;
     Action<Tile> TileTypeChangeCB;
     World world;
     public TileType Type { get => _type; set{TileType oldType = _type; _type = value; if(TileTypeChangeCB != null && oldType != _type)TileTypeChangeCB(this);} }

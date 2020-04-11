@@ -182,6 +182,8 @@ public class Mouse_Controller : MonoBehaviour
             {
                 BuildingPreview.layer = 0;
                 GameObject Building = World_Controller._Instance.MakingBuilding(SelectedBuilding,OriginTile,BuildingPreview);
+                if(Building != null)
+                {
                 Building.transform.position = BuildingPreview.transform.position;
                 Building.transform.localScale = BuildingPreview.transform.localScale;
 
@@ -190,6 +192,7 @@ public class Mouse_Controller : MonoBehaviour
                 UI_Controller._Instance.UpdateResources();
                 Destroy(BuildingPreview.gameObject);
                 SelectedBuilding = null;
+                }
             }
             if(Input.GetMouseButtonDown(1))
             {
