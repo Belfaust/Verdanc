@@ -4,9 +4,8 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System;
 
-public class Button_Controller : MonoBehaviour
+public class Factory_Controller : MonoBehaviour
 {
-    UI_Controller uI_Controller;
     public Sprite Tree,cursor;
     public Button[] Poaches;
     public GameObject[] Poaches_Positions;
@@ -38,9 +37,10 @@ public class Button_Controller : MonoBehaviour
     }
     public void World_Map(Button thisButton)
     {
+        UI_Controller uI_Controller;
         uI_Controller = GameObject.FindObjectOfType<UI_Controller>();
         thisButton.onClick.AddListener(uI_Controller.World_Map_Button);
-        Mouse_Controller._Instance.CursorPrefab.GetComponent<Image>().sprite = cursor;
+        Mouse_Controller._Instance.CursorPrefab.GetComponent<Image>().sprite = Mouse_Controller._Instance.CursorSprite;
         Mouse_Controller._Instance.CurrentlySelectedBuilding = null;
     }
     public void Sapling_Plant_Button()
@@ -87,12 +87,13 @@ public class Button_Controller : MonoBehaviour
         {
             for (int i = 0; i < Poaches.Length; i++)
                 {   
-                    if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i].Growth_State == 3)
-                {
-                }
-                else
-                {
-                }
+                    for (int j = 0; j < 3; j++)
+                    {
+                        if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i].Growth_State == j)
+                        {
+                            Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Saplings_Models[j];
+                        }
+                    }
                 }   
         }
         return null;

@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 public class Mouse_Controller : MonoBehaviour
 {
     public static Mouse_Controller _Instance{get;protected set;}
-    public GameObject CursorPrefab,FactoryModel,MainBaseModel,CurrentlySelectedBuilding;
+    public GameObject CursorPrefab,FactoryModel,MainBaseModel,LaboratoryModel,CurrentlySelectedBuilding;
+    public Sprite CursorSprite;
     private Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
     private Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
     public Sapling CurrentlySelectedSapling;
@@ -26,8 +27,8 @@ public class Mouse_Controller : MonoBehaviour
         {   _Instance = this;
         DontDestroyOnLoad(this.gameObject);
         }
+        BuildingPreview = new GameObject();
         //MainBase();
-
     }
      void Update() 
     {
@@ -151,19 +152,31 @@ public class Mouse_Controller : MonoBehaviour
                     if(hit.transform.gameObject.GetComponent<Factory>())
                     {
                         Click_Count += 1;
-                        if(hit.transform.gameObject.GetComponent<Factory>()&&Click_Count > 1)
+                        if(Click_Count > 1)
                         {
                             Click_Count = 0;
                             World_Controller._Instance.OnWorldMap = false;
-                            UI_Controller._Instance.LoadFactory(hit.transform.gameObject.GetComponent<Factory>());
+                            UI_Controller._Instance.LoadFactory();
                             CurrentlySelectedBuilding = hit.transform.gameObject;
+                        }
+                    }
+                    if(hit.transform.gameObject.GetComponent<Laboratory>())
+                    {
+                        Click_Count +=1;
+                        if(Click_Count > 1)
+                        {
+                            Click_Count = 0;
+                            World_Controller._Instance.OnWorldMap = false;
+                            UI_Controller._Instance.LoadLaboratory();
+                            CurrentlySelectedBuilding = hit.transform.gameObject;
+                        
                         }
                     }
                 }   
         }
     }
     private BuiltObject SelectedBuilding;
-    private GameObject BuildingPreview; // Preview of an object on the map that has yet to be placed 
+    private GameObject BuildingPreview ; // Preview of an object on the map that has yet to be placed 
     void Building()
     {
         Ray Mouse_Ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -191,6 +204,7 @@ public class Mouse_Controller : MonoBehaviour
                 World_Controller._Instance.Substance -= SelectedBuilding.Substance_Cost;
                 UI_Controller._Instance.UpdateResources();
                 Destroy(BuildingPreview.gameObject);
+                BuildingPreview = new GameObject();
                 SelectedBuilding = null;
                 }
             }
@@ -200,32 +214,36 @@ public class Mouse_Controller : MonoBehaviour
                 SelectedBuilding = null;
             }
         }
-
+    }
+    public void Laboratory()
+    {
+        SelectedBuilding = BuiltObject.CreatePrototype("Laboratory",3,4,3,150,40);
+        BuildingPreview.name = "Laboratory";
+        CreatingPreviewBuiling(BuildingPreview,LaboratoryModel);
+        BuildingPreview.AddComponent<Laboratory>();
     }
     public void Factory()
     {
         SelectedBuilding = BuiltObject.CreatePrototype("Factory",3,2,2,50,5);
-        BuildingPreview = new GameObject();
-        BuildingPreview.name = "BuildingPreviewObject";
-        BuildingPreview.AddComponent<MeshFilter>();
-        BuildingPreview.AddComponent<MeshRenderer>();
-        BuildingPreview.transform.localScale = FactoryModel.transform.localScale;
-        BuildingPreview.GetComponent<MeshFilter>().sharedMesh = FactoryModel.GetComponent<MeshFilter>().sharedMesh;
-        BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = FactoryModel.GetComponent<MeshRenderer>().sharedMaterials;
-        BuildingPreview.AddComponent<MeshCollider>();
+        BuildingPreview.name = "Factory";
+        CreatingPreviewBuiling(BuildingPreview,FactoryModel);
         BuildingPreview.AddComponent<Factory>();
     }
     public void MainBase()
     {
         SelectedBuilding = BuiltObject.CreatePrototype("MainBase",3,3,3,0,0);
-        BuildingPreview = new GameObject();
-        BuildingPreview.name = "BuildingPreviewObject";
-        BuildingPreview.AddComponent<MeshFilter>();
-        BuildingPreview.AddComponent<MeshRenderer>();
-        BuildingPreview.transform.localScale = MainBaseModel.transform.localScale;
-        BuildingPreview.GetComponent<MeshFilter>().sharedMesh = MainBaseModel.GetComponent<MeshFilter>().sharedMesh;
-        BuildingPreview.GetComponent<MeshRenderer>().sharedMaterials = MainBaseModel.GetComponent<MeshRenderer>().sharedMaterials;
-        BuildingPreview.AddComponent<MeshCollider>();
+        BuildingPreview.name = "MainBase";
+        CreatingPreviewBuiling(BuildingPreview,MainBaseModel);
+        BuildingPreview.AddComponent<MainBase>();
+    }
+    public void CreatingPreviewBuiling(GameObject PreviewBuilding,GameObject BuildingModel)
+    {
+        PreviewBuilding.AddComponent<MeshFilter>();
+        PreviewBuilding.AddComponent<MeshRenderer>();
+        PreviewBuilding.transform.localScale = BuildingModel.transform.localScale;
+        PreviewBuilding.GetComponent<MeshFilter>().sharedMesh = BuildingModel.GetComponent<MeshFilter>().sharedMesh;
+        PreviewBuilding.GetComponent<MeshRenderer>().sharedMaterials = BuildingModel.GetComponent<MeshRenderer>().sharedMaterials;
+        PreviewBuilding.AddComponent<MeshCollider>();
     }
     public void SetMode_BuildRoad(TileType SelectedBuildTiles)
     {

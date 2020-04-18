@@ -3330,7 +3330,7 @@ GameObject:
   - component: {fileID: 1461028969}
   - component: {fileID: 1461028968}
   m_Layer: 0
-  m_Name: Button_Controller
+  m_Name: Factory_Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

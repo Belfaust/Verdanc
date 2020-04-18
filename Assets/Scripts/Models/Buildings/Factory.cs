@@ -7,7 +7,9 @@ public class Factory : MonoBehaviour
     private Sapling[] MyFactory_Sapling_List = new Sapling[3];
     public Sapling[] Factory_Sapling_List
     {
-    get {return MyFactory_Sapling_List;}
+    get {
+            return MyFactory_Sapling_List;
+        }
     set {
             MyFactory_Sapling_List= value;
             Incubator_Check();

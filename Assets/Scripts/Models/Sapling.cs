@@ -11,11 +11,13 @@ public class Sapling
     int MyGrowth_State = 0;
     Action GrowthStateChangeCB;
     public Sapling_Type Type{get => _Type;set{}}
+    public Sapling_Traits[] Traits;
    public int Verdancy{get;set;}
    public int Fertility{get;set;}
    public int Growth_Time{get;set;}
    public int Growth_State{get => MyGrowth_State;set{MyGrowth_State = value;if(GrowthStateChangeCB != null)GrowthStateChangeCB();}}
    public bool Growing {get;set;} = false;
+   public bool UnderResearch {get;set;} = false;
     
     public void AddSaplingCB(Action Callback)
     {

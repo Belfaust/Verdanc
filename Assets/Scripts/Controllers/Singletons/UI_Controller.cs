@@ -9,7 +9,6 @@ public class UI_Controller : MonoBehaviour
     public static UI_Controller _Instance{get;protected set;}
     public TextMeshProUGUI TimeText,MoneyText,SubstanceText;
     public GameObject Main_UI;
-    public string Factory_Scene_Name;
 
     private void Start() {
          if(_Instance != null){
@@ -52,9 +51,14 @@ public class UI_Controller : MonoBehaviour
         UnloadAllScenes("WorldScene");
         Main_UI.SetActive(true);
      }
-    public void LoadFactory(Factory factory)
+    public void LoadFactory()
     {        
         SceneManager.LoadScene("Factory",LoadSceneMode.Additive);    
+        Main_UI.SetActive(false);
+    }
+    public void LoadLaboratory()
+    {
+        SceneManager.LoadScene("Laboratory",LoadSceneMode.Additive);    
         Main_UI.SetActive(false);
     }
 
