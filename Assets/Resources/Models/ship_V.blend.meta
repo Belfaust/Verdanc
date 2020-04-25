@@ -2,17 +2,10 @@ fileFormatVersion: 2
 guid: acdc287db6b75f54fbf9c8673d5d2a60
 ModelImporter:
   serializedVersion: 19300
-<<<<<<< HEAD
   internalIDToNameTable:
-  - first:
-      74: 1989289236423521904
-    second: Default Take
   - first:
       74: -623603649343465320
     second: Scene
-=======
-  internalIDToNameTable: []
->>>>>>> NotAdamGraphicalBranch
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -97,11 +90,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-<<<<<<< HEAD
-  animationType: 1
-=======
   animationType: 2
->>>>>>> NotAdamGraphicalBranch
   humanoidOversampling: 1
   avatarSetup: 0
   additionalBone: 0

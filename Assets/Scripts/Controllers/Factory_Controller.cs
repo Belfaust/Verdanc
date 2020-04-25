@@ -89,7 +89,11 @@ public class Factory_Controller : MonoBehaviour
                 {   
                     for (int j = 0; j < 3; j++)
                     {
-                        if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i].Growth_State == j)
+                        if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i].Growth_State == j
+                            && 
+                        // Error here is because it checks for the saplings in the slots however some of the slots may be null so it returns an error  
+                        // it does not stop system from working however it will show up in the console
+                        Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i] != null          )
                         {
                             Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Saplings_Models[j];
                         }

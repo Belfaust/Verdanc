@@ -5,6 +5,7 @@ using UnityEngine;
 public class Laboratory : MonoBehaviour
 {
     private Sapling[] MyLaboratory_Sapling_List = new Sapling[3];
+    public float[] ResearchSlotProgress = new float[3];
     public Sapling[] Laboratory_Sapling_List
     {
     get {
@@ -33,6 +34,13 @@ public class Laboratory : MonoBehaviour
         for (int i = 0; i < sapling.Fertility + ( sapling.Verdancy * 3 ) + sapling.Growth_Time; i++)
         {
             yield return new WaitForSeconds(1);
+            for (int j = 0; j < Laboratory_Sapling_List.Length; j++)
+            {
+                if(Laboratory_Sapling_List[j] == sapling)
+                {
+                    ResearchSlotProgress[j] = i/sapling.Fertility + ( sapling.Verdancy * 3 ) + sapling.Growth_Time;
+                }
+            }
             Timer += 1;
         }
         sapling.Fertility = sapling.Fertility + Random.Range((int)0, 3);

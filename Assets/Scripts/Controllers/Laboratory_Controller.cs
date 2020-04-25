@@ -19,6 +19,21 @@ public class Laboratory_Controller : MonoBehaviour
         SaplingExample.Traits[0] = Sapling_Traits.Bushy;
 
     }
+    IEnumerator ProgressBarCheck()
+    {
+        if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Laboratory>() != null)
+        {
+            yield return new WaitForSeconds(1);
+            for (int i = 0; i < ResearchSlots.Length; i++)
+            {    
+              //  ResearchSlots[i].transform.GetComponentInChildren(typeof(Scrollbar),false).value = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Laboratory>().ResearchSlotProgress[i];
+            }
+        }
+        else
+        {
+            yield break;
+        }
+    }
     public void Research_Slot_Selection(int ResearchSlotIndex)
     {
         CurrentlySelectedResearchSlot = ResearchSlots[ResearchSlotIndex];

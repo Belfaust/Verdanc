@@ -635,6 +635,14 @@
       <Project>{b2cbe0e9-783f-bda2-f4e6-167216755ccf}</Project>
       <Name>Unity.VSCode.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Core.Editor.csproj">
+      <Project>{2a2a19c9-f334-2b55-0ca9-364f1b7a8ac9}</Project>
+      <Name>Unity.RenderPipelines.Core.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.csproj">
+      <Project>{766bcc68-3787-fed0-0c22-dd1b6246122c}</Project>
+      <Name>Unity.RenderPipelines.Core.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
       <Project>{ce9c5ae4-7ce0-d466-51fb-4b1f4225bafd}</Project>
       <Name>Unity.TextMeshPro.Editor</Name>
@@ -654,6 +662,18 @@
     <ProjectReference Include="Unity.Rider.Editor.csproj">
       <Project>{e6a56db3-4fba-57a4-502c-f76d7974dc58}</Project>
       <Name>Unity.Rider.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.csproj">
+      <Project>{1b038eef-60e5-3f58-65d7-96abcc80d088}</Project>
+      <Name>Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ShaderGraph.Editor.csproj">
+      <Project>{ea9bfae7-2ca5-0591-447b-83af618c4432}</Project>
+      <Name>Unity.ShaderGraph.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.Core.ShaderLibrary.csproj">
+      <Project>{3ce1252a-4649-7489-de29-fe697b224abe}</Project>
+      <Name>Unity.RenderPipelines.Core.ShaderLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{06f659d8-583d-0d9b-242d-f50ae24958e3}</Project>
