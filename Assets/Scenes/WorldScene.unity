@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -350, y: -148.6}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 57.96}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &31887258
@@ -1284,6 +1284,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GroundTexture: {fileID: 2800000, guid: e60093be0677f12468f1e7affd7bbd7a, type: 3}
   tree: {fileID: -927199367670048503, guid: 903ec6ef4ce28384e9550f4806bc7514, type: 3}
+  Bush: {fileID: -927199367670048503, guid: 68e729f85387f424b8334d50acaf9d0b, type: 3}
+  Rock: {fileID: -927199367670048503, guid: d2eba6379f7d7d44fb2fc1328a005c92, type: 3}
   OnWorldMap: 1
   Money: 250
   Substance: 50
@@ -1582,7 +1584,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1646871229}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 411.20645, y: 457.1581, z: -238.0625}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1707,7 +1709,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -1.7, y: 149.2}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 796.6, y: 61.9}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1920037286
@@ -1909,8 +1911,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0, y: -0.0014801}
+  m_SizeDelta: {x: 800, y: 450.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &5964163551425713852
 PrefabInstance:

@@ -9,30 +9,30 @@ public class Laboratory_Controller : MonoBehaviour
     public GameObject[] ResearchSlots;
     private GameObject CurrentlySelectedResearchSlot;
     Sapling SaplingExample;
+    Laboratory CurrentLaboratory;
     void Start()
     {
+        CurrentLaboratory = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Laboratory>();
         SaplingExample = new Sapling();
         SaplingExample.Verdancy = 3;
         SaplingExample.Fertility = 6;
         SaplingExample.Growth_Time = 15;
         SaplingExample.Traits = new Sapling_Traits[1];
         SaplingExample.Traits[0] = Sapling_Traits.Bushy;
-
+        StartCoroutine("ProgressBarCheck");
+        UpdatingLaboratoryInfo();
     }
     IEnumerator ProgressBarCheck()
     {
-        if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Laboratory>() != null)
+        while(CurrentLaboratory != null)
         {
-            yield return new WaitForSeconds(1);
             for (int i = 0; i < ResearchSlots.Length; i++)
-            {    
-              //  ResearchSlots[i].transform.GetComponentInChildren(typeof(Scrollbar),false).value = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Laboratory>().ResearchSlotProgress[i];
+            { 
+                ResearchSlots[i].transform.GetComponentInChildren<Scrollbar>().size = CurrentLaboratory.ResearchSlotProgress[i];
             }
+            yield return new WaitForSeconds(1);
         }
-        else
-        {
             yield break;
-        }
     }
     public void Research_Slot_Selection(int ResearchSlotIndex)
     {
@@ -40,17 +40,33 @@ public class Laboratory_Controller : MonoBehaviour
     }
     public void Selecting_Sapling(Button SaplingSlot)
     {
-        Laboratory CurrentLaboratory = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Laboratory>();
         Sapling[] LaboratorySaplingList = CurrentLaboratory.Laboratory_Sapling_List;
         for (int i = 0; i < ResearchSlots.Length; i++)
         {
-            if(ResearchSlots[i] == CurrentlySelectedResearchSlot&&SaplingExample.UnderResearch == false)
+            if(ResearchSlots[i] == CurrentlySelectedResearchSlot&&LaboratorySaplingList[i] == null)
             {
-                    for (int j = 0; j < ResearchSlots[i].transform.childCount; j++)
+                   LaboratorySaplingList[i] = SaplingExample;
+
+            }
+        }
+        UpdatingLaboratoryInfo();
+        CurrentLaboratory.Laboratory_Sapling_List = LaboratorySaplingList;
+    }
+    private void UpdatingLaboratoryInfo()
+    {
+        for (int i = 0; i < ResearchSlots.Length; i++)
+        {
+            if(CurrentLaboratory.Laboratory_Sapling_List[i] != null)
+            {
+             for (int j = 0; j < ResearchSlots[i].transform.childCount; j++)
                     {
                         if(ResearchSlots[i].transform.GetChild(j).GetComponent<TextMeshProUGUI>().text != null&&j==0)
                         {
                         ResearchSlots[i].transform.GetChild(j).GetComponent<TextMeshProUGUI>().text = " " + SaplingExample.Type; 
+                        }
+                        else
+                        {
+                        Debug.Log("You Don't have a Type Child in first Position in: " + i +" Laboratory Slot" );
                         }
                         if(ResearchSlots[i].transform.GetChild(j).GetComponent<TextMeshProUGUI>().text != null&&j==1)
                         {
@@ -59,21 +75,26 @@ public class Laboratory_Controller : MonoBehaviour
                         "\nVerdancy: " + SaplingExample.Verdancy +
                         "\nFertility: " + SaplingExample.Fertility + 
                         "\nGrowthTime: " + SaplingExample.Growth_Time;
-                         
+                        }else
+                        {
+                        Debug.Log("You Don't have a Description Child in second Position in: " + i +" Laboratory Slot" );
                         }
                         if(ResearchSlots[i].transform.GetChild(j).GetComponent<TextMeshProUGUI>().text != null&&j==2)
                         {
                         ResearchSlots[i].transform.GetChild(j).GetComponent<TextMeshProUGUI>().text = "Traits: " + SaplingExample.Traits[0]; 
                         break;
                         }
+                        else
+                        {
+                        Debug.Log("You Don't have a Traits Child in third Position in: " + i +" Laboratory Slot" );
+                        }
                     }
-                    LaboratorySaplingList[i] = SaplingExample;
             }
         }
-        CurrentLaboratory.Laboratory_Sapling_List = LaboratorySaplingList;
     }
     public void World_Map(Button thisButton)
     {
+        StopCoroutine("ProgressBarCheck");
         UI_Controller uI_Controller;
         uI_Controller = GameObject.FindObjectOfType<UI_Controller>();
         thisButton.onClick.AddListener(uI_Controller.World_Map_Button);

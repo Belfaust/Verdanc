@@ -9,14 +9,13 @@ public class World_Controller : MonoBehaviour
     Dictionary<BuiltObject, GameObject> BuiltObjects = new Dictionary<BuiltObject, GameObject>();   
     private GameObject[,] ChunkList;
     public Texture GroundTexture;
-    public GameObject tree;
+    public GameObject tree,Bush,Rock;
     public bool OnWorldMap = true; // boolean made for checking if player is looking at world map
     private bool PausedTimeState = false;
     public bool PausedTime{ get => PausedTimeState;set{PausedTimeState = value; TimeCB();}}
     public int WorldTime{get;set;}       // Ongoing Counter of Time 
     public int Money = 250,Substance = 25;
     private void Awake() {
-        
         if(_Instance != null){
         Debug.Log("Err there are 2 instances of World Controllers");
         Destroy(this);
@@ -99,25 +98,32 @@ public class World_Controller : MonoBehaviour
                     for (int z = 0; z < World.Depth; z++)
                     {
                         Tile tile_data = World.GetTileAt(x,y,z);
-                        if(tile_data.Type == TileType.Grass)
-                            {
-                            if(Random.Range(0,150) == 11)
-                                {
-                        GameObject Temptree = new GameObject();
-                        Temptree.transform.position = new Vector3(tile_data.X + .5f,tile_data.Y+ .5f,tile_data.Z+1.5f);
-                        Temptree.name = "tree"+tile_data.Z;
-
-                        Temptree.AddComponent<MeshFilter>();
-                        Temptree.AddComponent<MeshRenderer>();
-
-                        Temptree.GetComponent<MeshFilter>().sharedMesh = tree.GetComponent<MeshFilter>().sharedMesh;
-                        Temptree.GetComponent<MeshRenderer>().sharedMaterials = tree.GetComponent<MeshRenderer>().sharedMaterials;
-           
-                                }
-                            }
+                        GeneratingObject(tile_data,tree,150);
+                        GeneratingObject(tile_data,Rock,100);
+                        GeneratingObject(tile_data,Bush,50);
                         OnTileTypeChange(tile_data);                // Executing a callback and adding it to the tile
                         tile_data.RegisterTileTypeChange( OnTileTypeChange );
                     }
+                }
+            }
+    }
+    private void GeneratingObject(Tile tile_position,GameObject ObjectMesh,int AppearanceRate)
+    {
+        if(tile_position.Type == TileType.Grass&&World.GetTileAt(tile_position.X,tile_position.Y,tile_position.Z+1).Type != TileType.Water)
+            {
+                if(Random.Range(0,AppearanceRate) == 11&&World.GetTileAt(tile_position.X,tile_position.Y,tile_position.Z+1).builtobject == null)
+                {
+                    GameObject TempObj = new GameObject();
+                    BuiltObject FloraObject = BuiltObject.CreatePrototype("Prop",1,1,3,0,0);
+                    TempObj.transform.position = new Vector3(tile_position.X + .5f,tile_position.Y+ .5f,tile_position.Z+1.5f);
+                    World.GetTileAt(tile_position.X,tile_position.Y,tile_position.Z+1).PlaceObject(FloraObject);
+                    TempObj.name = "tree"+tile_position.Z;
+
+                    TempObj.AddComponent<MeshFilter>();
+                    TempObj.AddComponent<MeshRenderer>();
+
+                    TempObj.GetComponent<MeshFilter>().sharedMesh = ObjectMesh.GetComponent<MeshFilter>().sharedMesh;
+                    TempObj.GetComponent<MeshRenderer>().sharedMaterials = ObjectMesh.GetComponent<MeshRenderer>().sharedMaterials;
                 }
             }
     }

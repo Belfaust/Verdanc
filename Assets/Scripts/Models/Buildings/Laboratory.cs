@@ -38,7 +38,7 @@ public class Laboratory : MonoBehaviour
             {
                 if(Laboratory_Sapling_List[j] == sapling)
                 {
-                    ResearchSlotProgress[j] = i/sapling.Fertility + ( sapling.Verdancy * 3 ) + sapling.Growth_Time;
+                    ResearchSlotProgress[j] = (i+1)/(float)(sapling.Fertility +  (float)(sapling.Verdancy * 3 ) + (float)sapling.Growth_Time);
                 }
             }
             Timer += 1;
