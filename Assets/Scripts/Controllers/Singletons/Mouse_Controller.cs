@@ -7,6 +7,7 @@ public class Mouse_Controller : MonoBehaviour
     public static Mouse_Controller _Instance{get;protected set;}
     public GameObject CursorPrefab,FactoryModel,MainBaseModel,LaboratoryModel,CurrentlySelectedBuilding;
     public Sprite CursorSprite;
+    public AnimationClip MainBaseLanding;
     private Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
     private Vector3 Last_Frame_Pos,NotOffsetCamera,TileStartDragPos;
     public Sapling CurrentlySelectedSapling;
@@ -28,15 +29,14 @@ public class Mouse_Controller : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         }
         BuildingPreview = new GameObject();
-        //MainBase();
     }
      void Update() 
     {
         UpdateCursor();   
         if(World_Controller._Instance.OnWorldMap == true)
         {
-        CurrentFramePos = new Vector3(GetWorldPositionOnPlane(Input.mousePosition,0).x +.5f,GetWorldPositionOnPlane(Input.mousePosition,0).y +.5f); // this is the Camera set up for Dealing with tiles since there is no better way to offset it
-        NotOffsetCamera = GetWorldPositionOnPlane(Input.mousePosition,0);// True Camera position on A plane that is generated in front of it to create a smooth transition of moving
+        CurrentFramePos = new Vector3(GetWorldPositionOnPlane(Input.mousePosition,0).x +.5f,GetWorldPositionOnPlane(Input.mousePosition,0).y +.5f); // this is the Camera set up for Dealing with tiles since there is no better way to offset it that i know of
+        NotOffsetCamera = GetWorldPositionOnPlane(Input.mousePosition,0);// True Camera position on a plane that is generated in front of it to create a smooth transition of moving
         CameraMovement();    
         Building();
         BuildingSelection();
@@ -187,12 +187,16 @@ public class Mouse_Controller : MonoBehaviour
             BuildingPreview.layer = 2;
             if(Physics.Raycast(Mouse_Ray, out hit , 100))
             {
+            //Showing where the building would be on the map
             BuildingPreview.transform.position = new Vector3((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
             if(World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z)) != null)
-            OriginTile = World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
+                {
+                OriginTile = World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
+                }
             }
             if(Input.GetMouseButtonDown(0)&&World_Controller._Instance.Money >= SelectedBuilding.Money_Cost&&World_Controller._Instance.Substance >= SelectedBuilding.Substance_Cost)
             {
+                //Placing the building Down
                 BuildingPreview.layer = 0;
                 GameObject Building = World_Controller._Instance.MakingBuilding(SelectedBuilding,OriginTile,BuildingPreview);
                 if(Building != null)
@@ -205,10 +209,15 @@ public class Mouse_Controller : MonoBehaviour
                 UI_Controller._Instance.UpdateResources();
                 Destroy(BuildingPreview.gameObject);
                 BuildingPreview = new GameObject();
+                if(SelectedBuilding.objectType == "MainBase")
+                {
+                    World_Controller._Instance.PausedTime = false;
+                    
+                }
                 SelectedBuilding = null;
                 }
             }
-            if(Input.GetMouseButtonDown(1))
+            if(Input.GetMouseButtonDown(1)&&SelectedBuilding.objectType != "MainBase")
             {
                 Destroy(BuildingPreview.gameObject);
                 SelectedBuilding = null;
@@ -228,6 +237,7 @@ public class Mouse_Controller : MonoBehaviour
         BuildingPreview.name = "Factory";
         CreatingPreviewBuiling(BuildingPreview,FactoryModel);
         BuildingPreview.AddComponent<Factory>();
+        World_Controller._Instance.PausedTime = true;
     }
     public void MainBase()
     {
@@ -235,6 +245,7 @@ public class Mouse_Controller : MonoBehaviour
         BuildingPreview.name = "MainBase";
         CreatingPreviewBuiling(BuildingPreview,MainBaseModel);
         BuildingPreview.AddComponent<MainBase>();
+        World_Controller._Instance.PausedTime = true;
     }
     public void CreatingPreviewBuiling(GameObject PreviewBuilding,GameObject BuildingModel)
     {

@@ -615,12 +615,14 @@ MonoBehaviour:
   CursorPrefab: {fileID: 259917804}
   FactoryModel: {fileID: 8712865540108863038, guid: 612d7ed40eb688545900b2e4cc0e4123,
     type: 3}
-  MainBaseModel: {fileID: 3707199154201266448, guid: c7bd9ea2b2ad25a48bb64cc4839d17c6,
+  MainBaseModel: {fileID: 5323799135430250742, guid: e4a3ff6459aba254bbbb12c2ac2b51fe,
     type: 3}
   LaboratoryModel: {fileID: 6113544107237656787, guid: f822909ad18a73e4c9afc851c915992f,
     type: 3}
   CurrentlySelectedBuilding: {fileID: 0}
   CursorSprite: {fileID: 21300000, guid: 668769e173b20774fb3d69494cab7c4a, type: 3}
+  MainBaseLanding: {fileID: -623603649343465320, guid: acdc287db6b75f54fbf9c8673d5d2a60,
+    type: 3}
   offset_z: 2
 --- !u!4 &730008157
 Transform:

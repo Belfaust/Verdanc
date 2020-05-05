@@ -106,6 +106,7 @@ public class World_Controller : MonoBehaviour
                     }
                 }
             }
+            Mouse_Controller._Instance.MainBase();
     }
     private void GeneratingObject(Tile tile_position,GameObject ObjectMesh,int AppearanceRate)
     {
