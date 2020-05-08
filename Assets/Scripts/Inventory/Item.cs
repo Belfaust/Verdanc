@@ -7,9 +7,9 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
 
-    new public string name = "New Item";    // Name of the item
+    new public string name = "Sapling";    // Name of the item
     public Sprite icon = null;              // Item icon
-    public bool isDefaultItem = false;      // Is the item default wear?
+    public bool isDefaultItem = true;      // Is the item default wear?
 
     // Called when the item is pressed in the inventory
     public virtual void Use()
@@ -17,7 +17,7 @@ public class Item : ScriptableObject
         // Use the item
         // Something might happen
 
-        Debug.Log("Using " + name);
+        Debug.Log("Właśnie postawiłes sadzonke " + name);
     }
 
     public void RemoveFromInventory()
