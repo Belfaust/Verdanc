@@ -50,16 +50,22 @@ public class UI_Controller : MonoBehaviour
         World_Controller._Instance.OnWorldMap = true;
         UnloadAllScenes("WorldScene");
         Main_UI.SetActive(true);
-     }
-    public void LoadFactory()
+    }
+    public static void LoadFactory()
     {        
         SceneManager.LoadScene("Factory",LoadSceneMode.Additive);    
-        Main_UI.SetActive(false);
+        UI_Controller._Instance.Main_UI.SetActive(false);
     }
-    public void LoadLaboratory()
+    public static void LoadLaboratory()
     {
         SceneManager.LoadScene("Laboratory",LoadSceneMode.Additive);    
-        Main_UI.SetActive(false);
+        UI_Controller._Instance.Main_UI.SetActive(false);
     }
+    public static void LoadMainBase()
+    {
+        SceneManager.LoadScene("MainBase",LoadSceneMode.Additive);    
+        UI_Controller._Instance.Main_UI.SetActive(false);
+    }
+    
 
 }

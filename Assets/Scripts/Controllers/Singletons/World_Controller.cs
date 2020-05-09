@@ -7,13 +7,13 @@ public class World_Controller : MonoBehaviour
     public static World_Controller _Instance{get;protected set;}
     public World World{get;protected set;}
     Dictionary<BuiltObject, GameObject> BuiltObjects = new Dictionary<BuiltObject, GameObject>();   
-    private GameObject[,] ChunkList;
     public Texture GroundTexture;
     public GameObject tree,Bush,Rock;
-    public bool OnWorldMap = true; // boolean made for checking if player is looking at world map
+    public bool OnWorldMap = true; // Boolean made for checking if player is looking at world map
     private bool PausedTimeState = false;
     public bool PausedTime{ get => PausedTimeState;set{PausedTimeState = value; TimeCB();}}
-    public int WorldTime{get;set;}       // Ongoing Counter of Time 
+    public int WorldTime{get;set;}
+    public MainBase mainBase;        
     public int Money = 250,Substance = 25;
     private void Awake() {
         if(_Instance != null){
@@ -59,7 +59,7 @@ public class World_Controller : MonoBehaviour
             //Gameover
         }
     }
-    
+    private GameObject[,] ChunkList;
     public void CreateNewWorld()
     {
         World = new World();
@@ -87,10 +87,10 @@ public class World_Controller : MonoBehaviour
                     StartCoroutine(GenerateMeshes(ChunkX,ChunkY));
                 }
             }
+            Mouse_Controller._Instance.MainBase(); 
     }
     IEnumerator GenerateMeshes(int ChunkX,int ChunkY)
     {
-        yield return new WaitForSeconds(.1f);
         for (int x = ChunkX; x < ChunkX + World.ChunkSize; x++)                       //Starting to Generate Visual models for the World
             {
                 for (int y = ChunkY; y < ChunkY + World.ChunkSize; y++)
@@ -106,7 +106,7 @@ public class World_Controller : MonoBehaviour
                     }
                 }
             }
-            Mouse_Controller._Instance.MainBase();
+            yield return new WaitForSeconds(.1f);
     }
     private void GeneratingObject(Tile tile_position,GameObject ObjectMesh,int AppearanceRate)
     {

@@ -18,6 +18,7 @@ public class Factory_Controller : MonoBehaviour
         for (int i = 0; i < Poaches.Length; i++)
         {
             Sapling IncubatorSapling = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i];
+            
             if( IncubatorSapling != null)
             {
                 if(IncubatorSapling.Growth_State == 3)
@@ -33,13 +34,12 @@ public class Factory_Controller : MonoBehaviour
                     Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Saplings_Models[0];
                 }
             }
+
         }
     }
     public void World_Map(Button thisButton)
     {
-        UI_Controller uI_Controller;
-        uI_Controller = GameObject.FindObjectOfType<UI_Controller>();
-        thisButton.onClick.AddListener(uI_Controller.World_Map_Button);
+        thisButton.onClick.AddListener(UI_Controller._Instance.World_Map_Button);
         Mouse_Controller._Instance.CursorPrefab.GetComponent<Image>().sprite = Mouse_Controller._Instance.CursorSprite;
         Mouse_Controller._Instance.CurrentlySelectedBuilding = null;
     }
@@ -48,7 +48,7 @@ public class Factory_Controller : MonoBehaviour
         Mouse_Controller._Instance.CursorPrefab.GetComponent<Image>().sprite = Tree;
         Mouse_Controller._Instance.CurrentlySelectedSapling = Sapling_Example;
     }
-    public void Selling_Sapling(Button thisButton)
+    public void Gathering_Sapling(Button thisButton)
     {
         Factory CurrentFactory = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>();
         Sapling[] FactorySaplingList = CurrentFactory.Factory_Sapling_List;
@@ -59,13 +59,17 @@ public class Factory_Controller : MonoBehaviour
                 Sapling This_Sapling = Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i];
                 if(This_Sapling == null)
                 {
+
                     FactorySaplingList[i] = Mouse_Controller._Instance.CurrentlySelectedSapling;
                     FactorySaplingList[i].Growth_State = 1;
-                    Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Sapling_MeshChange(FactorySaplingList[i]);
                     FactorySaplingList[i].Growing = false;
                     FactorySaplingList[i].AddSaplingCB(Sapling_Growth_Update());
+
+                    Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Sapling_MeshChange(FactorySaplingList[i]);
+
                     CurrentFactory.Factory_Sapling_List = FactorySaplingList;
                     FactorySaplingList = null;
+
                     Mouse_Controller._Instance.CurrentlySelectedSapling = null;
                     Mouse_Controller._Instance.CursorPrefab.GetComponent<Image>().sprite = cursor;
                     
@@ -92,7 +96,7 @@ public class Factory_Controller : MonoBehaviour
                         if(Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i].Growth_State == j
                             && 
                         // Error here is because it checks for the saplings in the slots however some of the slots may be null so it returns an error  
-                        // it does not stop system from working however it will show up in the console
+                        // it does not stop system from working but it will show up in the console
                         Mouse_Controller._Instance.CurrentlySelectedBuilding.GetComponent<Factory>().Factory_Sapling_List[i] != null          )
                         {
                             Poaches_Positions[i].GetComponent<MeshFilter>().mesh = Saplings_Models[j];

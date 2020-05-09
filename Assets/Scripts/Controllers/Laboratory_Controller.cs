@@ -46,7 +46,6 @@ public class Laboratory_Controller : MonoBehaviour
             if(ResearchSlots[i] == CurrentlySelectedResearchSlot&&LaboratorySaplingList[i] == null)
             {
                    LaboratorySaplingList[i] = SaplingExample;
-
             }
         }
         UpdatingLaboratoryInfo();
@@ -95,9 +94,7 @@ public class Laboratory_Controller : MonoBehaviour
     public void World_Map(Button thisButton)
     {
         StopCoroutine("ProgressBarCheck");
-        UI_Controller uI_Controller;
-        uI_Controller = GameObject.FindObjectOfType<UI_Controller>();
-        thisButton.onClick.AddListener(uI_Controller.World_Map_Button);
+        thisButton.onClick.AddListener(UI_Controller._Instance.World_Map_Button);
         Mouse_Controller._Instance.CursorPrefab.GetComponent<Image>().sprite = Mouse_Controller._Instance.CursorSprite;
         Mouse_Controller._Instance.CurrentlySelectedBuilding = null;
     }
