@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.EventSystems;
 
 public class Mouse_Controller : MonoBehaviour
@@ -19,7 +20,7 @@ public class Mouse_Controller : MonoBehaviour
      xy.Raycast(ray, out distance);    
      return ray.GetPoint(distance);
  }  
-    private void Start() {
+    private void Awake() {
          if(_Instance != null){
         Debug.Log("Err there are 2 instances of Mouse Controllers");
         Destroy(this);
@@ -149,31 +150,27 @@ public class Mouse_Controller : MonoBehaviour
         {
            if(Physics.Raycast(Mouse_Ray,out hit,100))
                 {
-                    if(hit.transform.gameObject.GetComponent<Factory>())
-                    {
-                        Click_Count += 1;
-                        if(Click_Count > 1)
-                        {
-                            Click_Count = 0;
-                            World_Controller._Instance.OnWorldMap = false;
-                            UI_Controller._Instance.LoadFactory();
-                            CurrentlySelectedBuilding = hit.transform.gameObject;
-                        }
-                    }
-                    if(hit.transform.gameObject.GetComponent<Laboratory>())
-                    {
-                        Click_Count +=1;
-                        if(Click_Count > 1)
-                        {
-                            Click_Count = 0;
-                            World_Controller._Instance.OnWorldMap = false;
-                            UI_Controller._Instance.LoadLaboratory();
-                            CurrentlySelectedBuilding = hit.transform.gameObject;
-                        
-                        }
-                    }
+                    BuildingHitbox("Factory",UI_Controller.LoadFactory,hit);
+                    BuildingHitbox("Laboratory",UI_Controller.LoadLaboratory,hit);
+                    BuildingHitbox("MainBase",UI_Controller.LoadMainBase,hit);
                 }   
         }
+    }
+    private void BuildingHitbox(string ComponentName,Action LoadingFunction,RaycastHit RayHit)
+    {
+        if(RayHit.transform.gameObject.GetComponent(ComponentName) != null)
+        {
+            Click_Count +=1;
+            if(Click_Count > 1)
+                {
+                    Click_Count = 0;
+                    World_Controller._Instance.OnWorldMap = false;
+                    LoadingFunction();
+                    CurrentlySelectedBuilding = RayHit.transform.gameObject;
+                        
+                }
+        }
+
     }
     private BuiltObject SelectedBuilding;
     private GameObject BuildingPreview ; // Preview of an object on the map that has yet to be placed 
@@ -187,12 +184,15 @@ public class Mouse_Controller : MonoBehaviour
             BuildingPreview.layer = 2;
             if(Physics.Raycast(Mouse_Ray, out hit , 100))
             {
+
             //Showing where the building would be on the map
             BuildingPreview.transform.position = new Vector3((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
+
             if(World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z)) != null)
                 {
                 OriginTile = World_Controller._Instance.World.GetTileAt((int)(hit.point.x),(int)(hit.point.y),(int)(hit.point.z));
                 }
+
             }
             if(Input.GetMouseButtonDown(0)&&World_Controller._Instance.Money >= SelectedBuilding.Money_Cost&&World_Controller._Instance.Substance >= SelectedBuilding.Substance_Cost)
             {
@@ -201,18 +201,19 @@ public class Mouse_Controller : MonoBehaviour
                 GameObject Building = World_Controller._Instance.MakingBuilding(SelectedBuilding,OriginTile,BuildingPreview);
                 if(Building != null)
                 {
+
                 Building.transform.position = BuildingPreview.transform.position;
                 Building.transform.localScale = BuildingPreview.transform.localScale;
 
-                World_Controller._Instance.Money -= SelectedBuilding.Money_Cost;
-                World_Controller._Instance.Substance -= SelectedBuilding.Substance_Cost;
+                World_Controller._Instance.AddResources(-SelectedBuilding.Money_Cost,-SelectedBuilding.Substance_Cost);
                 UI_Controller._Instance.UpdateResources();
                 Destroy(BuildingPreview.gameObject);
                 BuildingPreview = new GameObject();
-                if(SelectedBuilding.objectType == "MainBase")
+
+                if(SelectedBuilding.objectType == "MainBase") // Main Base is an exepction to the Algorithm because it can only be placed once at the start of the game
                 {
                     World_Controller._Instance.PausedTime = false;
-                    
+                    World_Controller._Instance.mainBase = Building.GetComponent<MainBase>();
                 }
                 SelectedBuilding = null;
                 }
@@ -237,7 +238,6 @@ public class Mouse_Controller : MonoBehaviour
         BuildingPreview.name = "Factory";
         CreatingPreviewBuiling(BuildingPreview,FactoryModel);
         BuildingPreview.AddComponent<Factory>();
-        World_Controller._Instance.PausedTime = true;
     }
     public void MainBase()
     {
@@ -247,6 +247,10 @@ public class Mouse_Controller : MonoBehaviour
         BuildingPreview.AddComponent<MainBase>();
         World_Controller._Instance.PausedTime = true;
     }
+    // Creating Preview Building 
+    // This method is responsible for changing a model of a Gameobject in a World Scene
+    // Based on a Refrence model it will aplly Scale along with a collider 
+    // After that if the player places down the buildiing it will inherit all components in the PreviewBuilding
     public void CreatingPreviewBuiling(GameObject PreviewBuilding,GameObject BuildingModel)
     {
         PreviewBuilding.AddComponent<MeshFilter>();

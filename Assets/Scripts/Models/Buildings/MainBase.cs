@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class MainBase : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public List<Sapling> InventorySaplingList;
+    public void Selling(Sapling Saplingexample)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        for (int i = 0; i < InventorySaplingList.Count; i++)
+        {
+            if (InventorySaplingList[i] == Saplingexample&& InventorySaplingList[i].Growth_State == 3)
+            {
+            World_Controller._Instance.AddResources((int)(Saplingexample.Money_Base * (Saplingexample.Verdancy * 3) + Saplingexample.Fertility),0);
+            Saplingexample = null;       
+            }
+        }
     }
 }
