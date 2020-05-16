@@ -66,6 +66,16 @@ public class UI_Controller : MonoBehaviour
         SceneManager.LoadScene("MainBase",LoadSceneMode.Additive);    
         UI_Controller._Instance.Main_UI.SetActive(false);
     }
+    public static void LoadMercenaryCamp()
+    {
+        SceneManager.LoadScene("MercenaryCamp",LoadSceneMode.Additive);    
+        UI_Controller._Instance.Main_UI.SetActive(false);
+    }
+    public static void LoadBuilding(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName,LoadSceneMode.Additive);    
+        UI_Controller._Instance.Main_UI.SetActive(false);
+    } 
     
 
 }

@@ -6,14 +6,19 @@ public class MainBase : MonoBehaviour
 {
     public List<Sapling> InventorySaplingList = new List<Sapling>();
     public List<Sapling> SaplingListToSell = new List<Sapling>();
-    public void Selling(Sapling Saplingexample)
+    public void PuttingSaplingOnList(Sapling Saplingexample)
     {
         for (int i = 0; i < InventorySaplingList.Count; i++)
         {
             if (InventorySaplingList[i] == Saplingexample&& InventorySaplingList[i].Growth_State == 3)
             {
                 SaplingListToSell.Add(Saplingexample);
+                Debug.Log(SaplingListToSell.Count);
                 Saplingexample = null;       
+            }
+            else
+            {
+                Debug.Log("This sapling isn't grown Yet ,You can only sell adult Sapling!!");
             }
         }
     }

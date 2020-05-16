@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class Mouse_Controller : MonoBehaviour
 {
     public static Mouse_Controller _Instance{get;protected set;}
-    public GameObject CursorPrefab,FactoryModel,MainBaseModel,LaboratoryModel,CurrentlySelectedBuilding;
+    public GameObject CursorPrefab,FactoryModel,MainBaseModel,MercenaryCampModel,LaboratoryModel,CurrentlySelectedBuilding;
     public Sprite CursorSprite;
     public AnimationClip MainBaseLanding;
     private Vector3 CurrentFramePos = new Vector3(-.5f,-.5f);
@@ -153,6 +153,7 @@ public class Mouse_Controller : MonoBehaviour
                     BuildingHitbox("Factory",UI_Controller.LoadFactory,hit);
                     BuildingHitbox("Laboratory",UI_Controller.LoadLaboratory,hit);
                     BuildingHitbox("MainBase",UI_Controller.LoadMainBase,hit);
+                    BuildingHitbox("MErcenaryCamp",UI_Controller.LoadMercenaryCamp,hit);
                 }   
         }
     }
@@ -167,7 +168,6 @@ public class Mouse_Controller : MonoBehaviour
                     World_Controller._Instance.OnWorldMap = false;
                     LoadingFunction();
                     CurrentlySelectedBuilding = RayHit.transform.gameObject;
-                        
                 }
         }
 
@@ -246,6 +246,13 @@ public class Mouse_Controller : MonoBehaviour
         CreatingPreviewBuiling(BuildingPreview,MainBaseModel);
         BuildingPreview.AddComponent<MainBase>();
         World_Controller._Instance.PausedTime = true;
+    }
+    public void MercenaryCamp()
+    {
+        SelectedBuilding = BuiltObject.CreatePrototype("MercenaryCamp",3,3,3,0,0);
+        BuildingPreview.name = "MercenaryCamp";
+        CreatingPreviewBuiling(BuildingPreview,MercenaryCampModel);
+        BuildingPreview.AddComponent<MErcenaryCamp>();
     }
     // Creating Preview Building 
     // This method is responsible for changing a model of a Gameobject in a World Scene

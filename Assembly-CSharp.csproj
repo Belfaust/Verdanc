@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\Controllers\Factory_Controller.cs" />
      <Compile Include="Assets\Scripts\Controllers\Laboratory_Controller.cs" />
      <Compile Include="Assets\Scripts\Controllers\MainBase_Controller.cs" />
+     <Compile Include="Assets\Scripts\Controllers\MercenarCamp_Controller.cs" />
      <Compile Include="Assets\Scripts\Controllers\RTSPlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Controllers\Singletons\Mouse_Controller.cs" />
      <Compile Include="Assets\Scripts\Controllers\Singletons\UI_Controller.cs" />
@@ -59,6 +60,7 @@
      <Compile Include="Assets\Scripts\Models\Buildings\BuiltObject.cs" />
      <Compile Include="Assets\Scripts\Models\Buildings\Factory.cs" />
      <Compile Include="Assets\Scripts\Models\Buildings\Laboratory.cs" />
+     <Compile Include="Assets\Scripts\Models\Buildings\MErcenaryCamp.cs" />
      <Compile Include="Assets\Scripts\Models\Buildings\MainBase.cs" />
      <Compile Include="Assets\Scripts\Models\Sapling.cs" />
      <Compile Include="Assets\Scripts\Models\Tile.cs" />

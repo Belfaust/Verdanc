@@ -12,6 +12,7 @@ public class Sapling
     Action GrowthStateChangeCB;
     public Sapling_Type Type{get => _Type;set{_Type = value;Money_Base_Type_Check();}}
     public Sapling_Traits[] Traits;
+    public string name{get;set;}
    public int Verdancy{get;set;}
    public int Fertility{get;set;}
    public int Growth_Time{get;set;}

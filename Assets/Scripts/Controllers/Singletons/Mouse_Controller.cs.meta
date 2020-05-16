@@ -3,7 +3,15 @@ guid: 129761a1959ad07478ab816a85e0f0eb
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - CursorPrefab: {instanceID: 0}
+  - FactoryModel: {instanceID: 0}
+  - MainBaseModel: {instanceID: 0}
+  - MercenaryCampModel: {instanceID: 0}
+  - LaboratoryModel: {instanceID: 0}
+  - CurrentlySelectedBuilding: {instanceID: 0}
+  - CursorSprite: {fileID: 21300000, guid: 668769e173b20774fb3d69494cab7c4a, type: 3}
+  - MainBaseLanding: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

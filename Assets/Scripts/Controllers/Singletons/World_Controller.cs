@@ -51,6 +51,7 @@ public class World_Controller : MonoBehaviour
             if(Time%7==0)
             {
                 Money -= 100;
+                mainBase.SendingSaplings();
                 UI_Controller._Instance.UpdateResources();
             }
         }
@@ -98,11 +99,11 @@ public class World_Controller : MonoBehaviour
                     for (int z = 0; z < World.Depth; z++)
                     {
                         Tile tile_data = World.GetTileAt(x,y,z);
-                        GeneratingObject(tile_data,tree,150);
-                        GeneratingObject(tile_data,Rock,100);
-                        GeneratingObject(tile_data,Bush,50);
+                         GeneratingObject(tile_data,tree,150);
+                         GeneratingObject(tile_data,Rock,100);
+                         GeneratingObject(tile_data,Bush,50);
                         OnTileTypeChange(tile_data);                // Executing a callback and adding it to the tile
-                        tile_data.RegisterTileTypeChange( OnTileTypeChange );
+                         tile_data.RegisterTileTypeChange( OnTileTypeChange );
                     }
                 }
             }
@@ -194,7 +195,51 @@ public class World_Controller : MonoBehaviour
     }
     void MakeFace(FaceDirections dir,Tile tile_data,List<Vector3> vertices,List<int> triangles)
     {
-            vertices.AddRange (CubeMeshData.faceVertices(dir,new Vector3(tile_data.X-GetTileGameObject(tile_data).transform.position.x,tile_data.Y-GetTileGameObject(tile_data).transform.position.y,tile_data.Z)));
+        if(GetNeighbour(tile_data,FaceDirections.North).Type != TileType.Empty)
+        {
+            vertices.AddRange(CubeMeshData.faceVertices(dir,new Vector3(tile_data.X-GetTileGameObject(tile_data).transform.position.x,tile_data.Y-GetTileGameObject(tile_data).transform.position.y,tile_data.Z)));
+        }
+        else
+        {  //Surface Method For Better and Less blocky terrain 
+            Vector3[] SurfaceFaces = new Vector3[4];
+            Transform CurrentChunk = GetTileGameObject(tile_data).transform;
+            Tile TempTile = GetTileAtWorldCoord(new Vector3(tile_data.X,tile_data.Y,tile_data.Z));
+
+            SurfaceFaces[0] = new Vector3(TempTile.X- CurrentChunk.position.x,TempTile.Y- CurrentChunk.position.y,TempTile.Z);
+
+            for (int i = -2; i < 2; i++)
+            {
+                if(GetTileAtWorldCoord(new Vector3(tile_data.X + 1,tile_data.Y,tile_data.Z+ i))!= null)
+                if(GetTileAtWorldCoord(new Vector3(tile_data.X + 1,tile_data.Y,tile_data.Z+ i)).Type != TileType.Empty)
+                {
+                TempTile = GetTileAtWorldCoord(new Vector3(tile_data.X+ 1,tile_data.Y,tile_data.Z+ i));
+                }
+            }
+            SurfaceFaces[1] = new Vector3(TempTile.X - CurrentChunk.position.x,TempTile.Y- CurrentChunk.position.y,TempTile.Z);
+
+            for (int i = -2; i < 2; i++)
+            {
+                if(GetTileAtWorldCoord(new Vector3(tile_data.X,tile_data.Y+1,tile_data.Z+ i))!=null)
+                if(GetTileAtWorldCoord(new Vector3(tile_data.X,tile_data.Y+1,tile_data.Z+ i)).Type != TileType.Empty)
+                {
+                TempTile = GetTileAtWorldCoord(new Vector3(tile_data.X,tile_data.Y+1,tile_data.Z+ i));
+                }
+            }
+            SurfaceFaces[3] = new Vector3(TempTile.X- CurrentChunk.position.x,TempTile.Y- CurrentChunk.position.y,TempTile.Z);
+
+            for (int i = -2; i < 2; i++)
+            {
+                if(GetTileAtWorldCoord(new Vector3(tile_data.X+ 1,tile_data.Y+1,tile_data.Z+ i)) != null)
+                if(GetTileAtWorldCoord(new Vector3(tile_data.X+ 1,tile_data.Y+1,tile_data.Z+ i)).Type != TileType.Empty)
+                {
+                TempTile = GetTileAtWorldCoord(new Vector3(tile_data.X+ 1,tile_data.Y + 1,tile_data.Z+ i));
+                }
+            }
+            SurfaceFaces[2] = new Vector3(TempTile.X- CurrentChunk.position.x,TempTile.Y- CurrentChunk.position.y,TempTile.Z);
+
+            vertices.AddRange(SurfaceFaces);
+
+        }
             int vCount = vertices.Count;
             
 
@@ -262,7 +307,7 @@ public class World_Controller : MonoBehaviour
                         for (int z = 0; z < BuildingSize.GetLength(2); z++)
                         {
                           tiles[tileListCount] = World.GetTileAt(OriginTile.X + x,OriginTile.Y +y,OriginTile.Z +z);
-                          if(tiles[tileListCount].Type != TileType.Empty||tiles[tileListCount].builtobject != null)
+                          if(tiles[tileListCount].builtobject != null)
                           {
                               Debug.Log("There is no Space for that building here");
                               return null;
